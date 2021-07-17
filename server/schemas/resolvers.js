@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Location } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 
@@ -9,7 +9,7 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('comments')
-                    .populate('location')
+                    .populate(Location)
                     .populate('friends');
 
                 return userData;

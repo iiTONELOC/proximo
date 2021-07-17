@@ -5,7 +5,7 @@ type User {
     username: String
     email: String
     friendCount: Int
-    Location: Location
+    location: [Location]
     friends: [User]
 }
 type Location {
