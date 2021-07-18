@@ -9,7 +9,7 @@ type User {
     friends: [User]
 }
 type Location {
-    userID: ID
+    user_id: ID
     latitude: String
     longitude: String
 }

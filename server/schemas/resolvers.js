@@ -46,20 +46,20 @@ const resolvers = {
         addUser: async (parent, args, context) => {
             // grabs the location either from browser or clients ip address
             const { latitude, longitude } = await Location.user(args, context);
-            // must be a LET instead of a CONST here
             // create the user first then we update location
-            let user = await User.create({ ...args });
+            const user = await User.create({ ...args });
 
             try {
-                // grab user by username
-                const updatedUser = await User.findOneAndUpdate(
-                    { username: user.username },
-                    { $push: { location: { latitude: latitude, longitude: longitude } } },
+                // grab user by id
+                const updatedUser = await User.findByIdAndUpdate(
+                    { _id: user._id },
+                    { $push: { location: { user_id: user._id, latitude: latitude, longitude: longitude } } },
                     { new: true }
                 );
                 // sign user and return updated info
                 const token = signToken(updatedUser);
-                user = { ...updatedUser }
+
+                console.log(updatedUser)
                 return { token, user };
             } catch (error) {
                 // in the event there is an error,
