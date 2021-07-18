@@ -21,7 +21,6 @@ function Messages({ socket }) {
     return (
         <div className="message-list">
             {console.log(messages)}
-
         </div>
     );
 }
