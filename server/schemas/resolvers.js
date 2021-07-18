@@ -1,7 +1,7 @@
-const { User, Location } = require('../models');
+const { User } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-
+const Location = require('../utils/Location');
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
@@ -9,7 +9,7 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('comments')
-                    .populate(Location)
+                    .populate('location')
                     .populate('friends');
 
                 return userData;
@@ -43,13 +43,35 @@ const resolvers = {
         //         .populate('friends');
         // },
     }, Mutation: {
-        addUser: async (parent, args) => {
-            const user = await User.create(args);
-            const token = signToken(user);
+        addUser: async (parent, args, context) => {
+            // grabs the location either from browser or clients ip address
+            const { latitude, longitude } = await Location.user(args, context);
+            // must be a LET instead of a CONST here
+            // create the user first then we update location
+            let user = await User.create({ ...args });
 
-            return { token, user };
+            try {
+                // grab user by username
+                const updatedUser = await User.findOneAndUpdate(
+                    { username: user.username },
+                    { $push: { location: { latitude: latitude, longitude: longitude } } },
+                    { new: true }
+                );
+                // sign user and return updated info
+                const token = signToken(updatedUser);
+                user = { ...updatedUser }
+                return { token, user };
+            } catch (error) {
+                // in the event there is an error,
+                // return all data minus location data
+                console.error(error);
+                const token = signToken(user);
+                return { token, user };
+            }
+
         },
         login: async (parent, { email, password }) => {
+
             const user = await User.findOne({ email });
 
             if (!user) {

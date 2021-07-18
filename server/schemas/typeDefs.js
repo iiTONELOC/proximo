@@ -10,8 +10,8 @@ type User {
 }
 type Location {
     userID: ID
-    latitude: Int
-    longitude: Int
+    latitude: String
+    longitude: String
 }
 
 
