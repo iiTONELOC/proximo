@@ -27,7 +27,7 @@ class Location {
                 console.log(e)
                 return
             })
-            return response
+            return response;
         } else {
             const ip = geoip.lookup(client);
             const data = {
@@ -36,13 +36,12 @@ class Location {
                 lat: ip.ll[0],
                 lon: ip.ll[1],
             }
-            return data
+            return data;
         }
     }
 
     static async user(args, context) {
-        const { latitude, longitude, } = args
-        console.log(`++++LAT LON+++++++`)
+        const { latitude, longitude, } = args;
         if (latitude == undefined || longitude == undefined) {
             const { lat, lon } = await Location.get(context);
             return {
