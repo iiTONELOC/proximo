@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@stdlib/math-base-special-deg2rad": "^0.0.6",
     "apollo-server-express": "2.25.2",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
