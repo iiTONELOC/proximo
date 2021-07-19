@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const locationSchema = require('./Location');
-
+const messageSchema = require('./Message');
 const userSchema = new Schema(
   {
     username: {
@@ -21,12 +21,7 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-      }
-    ],
+    messages: [messageSchema],
 
     friends: [
       {
