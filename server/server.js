@@ -1,27 +1,26 @@
 const express = require('express');
+const app = express();
 const path = require('path');
-// import ApolloServer
+const PORT = process.env.PORT || 3001;
+const db = require('./config/connection');
+const ChatServer = require('../chat-server');
 const { ApolloServer } = require('apollo-server-express');
 const { authMiddleware } = require('./utils/auth');
 const requestIp = require('request-ip');
-// import our typeDefs and resolvers
 const { typeDefs, resolvers } = require('./schemas');
-const db = require('./config/connection');
-const PORT = process.env.PORT || 3001;
-const app = express();
+
+
 // create a new Apollo server and pass in our schema data
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context:
     authMiddleware,
-  ip: function (req, res) {
+  ip: (req, res) => {
     const clientIp = requestIp.getClientIp(req);
     return clientIp
   }
 });
-
-// integrate our Apollo server with the Express application as middleware
 server.applyMiddleware({ app });
 app.use(requestIp.mw())
 app.use(express.urlencoded({ extended: false }));
@@ -46,6 +45,6 @@ db.once('open', () => {
     console.log(`API server running on port ${PORT}!`);
     // log where we can go to test our GQL API
     console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
-  })
-
+    ChatServer()
+  });
 });
