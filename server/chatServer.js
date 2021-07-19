@@ -1,9 +1,10 @@
 const express = require('express');
+const CHATPORT = process.env.CHATPORT || 8080
 const socketIo = require('socket.io');
 const cors = require('cors');
 const chatApp = express();
-const chatServer = require('http').createServer(chatApp);
-const io = socketIo(chatServer, {
+const server = require('http').createServer(chatApp);
+const io = socketIo(server, {
     cors: {
         origin: '*',
         methods: ['GET', 'POST']
@@ -11,13 +12,14 @@ const io = socketIo(chatServer, {
 })
 chatApp.use(cors())
 
-const CHAT = () => {
-    chatServer.listen(8080, () => {
+const ChatServer = () => {
+    server.listen(CHATPORT, () => {
+        console.log('Chat Server is active on port ' + CHATPORT)
         io.on('connection', (socket) => {
             socket.emit('message', 'TEST MESSAGE');
-            console.log(socket)
+            // console.log(socket)
         });
     });
 }
 
-module.exports = CHAT;
+module.exports = ChatServer;

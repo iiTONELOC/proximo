@@ -6,7 +6,7 @@ function Messages({ socket }) {
 
     useEffect(() => {
         const messageListener = (message) => {
-            setMessages(message)
+            setMessages([message])
         };
 
 
@@ -17,6 +17,8 @@ function Messages({ socket }) {
             socket.off('message', messageListener);
         };
     }, [socket]);
+
+
 
     return (
         <div className="message-list">
