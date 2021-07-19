@@ -1,9 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { io } from "socket.io-client";
+import Messages from './Messages';
 function App() {
+  const [socket, setSocket] = useState(null);
 
+  useEffect(() => {
+    const newSocket = io(`http://${window.location.hostname}:8080`);
+    setSocket(newSocket);
+    return () => newSocket.close();
+  }, [setSocket]);
   return (
     <div className="App">
       <header className="App-header">
@@ -20,6 +27,8 @@ function App() {
           Learn React
         </a>
       </header>
+      {socket ? <Messages socket={socket} /> : `Not connected!`}
+
     </div>
   );
 }
