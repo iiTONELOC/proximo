@@ -22,6 +22,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
+    profilePicture: {
+      type: String,
+      required: false,
+      default: null
+    },
     messages: [Message.schema],
     servers: [{
       type: Schema.Types.ObjectId,

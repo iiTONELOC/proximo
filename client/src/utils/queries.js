@@ -7,6 +7,7 @@ query {
         _id
         username
         email
+        profilePicture
         friendCount
             location{
                 user_id
