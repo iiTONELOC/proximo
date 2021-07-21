@@ -1,72 +1,31 @@
-const uuidv4 = require('uuid').v4;
-const messages = new Set();
-const users = new Map();
 
-const defaultUser = {
-    id: 'admin',
-    name: 'Proximo',
-};
+class ChatAPI {
 
-const messageExpirationTimeMS = 5 * 60 * 1000;
-const testMessage = {
-    id: uuidv4(),
-    user: defaultUser,
-    value: 'Welcome Stranger!',
-    time: Date.now()
-};
-class Connection {
-    constructor(io, socket) {
-        this.socket = socket;
-        this.io = io;
-        // console.log(`++++++++++++++++`, this.socket)
-        socket.on('getMessages', () => this.getMessages());
-        socket.on('message', (value) => this.handleMessage(value));
-        socket.on('disconnect', () => this.disconnect());
-        socket.on('connect_error', (err) => {
-            console.log(`connect_error due to ${err.message}`);
+    // GLOBAL CHAT
+    static globalChat(io) {
+        io.on('connection', (socket) => {
+            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
-    }
+    };
 
-    sendMessage(message) {
-        this.io.sockets.emit('message', message);
-    }
-
-    getMessages() {
-        messages.forEach((message) => this.sendMessage(message));
-    }
-
-    handleMessage(value) {
+    // METHODS
+    static handleMessage(value, socket, io) {
         const message = {
-            id: uuidv4(),
-            user: users.get(this.socket) || defaultUser,
+            id: Date.now(),
+            user: {
+                id: Date.now(),
+                name: `TEST USER`
+            } || '',
             value,
             time: Date.now()
         };
-
-
-        messages.add(message);
-        this.sendMessage(message);
-
-        setTimeout(
-            () => {
-                messages.delete(message);
-                this.io.sockets.emit('deleteMessage', message.id);
-            },
-            messageExpirationTimeMS,
-        );
+        ChatAPI.sendMessage(message, io);
     }
-
-    disconnect() {
-        users.delete(this.socket);
+    static sendMessage(message, io) {
+        io.sockets.emit('message', message);
     }
 }
 
-function chat(io) {
-    io.on('connection', (socket) => {
-        new Connection(io, socket);
 
-    });
 
-};
-
-module.exports = chat;
+module.exports = ChatAPI;

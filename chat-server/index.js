@@ -4,7 +4,7 @@ const socketIo = require('socket.io');
 const cors = require('cors');
 const app = express();
 const NetAddress = require('./utils/network');
-const chat = require('./utils/chat-handler')
+const ChatAPI = require('./utils/chat-handler')
 const server = require('http').createServer(app);
 const io = socketIo(server, {
     cors: {
@@ -16,10 +16,9 @@ app.use(cors())
 
 const ChatServer = () => {
     server.listen(CHATPORT, () => {
-
         console.log(`Chat Server connected @ http://localhost:${CHATPORT}\nOr on your network: http://${NetAddress()}:${CHATPORT} `)
-        chat(io)
-
+        // GLOBAL CHAT
+        ChatAPI.globalChat(io);
     });
 }
 
