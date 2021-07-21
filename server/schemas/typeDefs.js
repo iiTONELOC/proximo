@@ -10,7 +10,7 @@ type User {
     messages: [Message]
     servers: [Server]
     channels: [ChatRoom]
-    profilePicture: String
+    profilePicture: [String]
 }
 type Location {
     user_id: ID

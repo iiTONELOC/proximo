@@ -23,7 +23,7 @@ const userSchema = new Schema(
       minlength: 5
     },
     profilePicture: {
-      type: String,
+      type: Buffer,
       required: false,
       default: null
     },
