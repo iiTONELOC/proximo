@@ -1,16 +1,18 @@
 const { Schema, model } = require('mongoose');
-const reactionSchema = require('./Reaction');
 const dateFormat = require('../utils/dateFormat');
+const ChatRoom = require('./ChatRoom');
 
-const commentSchema = new Schema(
+const messageSchema = new Schema(
+
   {
-    CommentText: {
+    channel: [ChatRoom.schema],
+    text: {
       type: String,
-      required: 'You need to leave a Comment!',
+      required: 'Messages must have content!',
       minlength: 1,
       maxlength: 280
     },
-    createdAt: {
+    time: {
       type: Date,
       default: Date.now,
       get: timestamp => dateFormat(timestamp)
@@ -19,7 +21,6 @@ const commentSchema = new Schema(
       type: String,
       required: true
     },
-    reactions: [reactionSchema]
   },
   {
     toJSON: {
@@ -28,10 +29,7 @@ const commentSchema = new Schema(
   }
 );
 
-commentSchema.virtual('reactionCount').get(function () {
-  return this.reactions.length;
-});
 
-const Comment = model('Comment', commentSchema);
+const Message = model('Message', messageSchema);
 
-module.exports = Comment;
+module.exports = Message;
