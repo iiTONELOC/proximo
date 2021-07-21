@@ -8,10 +8,6 @@ mutation login($email: String!, $password: String!) {
         _id
         username
     }
-    location{
-        latitude
-        longitude
-    }
     }
 }
 `;

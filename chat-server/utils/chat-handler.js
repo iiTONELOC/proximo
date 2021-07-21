@@ -18,7 +18,7 @@ class Connection {
     constructor(io, socket) {
         this.socket = socket;
         this.io = io;
-        socket.emit('message', testMessage);
+        // console.log(`++++++++++++++++`, this.socket)
         socket.on('getMessages', () => this.getMessages());
         socket.on('message', (value) => this.handleMessage(value));
         socket.on('disconnect', () => this.disconnect());
