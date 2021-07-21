@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-//import { QUERY_USER, QUERY_ME } from '../utils/queries';
+import { QUERY_USER, QUERY_ME } from '../utils/queries';
 //import { ADD_FRIEND } from '../utils/mutations';
 import ThoughtList from '../components/ThoughtList';
 import FriendList from '../components/FriendList';
@@ -10,12 +10,31 @@ import Auth from '../utils/auth';
 
 const Profile = () => {
 
-//   //const [addFriend] = useMutation(ADD_FRIEND);
-//   //const { username: userParam } = useParams();
+  const { loading, error, data } = useQuery(QUERY_ME)
 
-//   //const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-//    // variables: { username: userParam }
-//  // });
+  console.log(data)
+
+  
+  const { username, friends } = {...data.me}
+  
+  console.log(friends)
+  console.log(username)
+  // const username = data.me.username
+
+//   //const [addFriend] = useMutation(ADD_FRIEND);
+  // useEffect(() => {
+  //   const username = useQuery(QUERY_ME, {
+  //     variables: { username }
+  //   });
+  // })
+
+//   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
+//    variables: { username: userParam }
+//  });
+
+//  const { loading, data } = useQuery(QUERY_ME, {
+//   variables: { username }
+// });
 //   //const user = data?.me || data?.user || {};
 //   const handleClick = async () => {
 //     try {
@@ -74,11 +93,11 @@ const Profile = () => {
         </ul>
         
       
-          {/* <FriendList
-            username={user.username}
-            friendCount={user.friendCount}
-            friends={user.friends}
-          /> */}
+          <FriendList
+            username={ username }
+            // friendCount={user.friendCount}
+            friends = { friends }
+          />
         </div>
       </div>
       {/* <div className="mb-3">{!userParam && <ThoughtForm />}</div> */}

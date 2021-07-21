@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { USE_QUERY } from '@apollo/client'
+
 
 const FriendList = ({ friendCount, username, friends }) => {
     if (!friends || !friends.length) {
