@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
-
+const locationSchema = require('./Location');
+const messageSchema = require('./Message');
 const userSchema = new Schema(
   {
     username: {
@@ -20,12 +21,7 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    thoughts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Thought'
-      }
-    ],
+    messages: [messageSchema],
 
     friends: [
       {
@@ -33,12 +29,7 @@ const userSchema = new Schema(
         ref: 'User'
       }
     ],
-    location: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Location'
-      }
-    ],
+    location: [locationSchema],
   },
   {
     toJSON: {
