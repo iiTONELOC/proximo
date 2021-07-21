@@ -8,6 +8,8 @@ type User {
     location: [Location]
     friends: [User]
     messages: [Message]
+    servers: [Server]
+    channels: [ChatRoom]
 }
 type Location {
     user_id: ID
@@ -15,25 +17,35 @@ type Location {
     longitude: String
 }
 type Message{
-    messageID: String
+    _id: ID
+    channel_id: ID
     text: String
     time: String
     username: String
 }
 input MessageInput{
-    messageID: String
     text: String
     time: String
     username: String
 }
 type ChatRoom{
-    chatID: String
+    _id: ID
+    name: String
     messages: [Message]
     location: [Location]
     private: Boolean
+    server: [Server]
 }
 
-
+type Server{
+    _id: ID
+    ownerID: ID
+    name: String
+    channels: [ChatRoom]
+    location: [Location]
+    createdAt: String
+    
+}
 type Query {
     me: User
     users: [User]

@@ -1,21 +1,28 @@
 const { Schema, model } = require('mongoose');
-const messageSchema = require('./Message');
+const Message = require('./Message');
 const locationSchema = require('./Location');
 
 const chatRoomSchema = new Schema(
     {
-        chatID: {
+        messages: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Message'
+        }],
+        name: {
             type: String,
-            required: true,
-            unique: true
+            required: 'Channels must have a name!',
+            minlength: 2,
+            maxlength: 25
         },
-        messages: [messageSchema],
         location: [locationSchema],
         private: {
             type: Boolean,
             required: true
+        },
+        server: {
+            type: Schema.Types.ObjectId,
+            ref: 'Server'
         }
-
     }
 );
 
