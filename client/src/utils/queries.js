@@ -7,15 +7,32 @@ query {
         _id
         username
         email
+        profilePicture
         friendCount
-    location{
-        user_id
-        latitude
-        longitude
-    }
-    friends{
-        username
-    }
+            location{
+                user_id
+                latitude
+                longitude
+            }
+            friends{
+                username
+            }
+            messages{
+                _id
+            }
+            servers{
+                _id
+                ownerID
+                name
+            channels{
+                _id
+                    location{
+                        latitude
+                        longitude
+                    }
+                private
+            }
+        }
     }
 }
 `;
@@ -27,14 +44,30 @@ query {
         username
         email
         friendCount
-    location{
-        user_id
-        latitude
-        longitude
-    }
-    friends{
-        username
-    }
+            location{
+                user_id
+                latitude
+                longitude
+            }
+            friends{
+                username
+            }
+            messages{
+                _id
+            }
+            servers{
+                _id
+                ownerID
+                name
+            channels{
+                _id
+                    location{
+                        latitude
+                        longitude
+                    }
+                private
+            }
+        }
     }
 }
 `;

@@ -1,12 +1,11 @@
-const { Schema } = require('mongoose');
+const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
+const ChatRoom = require('./ChatRoom');
 
 const messageSchema = new Schema(
 
   {
-    messageID: {
-      type: String
-    },
+    channel: [ChatRoom.schema],
     text: {
       type: String,
       required: 'Messages must have content!',
@@ -31,6 +30,6 @@ const messageSchema = new Schema(
 );
 
 
+const Message = model('Message', messageSchema);
 
-
-module.exports = messageSchema
+module.exports = Message;
