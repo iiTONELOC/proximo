@@ -55,11 +55,25 @@ const Profile = () => {
       </div>
 
       <div className="flex-row justify-space-between mb-3">
-        <div className="col-12 mb-3 col-lg-8">
+        <div className="col-12 mb-3 col-lg-8"> This is a profile picture of you
+
           {/* <ThoughtList thoughts={user.thoughts} title={`${user.username}'s thoughts...`} /> */}
         </div>
 
-        <div className="col-12 col-lg-3 mb-3">
+        <div className="col-12 mb-3 col-lg-8"> This is profile information</div>
+
+        <div className="col-12 col-lg-3 mb-3"> 
+        Friend list 
+        <ul>
+            <li>
+            Friend 1 with picture as icon
+            </li>
+            <li>
+            Friend 2 with picture as icon
+            </li>
+        </ul>
+        
+      
           {/* <FriendList
             username={user.username}
             friendCount={user.friendCount}
