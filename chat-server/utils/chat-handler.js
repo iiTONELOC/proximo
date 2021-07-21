@@ -3,15 +3,15 @@ const messages = new Set();
 const users = new Map();
 
 const defaultUser = {
-    id: 'anon',
-    name: 'Anonymous',
+    id: 'admin',
+    name: 'Proximo',
 };
 
 const messageExpirationTimeMS = 5 * 60 * 1000;
 const testMessage = {
     id: uuidv4(),
     user: defaultUser,
-    value: 'TEST',
+    value: 'Welcome Stranger!',
     time: Date.now()
 };
 class Connection {
