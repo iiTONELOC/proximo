@@ -73,27 +73,26 @@ userSchema.virtual('friendCount').get(function () {
 
 userSchema.virtual('UsersInRange').get(async function () {
   // query all active users return an array of users within 2 miles for now, change distance later
-  const Users = await User.find();
-  // calculate distance between users
+  const Users = await User.find().select('-__v -password');
+  // filter out currentUser
+  const AllUsers = Users.filter(el=> el._id.toString() != this._id.toString());
+  
   const [data] = this.location
+  //  lat-lon 1
   const { latitude, longitude } = data;
-  const userData = Users.map((el) => {
+  // map over users
+  return AllUsers.map((el) => {
     const [data2] = el.location;
+    // lat-lon 2
     const lat2 = data2.latitude;
     const long2 = data2.longitude;
-    const tooFar = Distance(latitude, longitude, lat2, long2)
-    if (this._id.toString() === el._id.toString()) {
-      // no need to calculate distance on the the same user
-    } else {
-      // if not user, calculate current distance between this user and all others
-      if (tooFar < 2) {
-        return data._id
+    // calculate distance between users
+    const howFar = Distance(latitude, longitude, lat2, long2)
+      // less than 2 miles away, return
+      if (howFar < 2) {
+        return el
       }
-    }
   })
-
-  // filter array to remove null values
-  return userData.filter(el=>el != null)
 })
 
 const User = model('User', userSchema);

@@ -11,7 +11,7 @@ type User {
     servers: [Server]
     channels: [ChatRoom]
     profilePicture: String
-    UsersInRange: [ID]
+    UsersInRange: [User]
 }
 type Location {
     user_id: ID

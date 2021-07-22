@@ -10,7 +10,10 @@ const resolvers = {
                     .select('-__v -password')
                     .populate('comments')
                     .populate('location')
-                    .populate('friends');
+                    .populate('friends')
+                    .populate('messages')
+                    .populate('servers')
+                    .populate('channels');
 
                 return userData;
             }
@@ -29,10 +32,13 @@ const resolvers = {
         // get all users
         users: async () => {
             return User.find()
-                .select('-__v -password')
-                .populate('comments')
-                .populate('location')
-                .populate('friends');
+            .select('-__v -password')
+            .populate('comments')
+            .populate('location')
+            .populate('friends')
+            .populate('messages')
+            .populate('servers')
+            .populate('channels');
         },
         // get a user by username
         // user: async (parent, { username }) => {
