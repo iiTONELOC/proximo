@@ -14,11 +14,11 @@ const Profile = () => {
 
   console.log(data)
 
-  
-  const { username, friends } = {...data.me}
-  
-  console.log(friends)
-  console.log(username)
+
+  // const { username, friends } = {...data.me}
+
+  // console.log(friends)
+  // console.log(username)
   // const username = data.me.username
 
 //   //const [addFriend] = useMutation(ADD_FRIEND);
@@ -61,8 +61,8 @@ const Profile = () => {
 //   }
   return (
     <div>
-      <div className="flex-row mb-3">
-        <h2 className="bg-dark text-secondary p-3 display-inline-block"> This is the profile page ** Insert picture of you ** 
+       <div className="App" class="p-6 items-center justify-center">
+        <h2 class="text-blue-400 font-extrabold"> This is the profile page ** Insert picture of you **
           {/* Viewing {userParam ? `${user.username}'s` : 'your'} profile. */}
         </h2>
 
@@ -81,8 +81,8 @@ const Profile = () => {
 
         <div className="col-12 mb-3 col-lg-8"> This is profile information</div>
 
-        <div className="col-12 col-lg-3 mb-3"> 
-        Friend list 
+        <div className="col-12 col-lg-3 mb-3">
+        Friend list
         <ul>
             <li>
             Friend 1 with picture as icon
@@ -91,13 +91,13 @@ const Profile = () => {
             Friend 2 with picture as icon
             </li>
         </ul>
-        
-      
-          <FriendList
+
+
+          {/* <FriendList
             username={ username }
             // friendCount={user.friendCount}
             friends = { friends }
-          />
+          /> */}
         </div>
       </div>
       {/* <div className="mb-3">{!userParam && <ThoughtForm />}</div> */}
