@@ -8,6 +8,13 @@ class ChatAPI {
         });
     };
 
+    // PUBLIC CHAT
+    static publicChat(io) {
+        io.on('connection', (socket) => {
+            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        });
+    };
+
     // METHODS
     static handleMessage(value, socket, io) {
         const message = {
@@ -25,7 +32,5 @@ class ChatAPI {
         io.sockets.emit('message', message);
     }
 }
-
-
 
 module.exports = ChatAPI;

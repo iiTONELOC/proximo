@@ -45,7 +45,6 @@ type Server{
     channels: [ChatRoom]
     location: [Location]
     createdAt: String
-    
 }
 type Query {
     me: User
@@ -61,7 +60,6 @@ type Mutation {
 type Auth {
     token: ID!
     user: User
-    
 }
 `
 
