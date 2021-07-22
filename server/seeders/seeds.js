@@ -1,11 +1,14 @@
 const faker = require('faker');
 
 const db = require('../config/connection');
-const { Thought, User } = require('../models');
+const {  User, Server, ChatRoom} = require('../models');
 
 db.once('open', async () => {
   // await Thought.deleteMany({});
   await User.deleteMany({});
+  await Server.deleteMany({});
+  await ChatRoom.deleteMany({})
+
 
   // // create user data
   // const userData = [];
