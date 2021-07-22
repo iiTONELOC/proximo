@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const locationSchema = require('./Location');
 const Message = require('./Message');
 const ChatRoom = require('./ChatRoom');
+const Distance = require('../utils/Distance');
 const userSchema = new Schema(
   {
     username: {
@@ -69,6 +70,34 @@ userSchema.methods.isCorrectPassword = async function (password) {
 userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
+
+userSchema.virtual('UsersInRange').get(async function(){
+// query all active users return an array of users within 2 miles for now, change distance later
+const Users = await User.find();
+// calculate distance between users
+const [data] = this.location
+const {latitude, longitude } = data;
+return Users.map((el)=>{
+
+const [data2] = el.location;
+const lat2 = data2.latitude;
+const long2 = data2.longitude;
+const tooFar = Distance(latitude, longitude, lat2, long2)
+if(this._id.toString() === el._id.toString()){
+  console.log('HERE')
+  console.log(tooFar)
+}else{
+  console.log(this._id)
+  console.log(el._id)
+  if(tooFar <=2){
+    
+    return data._id
+  }
+}
+
+
+})
+})
 
 const User = model('User', userSchema);
 
