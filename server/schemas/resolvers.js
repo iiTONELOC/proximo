@@ -1,6 +1,7 @@
 const { User, ChatRoom, Server } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const { createNewUser } = require('../utils/chatUtils/ChatUtility')
 const Location = require('../utils/Location');
 const resolvers = {
     Query: {
@@ -8,7 +9,6 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
-                    .populate('comments')
                     .populate('location')
                     .populate('friends')
                     .populate('messages')
@@ -33,7 +33,6 @@ const resolvers = {
         users: async () => {
             return User.find()
                 .select('-__v -password')
-                .populate('comments')
                 .populate('location')
                 .populate('friends')
                 .populate('messages')
@@ -50,59 +49,14 @@ const resolvers = {
         // },
     }, Mutation: {
         addUser: async (parent, args, context) => {
-            // grabs the location either from browser or clients ip address
-            const { latitude, longitude } = await Location.user(args, context);
-            // create the user first then we update location
-            const user = await User.create({ ...args });
-
             try {
-                // create server and channel for user
-                const createServer_createChannel = await Server.create({
-                    name: `${user.username}'s Personal Server`,
-                    ownerID: user._id,
-                    location: { user_id: user._id, latitude: latitude, longitude: longitude },
-                }).then(async ({ _id }) => {
-                    // create chatroom
-                    const c = await ChatRoom.create({
-                        name: `${user.username}'s Personal Chat`,
-                        location: { user_id: user._id, latitude: latitude, longitude: longitude },
-                        private: true,
-                        server: _id
-                    })
-                    // update the server with channel id
-                    const s = await Server.findOneAndUpdate({ _id: _id }, {
-                        $push: { channels: c._id }
-                    }, { new: true })
-                    // return id's to update the user
-                    const updatedUser = await User.findByIdAndUpdate(
-                        { _id: user._id },
-                        {
-                            $push: {
-                                location: { user_id: user._id, latitude: latitude, longitude: longitude },
-                                servers: s._id ,
-                                channels: c._id 
-                            }
-                        },
-                        { new: true }
-                    ).select('-__v -password');
-                    return updatedUser
-                }).catch(e => {
-                    console.error(e)
-                })
-                // update user with location, server, and channel
-              
-               
-
-                console.log('NEW USER',createServer_createChannel)
-                // sign user and return updated info
+                // custom method 
+                // located in utils/chatUtils/ChatUtility.js
+                const user = await createNewUser(args, context);
                 const token = signToken(user);
                 return { token, user };
             } catch (error) {
-                // in the event there is an error,
-                // return all data minus location data
-                console.error(error);
-                const token = signToken(user);
-                return { token, user };
+                console.error(error)
             }
 
         },
