@@ -1,7 +1,8 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const locationSchema = require('./Location');
-
+const Message = require('./Message');
+const ChatRoom = require('./ChatRoom');
 const userSchema = new Schema(
   {
     username: {
@@ -21,13 +22,20 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
-    comments: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Comment'
-      }
-    ],
-
+    profilePicture: {
+      type: String,
+      required: false,
+      default: null
+    },
+    messages: [Message.schema],
+    servers: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Server'
+    }],
+    channels: [{
+      type: Schema.Types.ObjectId,
+      ref: 'ChatRoom'
+    }],
     friends: [
       {
         type: Schema.Types.ObjectId,

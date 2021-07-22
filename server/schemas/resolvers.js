@@ -58,8 +58,6 @@ const resolvers = {
                 );
                 // sign user and return updated info
                 const token = signToken(updatedUser);
-
-                console.log(updatedUser)
                 return { token, user };
             } catch (error) {
                 // in the event there is an error,
@@ -115,19 +113,19 @@ const resolvers = {
 
         //     throw new AuthenticationError('You need to be logged in!');
         // },
-        // addFriend: async (parent, { friendId }, context) => {
-        //     if (context.user) {
-        //         const updatedUser = await User.findOneAndUpdate(
-        //             { _id: context.user._id },
-        //             { $addToSet: { friends: friendId } },
-        //             { new: true }
-        //         ).populate('friends');
+        addFriend: async (parent, { friendId }, context) => {
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { $addToSet: { friends: friendId } },
+                    { new: true }
+                ).populate('friends');
 
-        //         return updatedUser;
-        //     }
+                return updatedUser;
+            }
 
-        //     throw new AuthenticationError('You need to be logged in!');
-        // }
+            throw new AuthenticationError('You need to be logged in!');
+        }
 
 
     },
