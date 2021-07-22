@@ -5,7 +5,10 @@ const locationSchema = require('./Location');
 const serverSchema = new Schema(
 
     {
-        channels: [ChatRoom.schema],
+        channels: [{
+            type: Schema.Types.ObjectId,
+            ref: 'ChatRoom'
+        }],
         name: {
             type: String,
             required: 'Servers must have a name!',

@@ -72,6 +72,7 @@ userSchema.virtual('friendCount').get(function () {
 });
 
 userSchema.virtual('UsersInRange').get(async function () {
+ 
   // query all active users return an array of users within 2 miles for now, change distance later
   const Users = await User.find().select('-__v -password');
   // filter out currentUser
