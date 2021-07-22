@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-//import { QUERY_USER, QUERY_ME } from '../utils/queries';
+import { QUERY_USER, QUERY_ME } from '../utils/queries';
 //import { ADD_FRIEND } from '../utils/mutations';
 import ThoughtList from '../components/ThoughtList';
 import FriendList from '../components/FriendList';
@@ -10,12 +10,31 @@ import Auth from '../utils/auth';
 
 const Profile = () => {
 
-//   //const [addFriend] = useMutation(ADD_FRIEND);
-//   //const { username: userParam } = useParams();
+  const { loading, error, data } = useQuery(QUERY_ME)
 
-//   //const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
-//    // variables: { username: userParam }
-//  // });
+  console.log(data)
+
+  
+  const { username, friends } = {...data.me}
+  
+  console.log(friends)
+  console.log(username)
+  // const username = data.me.username
+
+//   //const [addFriend] = useMutation(ADD_FRIEND);
+  // useEffect(() => {
+  //   const username = useQuery(QUERY_ME, {
+  //     variables: { username }
+  //   });
+  // })
+
+//   const { loading, data } = useQuery(userParam ? QUERY_USER : QUERY_ME, {
+//    variables: { username: userParam }
+//  });
+
+//  const { loading, data } = useQuery(QUERY_ME, {
+//   variables: { username }
+// });
 //   //const user = data?.me || data?.user || {};
 //   const handleClick = async () => {
 //     try {
@@ -55,16 +74,30 @@ const Profile = () => {
       </div>
 
       <div className="flex-row justify-space-between mb-3">
-        <div className="col-12 mb-3 col-lg-8">
+        <div className="col-12 mb-3 col-lg-8"> This is a profile picture of you
+
           {/* <ThoughtList thoughts={user.thoughts} title={`${user.username}'s thoughts...`} /> */}
         </div>
 
-        <div className="col-12 col-lg-3 mb-3">
-          {/* <FriendList
-            username={user.username}
-            friendCount={user.friendCount}
-            friends={user.friends}
-          /> */}
+        <div className="col-12 mb-3 col-lg-8"> This is profile information</div>
+
+        <div className="col-12 col-lg-3 mb-3"> 
+        Friend list 
+        <ul>
+            <li>
+            Friend 1 with picture as icon
+            </li>
+            <li>
+            Friend 2 with picture as icon
+            </li>
+        </ul>
+        
+      
+          <FriendList
+            username={ username }
+            // friendCount={user.friendCount}
+            friends = { friends }
+          />
         </div>
       </div>
       {/* <div className="mb-3">{!userParam && <ThoughtForm />}</div> */}
