@@ -14,8 +14,28 @@ const Test = () => {
     return () => newSocket.close();
   }, [setSocket]);
 
+  var publicChat = false;
+
+  const createRoom = async event => {
+    event.preventDefault();
+    try {
+      socket.emit('create', (room) => {
+        socket.join(room);
+        console.log(room);
+      });
+      console.log(socket);
+
+      publicChat = true;
+      console.log(publicChat);
+      return publicChat;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   return (
     <main>
+      {loggedIn && <button onClick={createRoom}> Create Room </button>}
       {loggedIn && (<div className="flex-row justify-space-between">
         <h1>**THIS IS A TEST ** Global Chat</h1>
 
@@ -24,6 +44,13 @@ const Test = () => {
 
       </div>)}
 
+      {publicChat && (<div className="flex-row justify-space-between">
+        <h1>**THIS IS A TEST ** Public Chat</h1>
+
+        {socket ? (<div><Messages socket={socket} />
+          <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
+
+      </div>)}
     </main>
   );
 };

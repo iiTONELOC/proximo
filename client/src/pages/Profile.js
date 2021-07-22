@@ -15,10 +15,10 @@ const Profile = () => {
   console.log(data)
 
   
-  const { username, friends } = {...data.me}
+  // const { username, friends } = {...data.me}
   
-  console.log(friends)
-  console.log(username)
+  // console.log(friends)
+  // console.log(username)
   // const username = data.me.username
 
 //   //const [addFriend] = useMutation(ADD_FRIEND);
@@ -93,11 +93,11 @@ const Profile = () => {
         </ul>
         
       
-          <FriendList
+          {/* <FriendList
             username={ username }
-            // friendCount={user.friendCount}
+            friendCount={user.friendCount}
             friends = { friends }
-          />
+          /> */}
         </div>
       </div>
       {/* <div className="mb-3">{!userParam && <ThoughtForm />}</div> */}

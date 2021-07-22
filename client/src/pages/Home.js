@@ -21,7 +21,6 @@ const Home = () => {
           <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
 
       </div>)}
-
     </main>
   );
 };

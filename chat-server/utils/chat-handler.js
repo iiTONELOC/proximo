@@ -8,9 +8,11 @@ class ChatAPI {
         });
     };
 
-    // PUBLIC CHAT
+    //PUBLIC CHAT
     static publicChat(io) {
-        io.on('connection', (socket) => {
+        socket.emit('create', (room) => {
+            socket.join(room);
+            console.log(room);
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };
