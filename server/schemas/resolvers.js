@@ -20,11 +20,15 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        // find all servers:
-
+        // find all servers or a server, depending on query:
         servers: async (parent, { _id }) => {
             const params = _id ? { _id } : {};
             return Server.find(params).populate({ path: 'channels' });
+        },
+        // find all channels or a single channel
+        chatRooms: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return ChatRoom.find(params).populate({ path: 'server' })
         },
         // comment: async (parent, { _id }) => {
         //     return Comment.findOne({ _id });

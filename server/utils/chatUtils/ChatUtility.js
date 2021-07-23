@@ -1,5 +1,19 @@
 const { User, ChatRoom, Server } = require('../../models');
 const Location = require('../../utils/Location');
+// creates a new server for the user,
+const createServer = (user, latitude, longitude) => Server.create({
+    name: `${user.username}'s Personal Server`,
+    ownerID: user.id,
+    location: { user_id: user._id, latitude: latitude, longitude: longitude },
+}).then(data => data).catch(e => console.error(e));
+// creates a channel for the passed in user, user is not updated yet so requires server
+// name and private are optional
+const createChannel = (user, latitude, longitude, server, name, private) => ChatRoom.create({
+    name: name ? name : `${user.username}'s Personal Chat`,
+    location: { user_id: user._id, latitude: latitude, longitude: longitude },
+    private: private ? private : false,
+    server: server
+}).then(data => data).catch(e => console.error(e))
 
 module.exports = {
     createNewUser: async (args, context) => {
@@ -7,41 +21,33 @@ module.exports = {
         const { latitude, longitude } = await Location.user(args, context);
         //  create new user
         const user = await User.create({ ...args });
-        const data = await user;
         // create server
-        const createServer = () => Server.create({
-            name: `${data.username}'s Personal Server`,
-            ownerID: user.id,
-            location: { user_id: user._id, latitude: latitude, longitude: longitude },
-        }).then(data => data).catch(e => console.error(e));
-        const server = await createServer();
+        const server = await createServer(user, latitude, longitude);
         // create channel 
-        const createChannel = () => ChatRoom.create({
-            name: `${user.username}'s Personal Chat`,
-            location: { user_id: user._id, latitude: latitude, longitude: longitude },
-            private: true,
-            server: server
-        }).then(data => data).catch(e => console.error(e))
+        const channel = await createChannel(user, latitude, longitude, server);
         // update server with channel
-        const channel = await createChannel();
+
         const updateServer = () => Server.findByIdAndUpdate(server._id,
             { $push: { channels: channel._id } },
             { new: true }).catch(e => console.error(e));
-        updateServer();
-        // update user
-        const updatedUser = await User.findByIdAndUpdate(
-            { _id: user._id },
-            {
-                $push: {
-                    location: { user_id: user._id, latitude: latitude, longitude: longitude },
-                    servers: server._id,
-                    channels: channel._id
-                }
-            },
-            { new: true }
-        ).select('-__v -password');
-        console.log(updatedUser)
-        return user
-
+        try {
+            updateServer();
+            // update user
+            const updatedUser = await User.findByIdAndUpdate(
+                { _id: user._id },
+                {
+                    $push: {
+                        location: { user_id: user._id, latitude: latitude, longitude: longitude },
+                        servers: server._id,
+                        channels: channel._id
+                    }
+                },
+                { new: true }
+            ).select('-__v -password');
+            return updatedUser
+        } catch (error) {
+            console.error(error)
+            User.findByIdAndRemove(user._id)
+        }
     }
 }
