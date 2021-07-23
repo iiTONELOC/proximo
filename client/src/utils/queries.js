@@ -105,3 +105,42 @@ query{
     }
 }
 `;
+
+export const QUERY_CHANNELS = gql`
+query{
+  chatRooms{
+    _id
+    name
+    private
+    server{
+      _id
+      name
+      ownerID
+      location{
+        latitude
+        longitude
+      }
+    }
+  }
+}
+`;
+
+export const QUERY_SERVERS = gql`
+query {
+  servers{
+  _id
+    name
+    ownerID
+    location{
+      latitude
+      longitude
+    }
+    channels{
+      _id
+      name
+      private
+    }
+  }
+}
+`;
+

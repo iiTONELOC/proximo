@@ -30,32 +30,21 @@ const resolvers = {
             const params = _id ? { _id } : {};
             return ChatRoom.find(params).populate({ path: 'server' })
         },
-        // comment: async (parent, { _id }) => {
-        //     return Comment.findOne({ _id });
-        // },
-
 
         // get all users
-        users: async () => {
-            return User.find()
+        // get user by username
+        // get user by _id
+        users: async (parent, { _id, username }) => {
+            const params = _id ? { _id } : username ? { username } : {};
+            return User.find(params)
                 .select('-__v -password')
                 .populate({
                     path: 'servers',
                 }).populate({
                     path: 'channels',
                     path: "server",
-                    path: 'name'
-
                 })
         },
-        // get a user by username
-        // user: async (parent, { username }) => {
-        //     return User.findOne({ username })
-        //         .select('-__v -password')
-        //         .populate('comments')
-        //         .populate('location')
-        //         .populate('friends');
-        // },
     }, Mutation: {
         addUser: async (parent, args, context) => {
             try {
