@@ -9,13 +9,13 @@ class ChatAPI {
     };
 
     //PUBLIC CHAT
-    // static publicChat(io) {
-    //     socket.emit('create', (room) => {
-    //         socket.join(room);
-    //         console.log(room);
-    //         socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
-    //     });
-    // };
+    static publicChat(io) {
+        io.on('create', (room) => {
+            socket.join(room);
+            console.log(room);
+            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        });
+    };
 
     // METHODS
     static handleMessage(value, socket, io) {

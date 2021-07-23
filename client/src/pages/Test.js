@@ -14,7 +14,7 @@ const Test = () => {
     return () => newSocket.close();
   }, [setSocket]);
 
-  var publicChat = false;
+  const [publicChat, setPublicChat] = useState(false);
 
   const createRoom = async event => {
     event.preventDefault();
@@ -25,9 +25,8 @@ const Test = () => {
       });
       console.log(socket);
 
-      publicChat = true;
-      console.log(publicChat);
-      return publicChat;
+      
+      setPublicChat(true);
     } catch (e) {
       console.error(e);
     }
@@ -35,7 +34,7 @@ const Test = () => {
 
   return (
     <main>
-      {loggedIn && <button onClick={createRoom}> Create Room </button>}
+      {loggedIn && <button onClick={createRoom} type='submit'> Create Room </button>}
       {loggedIn && (<div className="flex-row justify-space-between">
         <h1>**THIS IS A TEST ** Global Chat</h1>
 
