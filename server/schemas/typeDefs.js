@@ -11,6 +11,7 @@ type User {
     servers: [Server]
     channels: [ChatRoom]
     profilePicture: String
+    UsersInRange: [User]
 }
 type Location {
     user_id: ID
@@ -51,6 +52,7 @@ type Query {
     users: [User]
     chatRooms: [ChatRoom]
     allMessages: [Message]
+    servers: [Server]
 }
 type Mutation {
     login(email: String!, password: String!): Auth

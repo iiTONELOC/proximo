@@ -42,7 +42,6 @@ query {
     me{
         _id
         username
-        email
         friendCount
             location{
                 user_id
@@ -50,21 +49,30 @@ query {
                 longitude
             }
             friends{
+              	_id
                 username
+              servers{
+                _id
+                name
+                channels{
+                  _id
+                  private
+                }
+              }
+              location{
+                latitude
+                longitude
+              }
             }
             messages{
                 _id
             }
             servers{
                 _id
-                ownerID
                 name
             channels{
                 _id
-                    location{
-                        latitude
-                        longitude
-                    }
+      					name
                 private
             }
         }
@@ -97,3 +105,42 @@ query{
     }
 }
 `;
+
+export const QUERY_CHANNELS = gql`
+query{
+  chatRooms{
+    _id
+    name
+    private
+    server{
+      _id
+      name
+      ownerID
+      location{
+        latitude
+        longitude
+      }
+    }
+  }
+}
+`;
+
+export const QUERY_SERVERS = gql`
+query {
+  servers{
+  _id
+    name
+    ownerID
+    location{
+      latitude
+      longitude
+    }
+    channels{
+      _id
+      name
+      private
+    }
+  }
+}
+`;
+

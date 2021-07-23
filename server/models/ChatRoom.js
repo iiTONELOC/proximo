@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 const Message = require('./Message');
 const locationSchema = require('./Location');
+const Server = require('./Servers')
 
 const chatRoomSchema = new Schema(
     {
@@ -17,12 +18,10 @@ const chatRoomSchema = new Schema(
         location: [locationSchema],
         private: {
             type: Boolean,
-            required: true
+            required: false,
+            default: false,
         },
-        server: {
-            type: Schema.Types.ObjectId,
-            ref: 'Server'
-        }
+        server: [Server.schema]
     }
 );
 

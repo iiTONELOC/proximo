@@ -1,6 +1,7 @@
-const { User } = require('../models');
+const { User, ChatRoom, Server } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const { createNewUser } = require('../utils/chatUtils/ChatUtility')
 const Location = require('../utils/Location');
 const resolvers = {
     Query: {
@@ -8,63 +9,52 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
-                    .populate('comments')
                     .populate('location')
-                    .populate('friends');
+                    .populate('friends')
+                    .populate('messages')
+                    .populate('servers')
+                    .populate('channels');
 
                 return userData;
             }
 
             throw new AuthenticationError('Not logged in');
         },
-        // comments: async (parent, { username }) => {
-        //     const params = username ? { username } : {};
-        //     return Comment.find(params).sort({ createdAt: -1 });
-        // },
-        // comment: async (parent, { _id }) => {
-        //     return Comment.findOne({ _id });
-        // },
-
+        // find all servers or a server, depending on query:
+        servers: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return Server.find(params).populate({ path: 'channels' });
+        },
+        // find all channels or a single channel
+        chatRooms: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return ChatRoom.find(params).populate({ path: 'server' })
+        },
 
         // get all users
-        users: async () => {
-            return User.find()
+        // get user by username
+        // get user by _id
+        users: async (parent, { _id, username }) => {
+            const params = _id ? { _id } : username ? { username } : {};
+            return User.find(params)
                 .select('-__v -password')
-                .populate('comments')
-                .populate('location')
-                .populate('friends');
+                .populate({
+                    path: 'servers',
+                }).populate({
+                    path: 'channels',
+                    path: "server",
+                })
         },
-        // get a user by username
-        // user: async (parent, { username }) => {
-        //     return User.findOne({ username })
-        //         .select('-__v -password')
-        //         .populate('comments')
-        //         .populate('location')
-        //         .populate('friends');
-        // },
     }, Mutation: {
         addUser: async (parent, args, context) => {
-            // grabs the location either from browser or clients ip address
-            const { latitude, longitude } = await Location.user(args, context);
-            // create the user first then we update location
-            const user = await User.create({ ...args });
-
             try {
-                // grab user by id
-                const updatedUser = await User.findByIdAndUpdate(
-                    { _id: user._id },
-                    { $push: { location: { user_id: user._id, latitude: latitude, longitude: longitude } } },
-                    { new: true }
-                );
-                // sign user and return updated info
-                const token = signToken(updatedUser);
-                return { token, user };
-            } catch (error) {
-                // in the event there is an error,
-                // return all data minus location data
-                console.error(error);
+                // custom method 
+                // located in utils/chatUtils/ChatUtility.js
+                const user = await createNewUser(args, context);
                 const token = signToken(user);
                 return { token, user };
+            } catch (error) {
+                console.error(error)
             }
 
         },
