@@ -19,7 +19,7 @@ const Header = () => {
             <>
               <Link to="/dashboard">Global Chats</Link>
               <Link to="/">Profile</Link>
-              <Link to='/test'>Test</Link>
+              <Link to='/public'>Public</Link>
               <a href="/" onClick={logout}>
                 Logout
               </a>

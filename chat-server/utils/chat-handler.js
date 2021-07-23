@@ -10,9 +10,8 @@ class ChatAPI {
 
     //PUBLIC CHAT
     static publicChat(io) {
-        io.on('create', (room) => {
+        socket.on('create', (room) => {
             socket.join(room);
-            console.log(room);
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };

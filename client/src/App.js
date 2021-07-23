@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import NoMatch from './pages/NoMatch';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
-import Test from './pages/Test'
+import Public from './pages/Public';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -38,7 +38,7 @@ function App() {
           <div className="container">
             <Switch>
               <Route exact path="/" component={Profile} />
-              <Route exact path="/test" component={Test} />
+              <Route exact path="/public" component={Public} />
               <Route exact path="/dashboard" component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
