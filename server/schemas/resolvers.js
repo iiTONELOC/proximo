@@ -1,7 +1,7 @@
 const { User, ChatRoom, Server } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser } = require('../utils/chatUtils/ChatUtility')
+const { createNewUser, joinChannel } = require('../utils/chatUtils/ChatUtility')
 const Location = require('../utils/Location');
 const resolvers = {
     Query: {
@@ -28,7 +28,7 @@ const resolvers = {
         // find all channels or a single channel
         chatRooms: async (parent, { _id }) => {
             const params = _id ? { _id } : {};
-            return ChatRoom.find(params).populate({ path: 'server' })
+            return ChatRoom.find(params).populate({ path: 'server', path: 'members' })
         },
 
         // get all users

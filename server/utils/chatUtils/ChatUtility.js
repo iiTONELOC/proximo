@@ -14,6 +14,7 @@ const createChannel = (user, latitude, longitude, server, name, private) => Chat
     private: private ? private : false,
     server: server
 }).then(data => data).catch(e => console.error(e))
+// join channel
 
 module.exports = {
     createNewUser: async (args, context) => {
@@ -49,5 +50,16 @@ module.exports = {
             console.error(error)
             User.findByIdAndRemove(user._id)
         }
+    },
+    joinChannel: async (user, channel, privateChannel) => {
+        const isPrivate = await ChatRoom.findById(channel._id);
+        if (!privateChannel) {
+            if (isPrivate.private === false) {
+                return ChatRoom.findByIdAndUpdate(channel._id, {
+                    $push: { members: user._id }
+                })
+            }
+        }
+        // maybe we should implement a user generated key for private chats
     }
 }
