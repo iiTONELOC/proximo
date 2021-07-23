@@ -53,6 +53,7 @@ type Query {
     users: [User]
     chatRooms: [ChatRoom]
     allMessages: [Message]
+    servers: [Server]
 }
 type Mutation {
     login(email: String!, password: String!): Auth

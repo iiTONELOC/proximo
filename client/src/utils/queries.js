@@ -42,7 +42,6 @@ query {
     me{
         _id
         username
-        email
         friendCount
             location{
                 user_id
@@ -50,21 +49,30 @@ query {
                 longitude
             }
             friends{
+              	_id
                 username
+              servers{
+                _id
+                name
+                channels{
+                  _id
+                  private
+                }
+              }
+              location{
+                latitude
+                longitude
+              }
             }
             messages{
                 _id
             }
             servers{
                 _id
-                ownerID
                 name
             channels{
                 _id
-                    location{
-                        latitude
-                        longitude
-                    }
+      					name
                 private
             }
         }

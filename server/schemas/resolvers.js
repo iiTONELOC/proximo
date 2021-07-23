@@ -20,10 +20,12 @@ const resolvers = {
 
             throw new AuthenticationError('Not logged in');
         },
-        // comments: async (parent, { username }) => {
-        //     const params = username ? { username } : {};
-        //     return Comment.find(params).sort({ createdAt: -1 });
-        // },
+        // find all servers:
+
+        servers: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return Server.find(params).populate({ path: 'channels' });
+        },
         // comment: async (parent, { _id }) => {
         //     return Comment.findOne({ _id });
         // },
@@ -33,11 +35,14 @@ const resolvers = {
         users: async () => {
             return User.find()
                 .select('-__v -password')
-                .populate('location')
-                .populate('friends')
-                .populate('messages')
-                .populate('servers')
-                .populate('channels');
+                .populate({
+                    path: 'servers',
+                }).populate({
+                    path: 'channels',
+                    path: "server",
+                    path: 'name'
+
+                })
         },
         // get a user by username
         // user: async (parent, { username }) => {
