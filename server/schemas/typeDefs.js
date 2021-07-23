@@ -37,6 +37,7 @@ type ChatRoom{
     location: [Location]
     private: Boolean
     server: [Server]
+    members:[User]
 }
 
 type Server{

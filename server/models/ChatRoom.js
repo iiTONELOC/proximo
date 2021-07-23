@@ -21,7 +21,11 @@ const chatRoomSchema = new Schema(
             required: false,
             default: false,
         },
-        server: [Server.schema]
+        server: [Server.schema],
+        members: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }]
     }
 );
 
