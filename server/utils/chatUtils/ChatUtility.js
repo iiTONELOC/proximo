@@ -1,5 +1,8 @@
 const { User, ChatRoom, Server, Message } = require('../../models');
 const Location = require('../../utils/Location');
+// CAN BE USED IN THE MUTATIONS OR IN THE IO SERVER ITSELF, AS LONG AS THE SOCKET EMITS 
+// NECESSARY INFO IN THE PAYLOAD
+
 // creates a new server for the user,
 const createServer = (user, latitude, longitude) => Server.create({
     name: `${user.username}'s Personal Server`,
@@ -52,12 +55,13 @@ module.exports = {
         }
     },
     joinChannel: async (user, channel, privateChannel) => {
-        const isPrivate = await ChatRoom.findById(channel._id);
+        const isPrivate = await ChatRoom.findById(channel);
+        console.log(isPrivate.private)
         if (!privateChannel) {
             if (isPrivate.private === false) {
-                return ChatRoom.findByIdAndUpdate(channel._id, {
-                    $push: { members: user._id }
-                })
+                return ChatRoom.findByIdAndUpdate(channel, {
+                    $push: { members: user },
+                }, { new: true }).select('-__v -password').populate({ path: 'server' }).populate('members')
             }
         }
         // maybe we should implement a user generated key for private chats
@@ -65,13 +69,31 @@ module.exports = {
     createServer: createServer,
     createChannel: createChannel,
     SendMessage: async (args) => {
-        const { channel } = args
-        const isChannel = await ChatRoom.findById(channel);
-        const newMessage = await Message.create({ ...args })
-        const { _id } = newMessage;
-        const updateMessage = await Message.findByIdAndUpdate(_id,
-            { $push: { channels: isChannel._id } },
-            { new: true }).populate('channels').catch(e => console.error(e));
-        return updateMessage
+
+        try {
+            const { channel } = args
+            // make sure the channel exists
+            const isChannel = await ChatRoom.findById(channel);
+            // create the message
+            const newMessage = await Message.create({ ...args })
+            const { _id } = newMessage;
+            // update created message with channel information
+            const updateMessage = await Message.findByIdAndUpdate(_id,
+                { $push: { channels: isChannel._id } },
+                { new: true }).populate('channels').catch(async e => {
+                    // somewhere the creation failed, delete msg from db
+                    if (_id) {
+                        const dMsg = await Message.findByIdAndDelete(_id);
+                        console.log(dMsg)
+                        return false
+                    }
+                    console.error(e)
+                    return false
+                });
+            return updateMessage
+        } catch (error) {
+            console.error(error);
+            return false
+        }
     },
 }

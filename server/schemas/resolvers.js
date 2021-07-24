@@ -1,8 +1,9 @@
 const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser, joinChannel, SendMessage } = require('../utils/chatUtils/ChatUtility')
-const Location = require('../utils/Location');
+const { createNewUser, joinChannel, SendMessage } = require('../utils/chatUtils/ChatUtility');
+const { AggregationCursor } = require('mongoose');
+
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
@@ -91,9 +92,40 @@ const resolvers = {
             throw new AuthenticationError('You need to be logged in!');
         },
         sendMessage: async (parent, args, context) => {
+            // EXAMPLE DATA
+            //  expects =>
+            // {
+            //     "text": "TEST MESSAGE",
+            //         "username": "Tester2",
+            //             "channel": "60fc6a483fd0913968a723cc"
+            // }
 
-            return SendMessage(args);
+            // ADD AUTH BACK IN! REMOVED FOR TESTING
+            // COMMENTED OUT BELOW
+            // PLACE THIS TRY/CATCH BLOCK INTO if statement
+            try {
+                const success = await SendMessage(args);
+                if (!success) {
+                    throw new Error(`sendMsg Resolver:`)
+                }
+                return success
+            } catch (error) {
+                console.error(error)
+            }
 
+            // if (context.user) {
+            //     console.log(messageInput)
+            // }
+
+            // throw new AuthenticationError('You need to be logged in!');
+        },
+        joinAChannel: async (parent, args, context) => {
+
+            const { user, channel } = { ...args }
+            const privateChannel = args.privateChannel
+            const d = await joinChannel(user, channel, !privateChannel ? false : privateChannel);
+            console.log(d)
+            return d
             // if (context.user) {
             //     console.log(messageInput)
             // }

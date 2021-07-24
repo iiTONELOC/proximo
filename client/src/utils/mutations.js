@@ -38,3 +38,18 @@ mutation addFriend($id: ID!) {
     }
 }
 `;
+
+export const SEND_MESSAGE = gql`
+mutation sendMessage($text: String!, $username: String!, $channel: ID!) {
+    sendMessage(text: $text, username: $username, channel: $channel) {
+    _id
+    channels{
+      _id
+      name
+    }
+    text
+    time
+    username
+    }
+}
+`
