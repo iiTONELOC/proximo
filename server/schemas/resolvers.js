@@ -1,7 +1,7 @@
-const { User, ChatRoom, Server } = require('../models');
+const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser, joinChannel } = require('../utils/chatUtils/ChatUtility')
+const { createNewUser, joinChannel, SendMessage } = require('../utils/chatUtils/ChatUtility')
 const Location = require('../utils/Location');
 const resolvers = {
     Query: {
@@ -42,6 +42,11 @@ const resolvers = {
                 .populate({ path: 'servers', populate: 'channels' })
                 .populate({ path: 'channels', populate: 'messages', populate: 'members' });
         },
+        allMessages: async (parent, args, context) => {
+            const allMessages = await Message.find({}).populate('channels');
+
+            return allMessages
+        }
     }, Mutation: {
         addUser: async (parent, args, context) => {
             try {
@@ -72,34 +77,6 @@ const resolvers = {
             const token = signToken(user);
             return { token, user };
         },
-        // addComment: async (parent, args, context) => {
-        //     if (context.user) {
-        //         const comment = await Comment.create({ ...args, username: context.user.username });
-
-        //         await User.findByIdAndUpdate(
-        //             { _id: context.user._id },
-        //             { $push: { comments: Comment._id } },
-        //             { new: true }
-        //         );
-
-        //         return comment;
-        //     }
-
-        //     throw new AuthenticationError('You need to be logged in!');
-        // },
-        // addReaction: async (parent, { commentId, reactionBody }, context) => {
-        //     if (context.user) {
-        //         const updatedComment = await Comment.findOneAndUpdate(
-        //             { _id: commentId },
-        //             { $push: { reactions: { reactionBody, username: context.user.username } } },
-        //             { new: true, runValidators: true }
-        //         );
-
-        //         return updatedComment;
-        //     }
-
-        //     throw new AuthenticationError('You need to be logged in!');
-        // },
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
                 const updatedUser = await User.findOneAndUpdate(
@@ -112,6 +89,16 @@ const resolvers = {
             }
 
             throw new AuthenticationError('You need to be logged in!');
+        },
+        sendMessage: async (parent, args, context) => {
+
+            return SendMessage(args);
+
+            // if (context.user) {
+            //     console.log(messageInput)
+            // }
+
+            // throw new AuthenticationError('You need to be logged in!');
         }
 
 

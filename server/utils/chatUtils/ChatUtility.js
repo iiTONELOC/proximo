@@ -1,4 +1,4 @@
-const { User, ChatRoom, Server } = require('../../models');
+const { User, ChatRoom, Server, Message } = require('../../models');
 const Location = require('../../utils/Location');
 // creates a new server for the user,
 const createServer = (user, latitude, longitude) => Server.create({
@@ -61,5 +61,17 @@ module.exports = {
             }
         }
         // maybe we should implement a user generated key for private chats
-    }
+    },
+    createServer: createServer,
+    createChannel: createChannel,
+    SendMessage: async (args) => {
+        const { channel } = args
+        const isChannel = await ChatRoom.findById(channel);
+        const newMessage = await Message.create({ ...args })
+        const { _id } = newMessage;
+        const updateMessage = await Message.findByIdAndUpdate(_id,
+            { $push: { channels: isChannel._id } },
+            { new: true }).populate('channels').catch(e => console.error(e));
+        return updateMessage
+    },
 }
