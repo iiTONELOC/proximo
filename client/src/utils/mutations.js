@@ -53,3 +53,21 @@ mutation sendMessage($text: String!, $username: String!, $channel: ID!) {
     }
 }
 `
+export const JOIN_CHANNEL = gql`
+mutation joinAChannel($user: ID!, $channel: ID!, $privateChannel: Boolean!) {
+   joinAChannel(user: $user, privateChannel: $privateChannel, channel: $channel) {
+    _id
+    name
+    private
+    server{
+      _id
+      name
+    }
+    members{
+      _id
+      username
+      profilePicture
+    }
+    }
+}
+`;

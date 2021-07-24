@@ -2,7 +2,7 @@ const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { createNewUser, joinChannel, SendMessage } = require('../utils/chatUtils/ChatUtility');
-const { AggregationCursor } = require('mongoose');
+
 
 const resolvers = {
     Query: {
@@ -11,9 +11,9 @@ const resolvers = {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
                     .populate('friends')
-                    .populate('messages')
-                    .populate({ path: 'servers', populate: 'channels' })
-                    .populate({ path: 'channels', populate: 'messages', populate: 'members' });
+                    .populate({ path: 'servers', populate: ['channels', 'messages', 'members'] })
+                    .populate({ path: 'channels', populate: 'members' })
+
 
                 return userData;
             }
@@ -23,12 +23,19 @@ const resolvers = {
         // find all servers or a server, depending on query:
         servers: async (parent, { _id }) => {
             const params = _id ? { _id } : {};
-            return Server.find(params).populate({ path: 'channels' });
+            return Server.find(params)
+                .populate({ path: 'channels', populate: ['messages', 'members'] })
+                // .populate({ path: 'channels', populate: 'members', })
+                ;
         },
         // find all channels or a single channel
         chatRooms: async (parent, { _id }) => {
             const params = _id ? { _id } : {};
-            return ChatRoom.find(params).populate({ path: 'servers', populate: 'channels' })
+            return ChatRoom.find(params)
+                .populate({ path: 'servers', populate: 'channels' })
+                .populate('messages')
+                .populate('members')
+                ;
         },
 
         // get all users
@@ -39,9 +46,8 @@ const resolvers = {
             return User.find(params)
                 .select('-__v -password')
                 .populate('friends')
-                .populate('messages')
-                .populate({ path: 'servers', populate: 'channels' })
-                .populate({ path: 'channels', populate: 'messages', populate: 'members' });
+                .populate({ path: 'servers', populate: ['channels', 'members'] })
+                .populate({ path: 'channels', populate: 'members' })
         },
         allMessages: async (parent, args, context) => {
             const allMessages = await Message.find({}).populate('channels');

@@ -96,6 +96,7 @@ query {
                   username
                   profilePicture
                 }
+
             }
         }
     }
@@ -119,17 +120,21 @@ export const QUERY_ME_BASIC = gql`
 
 export const QUERY_GLOBAL_MESSAGES = gql`
 query{
-    allMessages{
-        messageID
-        text
-        time
-        username
+  allMessages{
+    _id
+    channels{
+      _id
+      name
     }
+    text
+    time
+    username
+  }
 }
 `;
 
 export const QUERY_CHANNELS = gql`
-query{
+ query{
   chatRooms{
     _id
     name

@@ -68,7 +68,11 @@ module.exports = {
             if (isPrivate.private === false) {
                 return ChatRoom.findByIdAndUpdate(channel, {
                     $push: { members: user },
-                }, { new: true }).select('-__v -password').populate({ path: 'server' }).populate('members')
+                }, { new: true })
+                    .select('-__v -password')
+                    .populate({ path: 'server' })
+                    .populate('members');
+                // update the user
             }
             throw new Error('You must be invited to this channel!')
         }
@@ -77,7 +81,6 @@ module.exports = {
     createServer: createServer,
     createChannel: createChannel,
     SendMessage: async (args) => {
-
         try {
             const { channel } = args
             // make sure the channel exists
@@ -88,7 +91,9 @@ module.exports = {
             // update created message with channel information
             const updateMessage = await Message.findByIdAndUpdate(_id,
                 { $push: { channels: isChannel._id } },
-                { new: true }).populate('channels').catch(async e => {
+                { new: true })
+                .populate('channels')
+                .catch(async e => {
                     // somewhere the creation failed, delete msg from db
                     if (_id) {
                         const dMsg = await Message.findByIdAndDelete(_id);
@@ -98,7 +103,16 @@ module.exports = {
                     console.error(e)
                     return false
                 });
-            return updateMessage
+            // now update the channel
+            const updateChannel = await ChatRoom.findByIdAndUpdate(channel, {
+                $push: { messages: updateMessage._id }
+            }, { new: true });
+            if (updateChannel) {
+                return updateMessage
+            } else {
+                throw new Error('Cannot send message!')
+            }
+
         } catch (error) {
             console.error(error);
             return false

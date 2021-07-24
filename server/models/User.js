@@ -76,9 +76,8 @@ userSchema.virtual('UsersInRange').get(async function () {
   // query all active users return an array of users within 2 miles for now, change distance later
   const Users = await User.find().select('-__v -password')
     .populate('friends')
-    .populate('messages')
-    .populate({ path: 'servers', populate: 'channels' })
-    .populate('channels');;
+    .populate({ path: 'servers', populate: ['channels', 'members'], })
+    ;
   // filter out currentUser
   const AllUsers = Users.filter(el => el._id.toString() != this._id.toString());
 
