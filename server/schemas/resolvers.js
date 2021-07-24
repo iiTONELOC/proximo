@@ -9,11 +9,10 @@ const resolvers = {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
-                    .populate('location')
                     .populate('friends')
                     .populate('messages')
-                    .populate('servers')
-                    .populate('channels');
+                    .populate({ path: 'servers', populate: 'channels' })
+                    .populate({ path: 'channels', populate: 'messages', populate: 'members' });
 
                 return userData;
             }
@@ -28,7 +27,7 @@ const resolvers = {
         // find all channels or a single channel
         chatRooms: async (parent, { _id }) => {
             const params = _id ? { _id } : {};
-            return ChatRoom.find(params).populate({ path: 'server', path: 'members' })
+            return ChatRoom.find(params).populate({ path: 'servers', populate: 'channels' })
         },
 
         // get all users
@@ -38,12 +37,10 @@ const resolvers = {
             const params = _id ? { _id } : username ? { username } : {};
             return User.find(params)
                 .select('-__v -password')
-                .populate({
-                    path: 'servers',
-                }).populate({
-                    path: 'channels',
-                    path: "server",
-                })
+                .populate('friends')
+                .populate('messages')
+                .populate({ path: 'servers', populate: 'channels' })
+                .populate({ path: 'channels', populate: 'messages', populate: 'members' });
         },
     }, Mutation: {
         addUser: async (parent, args, context) => {
