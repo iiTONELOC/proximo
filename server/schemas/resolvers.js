@@ -1,8 +1,8 @@
-const { User, ChatRoom, Server } = require('../models');
+const { User, ChatRoom, Server, File } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
 const { createNewUser, joinChannel } = require('../utils/chatUtils/ChatUtility')
-const Location = require('../utils/Location');
+
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
@@ -45,7 +45,8 @@ const resolvers = {
                     path: "server",
                 })
         },
-    }, Mutation: {
+    },
+    Mutation: {
         addUser: async (parent, args, context) => {
             try {
                 // custom method 
@@ -115,10 +116,25 @@ const resolvers = {
             }
 
             throw new AuthenticationError('You need to be logged in!');
-        }
+        },
+        uploadFile: async (parent, { pictureData }, context) => {
+            console.log(pictureData)
+            if (context.user) {
+                const updatedUser = await User.findOneAndUpdate(
+                    { _id: context.user._id },
+                    { profilePicture: pictureData },
+                    { new: true }
+                ).populate('friends');
+
+                return updatedUser;
+            }
+
+            throw new AuthenticationError('You need to be logged in!');
+        },
 
 
     },
+
 
 };
 

@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express');
 const typeDefs = gql`
+
 type User {
     _id: ID
     username: String
@@ -30,6 +31,9 @@ input MessageInput{
     time: String
     username: String
 }
+input FileData{
+    pictureData: String
+}
 type ChatRoom{
     _id: ID
     name: String
@@ -38,6 +42,10 @@ type ChatRoom{
     private: Boolean
     server: [Server]
     members:[User]
+}
+type File {
+    _id: ID
+    pictureData: String
 }
 
 type Server{
@@ -55,16 +63,17 @@ type Query {
     chatRooms: [ChatRoom]
     allMessages: [Message]
     servers: [Server]
+    file: [File]
 }
 type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     addFriend(friendId: ID!): User
+    uploadFile(pictureData: String!): File
 }
 type Auth {
     token: ID!
     user: User
-    
 }
 `
 

@@ -38,3 +38,11 @@ mutation addFriend($id: ID!) {
     }
 }
 `;
+export const UploadMutation = gql`
+ mutation uploadFile($pictureData: String!) {
+    uploadFile(pictureData: $pictureData) {
+      _id
+        pictureData
+    }
+  }
+`;

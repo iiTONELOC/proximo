@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { } from '../../utils/mutations';
 import { QUERY_ME } from '../../utils/queries';
+
 const MessageForm = ({ socket }) => {
 
     const [value, setText] = useState('');
@@ -50,6 +51,7 @@ const MessageForm = ({ socket }) => {
                     Submit
                 </button>
             </form>
+
         </div>
     );
 };

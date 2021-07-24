@@ -8,7 +8,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { authMiddleware } = require('./utils/auth');
 const requestIp = require('request-ip');
 const { typeDefs, resolvers } = require('./schemas');
-
+const { graphqlUploadExpress } = require('graphql-upload')
 
 // create a new Apollo server and pass in our schema data
 const server = new ApolloServer({
@@ -21,6 +21,7 @@ const server = new ApolloServer({
     return clientIp
   }
 });
+app.use(graphqlUploadExpress());
 server.applyMiddleware({ app });
 app.use(requestIp.mw())
 app.use(express.urlencoded({ extended: false }));

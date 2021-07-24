@@ -72,12 +72,12 @@ userSchema.virtual('friendCount').get(function () {
 });
 
 userSchema.virtual('UsersInRange').get(async function () {
- 
+
   // query all active users return an array of users within 2 miles for now, change distance later
   const Users = await User.find().select('-__v -password');
   // filter out currentUser
-  const AllUsers = Users.filter(el=> el._id.toString() != this._id.toString());
-  
+  const AllUsers = Users.filter(el => el._id.toString() != this._id.toString());
+
   const [data] = this.location
   //  lat-lon 1
   const { latitude, longitude } = data;
@@ -89,10 +89,10 @@ userSchema.virtual('UsersInRange').get(async function () {
     const long2 = data2.longitude;
     // calculate distance between users
     const howFar = Distance(latitude, longitude, lat2, long2)
-      // less than 2 miles away, return
-      if (howFar < 2) {
-        return el
-      }
+    // less than 2 miles away, return
+    if (howFar < 2) {
+      return el
+    }
   })
 })
 

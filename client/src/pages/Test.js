@@ -3,7 +3,8 @@ import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
-
+import WithPreviews from '../components/ImageUploader'
+import Uploads from '../components/ImageUploader/Uploads';
 
 const Test = () => {
   const [socket, setSocket] = useState(null);
@@ -24,6 +25,10 @@ const Test = () => {
 
       </div>)}
 
+      <section>
+        <WithPreviews></WithPreviews>
+        <Uploads />
+      </section>
     </main>
   );
 };
