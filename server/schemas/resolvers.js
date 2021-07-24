@@ -120,12 +120,23 @@ const resolvers = {
             // throw new AuthenticationError('You need to be logged in!');
         },
         joinAChannel: async (parent, args, context) => {
-
+            // EXPECTS =>
+            // {
+            //     "user": "60fc803489194b280c993e7b",
+            //         "channel": "60fc803489194b280c993e80",
+            //             "privateChannel": false
+            // }
             const { user, channel } = { ...args }
             const privateChannel = args.privateChannel
-            const d = await joinChannel(user, channel, !privateChannel ? false : privateChannel);
-            console.log(d)
-            return d
+            try {
+                return await joinChannel(user, channel, !privateChannel ? false : privateChannel);
+            } catch (error) {
+                console.error(error)
+            }
+            // ADD AUTH BACK IN! REMOVED FOR TESTING
+            // COMMENTED OUT BELOW
+            // PLACE THIS TRY/CATCH BLOCK INTO if statement
+
             // if (context.user) {
             //     console.log(messageInput)
             // }

@@ -55,14 +55,22 @@ module.exports = {
         }
     },
     joinChannel: async (user, channel, privateChannel) => {
+        // ensure the room is not private
         const isPrivate = await ChatRoom.findById(channel);
-        console.log(isPrivate.private)
+        // check that the user is not already in the room
+        const alreadyThere = isPrivate.members.filter(el => el._id == user);
+        if (alreadyThere.length > 0) {
+            throw new Error("You are already in this chat!")
+        }
+        // if we are not requesting a private channel
         if (!privateChannel) {
+            // check and make sure the room is indeed a public room
             if (isPrivate.private === false) {
                 return ChatRoom.findByIdAndUpdate(channel, {
                     $push: { members: user },
                 }, { new: true }).select('-__v -password').populate({ path: 'server' }).populate('members')
             }
+            throw new Error('You must be invited to this channel!')
         }
         // maybe we should implement a user generated key for private chats
     },
