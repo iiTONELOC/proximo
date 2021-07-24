@@ -1,9 +1,13 @@
 
 class ChatAPI {
-
     // GLOBAL CHAT
     static globalChat(io) {
+        let clients = [];
+
         io.on('connection', (socket) => {
+            console.log(socket);
+            clients.push({id: socket.id});
+            console.log(clients);
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };
