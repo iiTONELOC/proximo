@@ -61,8 +61,8 @@ const Profile = () => {
 //   }
   return (
     <div>
-       <div className="App" class="p-6 items-center justify-center">
-        <h2 class="text-blue-400 font-extrabold"> This is the profile page ** Insert picture of you **
+       <div className="App h-screen w-full flex justify-center items-center bg-green-500">
+        <h2 class="text-sm text-gray-500"> This is the profile page ** Insert picture of you **
           {/* Viewing {userParam ? `${user.username}'s` : 'your'} profile. */}
         </h2>
 
