@@ -1,4 +1,4 @@
-
+import { sendMessage } from '../../server/utils/chatUtils';
 class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
