@@ -11,8 +11,21 @@ import Auth from '../utils/auth';
 const Profile = () => {
 
   const { loading, error, data } = useQuery(QUERY_ME)
-
+  if (loading) {console.log('wait mfer')}
   console.log(data)
+  console.log('checkcheck')
+
+  let user;
+
+  if (data) {
+    user = data.me;
+  }
+
+  console.log(user)
+
+
+  
+ // console.log(data.me.username)
 
 
   // const { username, friends } = {...data.me}
@@ -60,7 +73,15 @@ const Profile = () => {
 //     );
 //   }
   return (
+
+   
     <div>
+       {user ? (
+         
+        console.log(user.username)
+        
+      
+      ) : null}
        <div className="App" class="p-6 items-center justify-center">
         <h2 class="text-blue-400 font-extrabold"> This is the profile page ** Insert picture of you **
           {/* Viewing {userParam ? `${user.username}'s` : 'your'} profile. */}
@@ -79,7 +100,9 @@ const Profile = () => {
           {/* <ThoughtList thoughts={user.thoughts} title={`${user.username}'s thoughts...`} /> */}
         </div>
 
-        <div className="col-12 mb-3 col-lg-8"> This is profile information</div>
+        <div className="col-12 mb-3 col-lg-8"> 
+        {user.username}
+        </div>
 
         <div className="col-12 col-lg-3 mb-3">
         Friend list
