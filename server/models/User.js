@@ -2,7 +2,6 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const locationSchema = require('./Location');
 const Message = require('./Message');
-const ChatRoom = require('./ChatRoom');
 const Distance = require('../utils/Distance');
 const userSchema = new Schema(
   {

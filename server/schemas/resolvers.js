@@ -1,8 +1,9 @@
 const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser, joinChannel, SendMessage } = require('../utils/chatUtils/ChatUtility');
-
+const { createNewUser, joinChannel, SendMessage, leaveChannel, createServer, DeleteMessage } = require('../utils/chatUtils/ChatUtility');
+const Location = require('../utils/Location');
+const { aggregate } = require('../models/Servers');
 
 const resolvers = {
     Query: {
@@ -50,10 +51,9 @@ const resolvers = {
                 .populate({ path: 'channels', populate: 'members' })
         },
         allMessages: async (parent, args, context) => {
-            const allMessages = await Message.find({}).populate('channels');
+            return await Message.find({}).populate('channels');
+        },
 
-            return allMessages
-        }
     }, Mutation: {
         addUser: async (parent, args, context) => {
             try {
@@ -68,31 +68,24 @@ const resolvers = {
 
         },
         login: async (parent, { email, password }) => {
-
             const user = await User.findOne({ email });
-
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
             const correctPw = await user.isCorrectPassword(password);
-
             if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
             const token = signToken(user);
             return { token, user };
         },
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
+                return await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: { friends: friendId } },
                     { new: true }
-                ).populate('friends');
-
-                return updatedUser;
+                ).populate('friends'); W
             }
 
             throw new AuthenticationError('You need to be logged in!');
@@ -109,15 +102,7 @@ const resolvers = {
             // ADD AUTH BACK IN! REMOVED FOR TESTING
             // COMMENTED OUT BELOW
             // PLACE THIS TRY/CATCH BLOCK INTO if statement
-            try {
-                const success = await SendMessage(args);
-                if (!success) {
-                    throw new Error(`sendMsg Resolver:`)
-                }
-                return success
-            } catch (error) {
-                console.error(error)
-            }
+            return await SendMessage(args);
 
             // if (context.user) {
             //     console.log(messageInput)
@@ -125,6 +110,11 @@ const resolvers = {
 
             // throw new AuthenticationError('You need to be logged in!');
         },
+        deleteAMessage: async (parent, args, context) => {
+
+            return await DeleteMessage(args);
+        },
+
         joinAChannel: async (parent, args, context) => {
             // EXPECTS =>
             // {
@@ -148,9 +138,60 @@ const resolvers = {
             // }
 
             // throw new AuthenticationError('You need to be logged in!');
+        },
+        leaveAChannel: async (parent, args, context) => {
+            // EXPECTS =>
+            // {
+            //     "user": "60fc803489194b280c993e7b",
+            //         "channel": "60fc803489194b280c993e80",
+            // }
+            console.log(args)
+            try {
+                return await leaveChannel(args);
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        createNewServer: async (parent, args, context) => {
+            // get location data for user
+            const { latitude, longitude } = await Location.user(args, context);
+            // package data to use the createServer method that runs when signing up
+            const user = {
+                id: args.ownerID,
+                _id: args.ownerID
+            }
+            // create the server
+            const name = args.name
+            const create = await createServer(user, name, latitude, longitude);
+            // update user
+            if (!create) {
+                throw new Error('Unable to create the server! :\n')
+            } else {
+                const updateUser = await User.findByIdAndUpdate(args.ownerID, {
+                    $push: { servers: create._id }
+                }, { new: true })
+                    .select('-__v -password')
+                    .populate('friends')
+                    .populate({ path: 'servers', populate: ['channels', 'messages', 'members'] })
+                    .populate({ path: 'channels', populate: 'members' });
+                console.log(updateUser)
+                if (updateUser) {
+                    return create
+                } else {
+                    // something went wrong, delete server and try again
+                    await Server.findByIdAndDelete(create._id); throw new Error('Error Updating User, Canceled server')
+                }
+
+            }
         }
+        // COMMENTED OUT BELOW
+        // PLACE THIS TRY/CATCH BLOCK INTO if statement
 
+        // if (context.user) {
+        //     console.log(messageInput)
+        // }
 
+        // throw new AuthenticationError('You need to be logged in!');
     },
 
 };

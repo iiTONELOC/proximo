@@ -60,8 +60,11 @@ type Mutation {
     addUser(username: String!, email: String!, password: String!): Auth
     addFriend(friendId: ID!): User
     sendMessage(text: String!, username: String!, channel: ID!): Message
+    deleteAMessage(messageID: ID!): Message
     joinAChannel(user: ID!, channel: ID!, privateChannel: Boolean): ChatRoom
+    leaveAChannel(user: ID!, channel: ID!):ChatRoom
     createAChannel(server: ID!, name: String!, private: Boolean!): ChatRoom
+    createNewServer(name: String!, ownerID: ID!): Server
 }
 type Auth {
     token: ID!
