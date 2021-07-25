@@ -7,6 +7,11 @@ const Header = () => {
     event.preventDefault();
     Auth.logout();
   };
+
+
+  
+  
+
   return (
     <header className="bg-secondary mb-4 py-2 flex-row align-center">
       <div className="container flex-row justify-space-between-lg justify-center align-center">
@@ -19,7 +24,9 @@ const Header = () => {
             <>
             <Link to="/">Home</Link>
               <Link to="/dashboard">Global Chats</Link>
-              <Link to="/profile">Profile</Link>
+              <Link to={{
+                pathname:`/profile/`
+              }}>Profile</Link>
               <Link to='/test'>Test</Link>
               <a href="/" onClick={logout}>
                 Logout
