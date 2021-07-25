@@ -101,15 +101,7 @@ const resolvers = {
             // ADD AUTH BACK IN! REMOVED FOR TESTING
             // COMMENTED OUT BELOW
             // PLACE THIS TRY/CATCH BLOCK INTO if statement
-            try {
-                const success = await SendMessage(args);
-                if (!success) {
-                    throw new Error(`sendMsg Resolver:`)
-                }
-                return success
-            } catch (error) {
-                console.error(error)
-            }
+            return await SendMessage(args);
 
             // if (context.user) {
             //     console.log(messageInput)

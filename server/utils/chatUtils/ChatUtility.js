@@ -25,10 +25,23 @@ module.exports = {
         const { latitude, longitude } = await Location.user(args, context);
         //  create new user
         const user = await User.create({ ...args });
+        if (!user) {
+            throw new Error('Unable to create user')
+        }
         // create server
         const server = await createServer(user, latitude, longitude);
+        if (!server) {
+            // delete user
+            await User.findByIdAndDelete(user._id)
+            throw new Error('Unable to create server during user creation')
+        }
         // create channel 
         const channel = await createChannel(user, latitude, longitude, server);
+        if (!channel) {
+            await User.findByIdAndDelete(user._id);
+            await Server.findByIdAndDelete(server._id)
+            throw new Error('Unable to create a channel for the user! Try again!');
+        }
         // update server with channel
 
         const updateServer = () => Server.findByIdAndUpdate(server._id,
@@ -97,8 +110,14 @@ module.exports = {
             const { channel } = args
             // make sure the channel exists
             const isChannel = await ChatRoom.findById(channel);
+            if (!isChannel) {
+                throw new Error('Chat room does not exist!');
+            }
             // create the message
             const newMessage = await Message.create({ ...args })
+            if (!newMessage) {
+                throw new Error('Error Creating Message');
+            }
             const { _id } = newMessage;
             // update created message with channel information
             const updateMessage = await Message.findByIdAndUpdate(_id,
@@ -112,7 +131,6 @@ module.exports = {
                         console.log(dMsg)
                         return false
                     }
-                    console.error(e)
                     return false
                 });
             // now update the channel
@@ -126,8 +144,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.error(error);
-            return false
+            console.log(error)
         }
     },
 }
