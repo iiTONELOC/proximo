@@ -90,3 +90,29 @@ mutation leaveAChannel($user: ID!, $channel: ID!) {
     }
 }
 `;
+
+export const CREATE_SERVER = gql`
+mutation createNewServer($name: String!, $ownerID: ID!, ) {
+   createNewServer(name: $name, ownerID: $ownerID) {
+    _id
+    name
+   channels{
+    _id
+    name
+  }
+    createdAt
+    location{
+      latitude
+     longitude
+    }
+    }
+}
+`;
+
+export const DELETE_MSG = gql`
+mutation deleteAMessage($messageID: ID!) {
+    deleteAMessage(messageID:$messageID) {
+    _id
+  }
+}
+`;
