@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
+import { joinAChannel, sendMessage } from '../../../server/utils/chatUtils/ChatUtility';
 
 
 const Public = () => {
