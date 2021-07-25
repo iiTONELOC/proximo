@@ -4,8 +4,8 @@ const Location = require('../../utils/Location');
 // NECESSARY INFO IN THE PAYLOAD
 
 // creates a new server for the user,
-const createServer = (user, latitude, longitude) => Server.create({
-    name: `${user.username}'s Personal Server`,
+const createServer = (user, name, latitude, longitude) => Server.create({
+    name: name ? name : `${user.username}'s Personal Server`,
     ownerID: user.id,
     location: { user_id: user._id, latitude: latitude, longitude: longitude },
 }).then(data => data).catch(e => console.error(e));
@@ -72,11 +72,23 @@ module.exports = {
                     .select('-__v -password')
                     .populate({ path: 'server' })
                     .populate('members');
-                // update the user
             }
             throw new Error('You must be invited to this channel!')
         }
         // maybe we should implement a user generated key for private chats
+    },
+    leaveChannel: async ({ user, channel }) => {
+        try {
+            const didLeave = await ChatRoom.findByIdAndUpdate(channel, {
+                $pull: { members: user }
+            }, { new: true })
+                .populate({ path: 'servers', populate: 'channels' })
+                .populate('messages')
+                .populate('members');
+            return didLeave
+        } catch (error) {
+            console.error(error)
+        }
     },
     createServer: createServer,
     createChannel: createChannel,

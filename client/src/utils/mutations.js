@@ -71,3 +71,22 @@ mutation joinAChannel($user: ID!, $channel: ID!, $privateChannel: Boolean!) {
     }
 }
 `;
+
+export const LEAVE_CHANNEL = gql`
+mutation leaveAChannel($user: ID!, $channel: ID!) {
+   leaveAChannel(user: $user, channel: $channel) {
+    _id
+    name
+    private
+    server{
+      _id
+      name
+    }
+    members{
+      _id
+      username
+      profilePicture
+    }
+    }
+}
+`;
