@@ -10,7 +10,6 @@ query {
         profilePicture
         friendCount
             location{
-                user_id
                 latitude
                 longitude
             }
@@ -26,10 +25,11 @@ query {
                 name
             channels{
                 _id
-                    location{
-                        latitude
-                        longitude
-                    }
+              members{
+                _id
+                username
+                profilePicture
+              }
                 private
             }
         }
@@ -42,9 +42,23 @@ query {
     me{
         _id
         username
+      UsersInRange{
+        servers{
+          _id
+          ownerID
+          channels{
+            _id
+            name
+            private
+            members{
+              _id
+              username
+            }
+          }
+        }
+      }
         friendCount
             location{
-                user_id
                 latitude
                 longitude
             }
@@ -64,9 +78,6 @@ query {
                 longitude
               }
             }
-            messages{
-                _id
-            }
             servers{
                 _id
                 name
@@ -74,6 +85,18 @@ query {
                 _id
       					name
                 private
+              	messages{
+                  _id
+                  username
+                  text
+                  time
+                }
+              	members{
+                  _id
+                  username
+                  profilePicture
+                }
+
             }
         }
     }
@@ -97,17 +120,21 @@ export const QUERY_ME_BASIC = gql`
 
 export const QUERY_GLOBAL_MESSAGES = gql`
 query{
-    allMessages{
-        messageID
-        text
-        time
-        username
+  allMessages{
+    _id
+    channels{
+      _id
+      name
     }
+    text
+    time
+    username
+  }
 }
 `;
 
 export const QUERY_CHANNELS = gql`
-query{
+ query{
   chatRooms{
     _id
     name
@@ -115,30 +142,47 @@ query{
     server{
       _id
       name
-      ownerID
-      location{
-        latitude
-        longitude
-      }
+    }
+    messages{
+      _id
+      username
+      text
+      time
+    }
+    members{
+      _id
+      username
+      profilePicture
     }
   }
 }
 `;
 
 export const QUERY_SERVERS = gql`
-query {
+query{
   servers{
-  _id
+    _id
     name
     ownerID
-    location{
-      latitude
-      longitude
-    }
     channels{
       _id
       name
       private
+      messages{
+        _id
+        username
+        text
+        time
+      }
+      members{
+        _id
+        username
+        profilePicture
+      }
+    }
+    location{
+      latitude
+      longitude
     }
   }
 }

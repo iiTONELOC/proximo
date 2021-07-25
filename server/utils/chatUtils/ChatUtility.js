@@ -1,5 +1,8 @@
-const { User, ChatRoom, Server } = require('../../models');
+const { User, ChatRoom, Server, Message } = require('../../models');
 const Location = require('../../utils/Location');
+// CAN BE USED IN THE MUTATIONS OR IN THE IO SERVER ITSELF, AS LONG AS THE SOCKET EMITS 
+// NECESSARY INFO IN THE PAYLOAD
+
 // creates a new server for the user,
 const createServer = (user, latitude, longitude) => Server.create({
     name: `${user.username}'s Personal Server`,
@@ -52,14 +55,67 @@ module.exports = {
         }
     },
     joinChannel: async (user, channel, privateChannel) => {
-        const isPrivate = await ChatRoom.findById(channel._id);
+        // ensure the room is not private
+        const isPrivate = await ChatRoom.findById(channel);
+        // check that the user is not already in the room
+        const alreadyThere = isPrivate.members.filter(el => el._id == user);
+        if (alreadyThere.length > 0) {
+            throw new Error("You are already in this chat!")
+        }
+        // if we are not requesting a private channel
         if (!privateChannel) {
+            // check and make sure the room is indeed a public room
             if (isPrivate.private === false) {
-                return ChatRoom.findByIdAndUpdate(channel._id, {
-                    $push: { members: user._id }
-                })
+                return ChatRoom.findByIdAndUpdate(channel, {
+                    $push: { members: user },
+                }, { new: true })
+                    .select('-__v -password')
+                    .populate({ path: 'server' })
+                    .populate('members');
+                // update the user
             }
+            throw new Error('You must be invited to this channel!')
         }
         // maybe we should implement a user generated key for private chats
-    }
+    },
+    createServer: createServer,
+    createChannel: createChannel,
+    SendMessage: async (args) => {
+        try {
+            const { channel } = args
+            // make sure the channel exists
+            const isChannel = await ChatRoom.findById(channel);
+            // create the message
+            const newMessage = await Message.create({ ...args })
+            const { _id } = newMessage;
+            // update created message with channel information
+            const updateMessage = await Message.findByIdAndUpdate(_id,
+                { $push: { channels: isChannel._id } },
+                { new: true })
+                .populate('channels')
+                .catch(async e => {
+                    // somewhere the creation failed, delete msg from db
+                    if (_id) {
+                        const dMsg = await Message.findByIdAndDelete(_id);
+                        console.log(dMsg)
+                        return false
+                    }
+                    console.error(e)
+                    return false
+                });
+            // now update the channel
+            const updateChannel = await ChatRoom.findByIdAndUpdate(channel, {
+                $push: { messages: updateMessage._id }
+            }, { new: true });
+            if (updateChannel) {
+                return updateMessage
+            } else {
+                throw new Error('Cannot send message!')
+            }
+
+        } catch (error) {
+            console.error(error);
+            return false
+        }
+    },
 }
