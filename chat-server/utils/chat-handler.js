@@ -3,18 +3,22 @@ class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
         let clients = [];
+        console.log(clients);
 
         io.on('connection', (socket) => {
-            console.log(socket);
-            clients.push({id: socket.id});
-            console.log(clients);
+            for (let [id, socket] of io.of("/").sockets) {
+                clients.push({
+                    userID: id,
+                    socket: socket.id
+                });
+            }
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };
 
     //PUBLIC CHAT
     static publicChat(io) {
-        socket.on('create', (room) => {
+        socket.on('createPublic', (room) => {
             socket.join(room);
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });

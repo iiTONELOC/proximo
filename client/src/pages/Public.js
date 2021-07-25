@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
 import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
-import { joinAChannel, sendMessage } from '../../../server/utils/chatUtils/ChatUtility';
+import { JOIN_CHANNEL } from '../utils/mutations';
+import { QUERY_CHANNELS } from '../utils/queries';
 
 
 const Public = () => {
@@ -16,20 +18,26 @@ const Public = () => {
   }, [setSocket]);
 
   const [publicChat, setPublicChat] = useState(false);
+  const { loading, error, data } = useQuery(QUERY_CHANNELS);
+  const { user, channel, privateChannel } = useMutation(JOIN_CHANNEL);
+
+  console.log(privateChannel);
 
   const createRoom = async event => {
     event.preventDefault();
-    try {
-      socket.emit('create', (room) => {
-        socket.join(room);
-        console.log(room);
-      });
-      console.log(socket);
-
-      
-      setPublicChat(true);
-    } catch (e) {
-      console.error(e);
+    if(!privateChannel) {
+      try {
+        socket.emit('createPublic', (room) => {
+          socket.join(room);
+          console.log(room);
+        });
+        console.log(socket);
+  
+        
+        setPublicChat(true);
+      } catch (e) {
+        console.error(e);
+      }
     }
   }
 
