@@ -24,6 +24,14 @@ class ChatAPI {
         });
     };
 
+    //PRIVATE CHAT
+    static privateChat(io) {
+        socket.on('createPrivate', (room) => {
+            socket.join(room);
+            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        });
+    };
+
     // METHODS
     static handleMessage(value, socket, io) {
         const message = {

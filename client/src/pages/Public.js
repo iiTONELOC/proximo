@@ -32,12 +32,19 @@ const Public = () => {
           console.log(room);
         });
         console.log(socket);
-  
         
         setPublicChat(true);
       } catch (e) {
         console.error(e);
       }
+    } else {
+      socket.emit('createPrivate', (room) => {
+        socket.join(room);
+        console.log(room);
+      });
+      console.log(socket);
+
+      //setPrivateChat(true);
     }
   }
 
