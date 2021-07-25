@@ -1,8 +1,9 @@
 const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser, joinChannel, SendMessage, leaveChannel, createServer } = require('../utils/chatUtils/ChatUtility');
-const Location = require('../utils/Location')
+const { createNewUser, joinChannel, SendMessage, leaveChannel, createServer, DeleteMessage } = require('../utils/chatUtils/ChatUtility');
+const Location = require('../utils/Location');
+const { aggregate } = require('../models/Servers');
 
 const resolvers = {
     Query: {
@@ -109,6 +110,11 @@ const resolvers = {
 
             // throw new AuthenticationError('You need to be logged in!');
         },
+        deleteAMessage: async (parent, args, context) => {
+
+            return await DeleteMessage(args);
+        },
+
         joinAChannel: async (parent, args, context) => {
             // EXPECTS =>
             // {

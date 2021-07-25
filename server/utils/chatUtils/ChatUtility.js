@@ -147,4 +147,9 @@ module.exports = {
             console.log(error)
         }
     },
+    DeleteMessage: async ({ messageID }) => {
+        const deleted = await Message.findByIdAndDelete(messageID);
+        console.log(deleted);
+        return deleted;
+    }
 }
