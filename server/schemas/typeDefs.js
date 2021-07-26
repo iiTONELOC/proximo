@@ -64,7 +64,7 @@ type Mutation {
     deleteAMessage(messageID: ID!): Message
     joinAChannel(user: ID!, channel: ID!, privateChannel: Boolean): ChatRoom
     leaveAChannel(user: ID!, channel: ID!):ChatRoom
-    createAChannel(server: ID!, name: String!, private: Boolean!): ChatRoom
+    createAChannel(server: ID!, name: String!, private: Boolean): ChatRoom
     createNewServer(name: String!, ownerID: ID!): Server
 }
 type Auth {
