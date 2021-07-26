@@ -1,4 +1,3 @@
-import { sendMessage } from '../../server/utils/chatUtils';
 class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
@@ -6,12 +5,9 @@ class ChatAPI {
         console.log(clients);
 
         io.on('connection', (socket) => {
-            for (let [id, socket] of io.of("/").sockets) {
-                clients.push({
-                    userID: id,
-                    socket: socket.id
-                });
-            }
+            clients.push({
+                socket: socket.id
+            });
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };

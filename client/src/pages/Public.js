@@ -37,18 +37,18 @@ const Public = () => {
       } catch (e) {
         console.error(e);
       }
-    } else {
-      try {
-        socket.emit('createPrivate', (room) => {
-          socket.join(room);
-          console.log(room);
-        });
-        console.log(socket);
+    // } else {
+    //   try {
+    //     socket.emit('createPrivate', (room) => {
+    //       socket.join(room);
+    //       console.log(room);
+    //     });
+    //     console.log(socket);
         
-        //setPrivatecChat(true);
-      } catch (e) {
-        console.error(e);
-      }
+    //     //setPrivatecChat(true);
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
     }
   }
 
