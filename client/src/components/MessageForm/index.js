@@ -16,6 +16,7 @@ const MessageForm = ({ socket }) => {
     const handleFormSubmit = async event => {
         event.preventDefault();
         socket.emit('message', value);
+        socket.emit('messagePublic', value);
         try {
             // add thought to database
             // await addThought({
