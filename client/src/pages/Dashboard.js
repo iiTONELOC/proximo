@@ -30,12 +30,12 @@ import {
 import { SearchIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom';
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+    { name: '', href: '#', icon: HomeIcon, current: true },
+    { name: '', href: '#', icon: UsersIcon, current: false },
+    { name: '', href: '#', icon: FolderIcon, current: false },
+    { name: '', href: '#', icon: CalendarIcon, current: false },
+    { name: '', href: '#', icon: InboxIcon, current: false },
+    { name: '', href: '#', icon: ChartBarIcon, current: false },
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
@@ -55,7 +55,7 @@ export default function Example() {
 
             {/* Static sidebar for desktop */}
             <div className="hidden md:flex md:flex-shrink-0">
-                <div className="flex flex-col w-64">
+                <div className="flex flex-col w-20">
                     {/* Sidebar component, swap this element with another sidebar if you like */}
                     <div className="flex flex-col h-0 flex-1">
                         <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
@@ -96,7 +96,7 @@ export default function Example() {
                 </div>
             </div>
             <div className="flex flex-col w-0 flex-1 overflow-hidden">
-                <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                {/* <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
                     <button
                         className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
                         onClick={() => setSidebarOpen(true)}
@@ -132,9 +132,9 @@ export default function Example() {
 
                             {/* Profile dropdown */}
 
-                        </div>
+                        {/* </div>
                     </div>
-                </div>
+                </div> */}
 
                 <main className="flex-1 relative overflow-y-auto focus:outline-none">
                     <div className="py-6">
