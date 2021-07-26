@@ -42,10 +42,10 @@ export default function Example() {
         <div className="h-screen flex overflow-hidden bg-gray-100">
 
             {/* Static sidebar for desktop */}
-            <div className="hidden md:flex md:flex-shrink-0">
-                <div className="flex flex-col w-20">
+            <div className="h-full md:flex md:flex-shrink-0">
+                <div className="h-full flex flex-col w-20 ">
                     {/* Sidebar component, swap this element with another sidebar if you like */}
-                    <div className="flex flex-col h-0 flex-1">
+                    <div className=" h-full flex flex-col ">
                         <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
                             <Link to="/">
                                 <span className="sr-only">Proximo</span>
@@ -57,8 +57,8 @@ export default function Example() {
                                 />
                             </Link>
                         </div>
-                        <div className="flex-1 flex flex-col overflow-y-auto">
-                            <nav className="flex-1 px-2 py-4 bg-gray-800 space-y-1">
+                        <div className=" h-full flex-1 flex flex-col overflow-y-auto">
+                            <nav className="h-full px-2 py-4 bg-gray-800 space-y-1">
                                 {navigation.map((item) => (
                                     <a
                                         key={item.name}
@@ -120,12 +120,12 @@ export default function Example() {
 
                             {/* Profile dropdown */}
 
-                        {/* </div>
+                {/* </div>
                     </div>
                 </div> */}
 
-                <main className="flex flex-col min-h-screen">
-                    <div className="bg-gray-600 flex">
+                <main className="flex flex-col  min-h-screen">
+                    <div className="bg-gray-600 flex flex-row">
                         <div className="bg-gray-700 w-56 h-screen flex-none">
                             <h1 className="text-2xl font-semibold text-gray-900 mx-14 my-5">Proximo</h1>
                             <UserList></UserList>
