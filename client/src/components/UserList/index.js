@@ -44,7 +44,7 @@ const UserList = () => {
     //console.log(data.me);
 
     if (socket) {
-        if(data?.me){
+        if (data?.me) {
             users.push({
                 socketId: socket.id,
                 username: data.me.username,
