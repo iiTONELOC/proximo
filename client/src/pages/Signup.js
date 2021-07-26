@@ -4,7 +4,7 @@ import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { validateEmail } from '../utils/helpers';
 import createError from '../components/Alerts/Sign-up/createError'
-
+import Header from '../components/Header'
 export default function Example() {
   const [formState, setFormState] = useState({ username: '', email: '', password: '' });
   const [addUser, { error }] = useMutation(ADD_USER);
@@ -52,8 +52,7 @@ export default function Example() {
       });
       Auth.login(data.addUser.token);
     } catch (e) {
-      console.error(e);
-
+      console.log(e);
       setAlert(true)
       setTimeout(() => {
         setAlert('')
@@ -61,98 +60,103 @@ export default function Example() {
     }
   };
   return (
-    <div className="h-full bg-gray-800 flex sm:p-4">
-      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div className="mx-auto w-full max-w-sm lg:w-96">
-          <div>
-            {signUpError && createError()}
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-100">Create an account</h2>
-            {error && <div className='py-3 text-red-500'>{error.message}</div>}
+    <>
+      <Header></Header>
 
-            <div className="mt-6">
-              <form onSubmit={handleFormSubmit}>
-                <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                    User Name
+      <div className="h-full bg-gray-800 flex sm:p-4">
 
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      placeholder='Your username'
-                      name='username'
-                      type='username'
-                      id='username'
-                      value={formState.username}
-                      onChange={handleChange}
-                      required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+        <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+          <div className="mx-auto w-full max-w-sm lg:w-96">
+            <div>
+              {signUpError && createError()}
+              <h2 className="mt-6 text-3xl font-extrabold text-gray-100">Create an account</h2>
+              {error && <div className='py-3 text-red-500'>{error.message}</div>}
+
+              <div className="mt-6">
+                <form onSubmit={handleFormSubmit}>
+                  <div>
+                    <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                      User Name
+
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        placeholder='Your username'
+                        name='username'
+                        type='username'
+                        id='username'
+                        value={formState.username}
+                        onChange={handleChange}
+                        required
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    {userError && (<div className='py-3 text-red-500'>{userError}</div>)}
                   </div>
-                  {userError && (<div className='py-3 text-red-500'>{userError}</div>)}
-                </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                    Email
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email
 
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      placeholder='Your email'
-                      name='email'
-                      type='email'
-                      id='email'
-                      value={formState.email}
-                      onChange={handleChange}
-                      required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        placeholder='Your email'
+                        name='email'
+                        type='email'
+                        id='email'
+                        value={formState.email}
+                        onChange={handleChange}
+                        required
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    {emailError && (<div className='py-3 text-red-500'>{emailError}</div>)}
                   </div>
-                  {emailError && (<div className='py-3 text-red-500'>{emailError}</div>)}
-                </div>
 
-                <div className="space-y-1">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                    Password
+                  <div className="space-y-1">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                      Password
 
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      placeholder='******'
-                      name='password'
-                      type='password'
-                      id='password'
-                      value={formState.password}
-                      onChange={handleChange}
-                      required
-                      className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    />
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        placeholder='******'
+                        name='password'
+                        type='password'
+                        id='password'
+                        value={formState.password}
+                        onChange={handleChange}
+                        required
+                        className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                    {passwordError && (<div className='py-3 text-red-500'>{passwordError}</div>)}
                   </div>
-                  {passwordError && (<div className='py-3 text-red-500'>{passwordError}</div>)}
-                </div>
 
 
 
-                <div>
-                  <button
-                    type="submit"
-                    className="w-full mt-5 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    Create Account
-                  </button>
-                </div>
-              </form>
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full mt-5 flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      Create Account
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
+        <div className="hidden lg:block relative w-0 flex-1">
+          <img
+            className="absolute inset-0 h-full w-full object-cover"
+            src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
+            alt=""
+          />
+        </div>
       </div>
-      <div className="hidden lg:block relative w-0 flex-1">
-        <img
-          className="absolute inset-0 h-full w-full object-cover"
-          src="https://images.unsplash.com/photo-1505904267569-f02eaeb45a4c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-          alt=""
-        />
-      </div>
-    </div>
+    </>
   )
 }
