@@ -33,9 +33,9 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-        <div className="App" class="p-6 items-center justify-center">
+        <div className="w-full h-screen flex-row justify-center">
           <Header />
-          <div className="container">
+          <div className="w-full h-auto flex-row ">
             <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/public" component={Public} />
@@ -45,9 +45,11 @@ function App() {
               <Route exact path="/profile/:username?" component={Profile} />
               <Route component={NoMatch} />
             </Switch>
+            <Footer />
           </div>
-          <Footer />
         </div>
+
+
       </Router>
     </ApolloProvider>
   );

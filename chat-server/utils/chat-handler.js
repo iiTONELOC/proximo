@@ -1,10 +1,7 @@
 class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
-        let clients = [];
-
         io.on('connection', (socket) => {
-            clients.push(socket.id);
 
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
             socket.on('private message', (value) => ChatAPI.handleMessage(value, socket, io));

@@ -9,10 +9,11 @@ const server = require('http').createServer(app);
 
 const io = socketIo(server, {
     cors: {
-        origin: '*',
+        origin: "*",
         methods: ['GET', 'POST']
     }
 })
+
 app.use(cors())
 
 const ChatServer = () => {
