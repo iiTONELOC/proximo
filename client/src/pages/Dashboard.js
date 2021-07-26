@@ -1,6 +1,9 @@
-
-import { Redirect, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import UserList from '../components/UserList';
+import { io } from "socket.io-client";
+import MessageForm from '../components/MessageForm';
+import Messages from '../components/Messages';
+import Auth from '../utils/auth';
 
 import { Fragment, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
@@ -120,9 +123,9 @@ export default function Example() {
 
                             {/* Profile dropdown */}
 
-                        {/* </div>
+                         {/* </div>
                     </div>
-                </div> */}
+                </div>  */} 
 
                 <main className="flex flex-col min-h-screen">
                     <div className="bg-gray-600 flex">
@@ -132,9 +135,22 @@ export default function Example() {
                         </div>
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                             {/* Replace with your content */}
+                            
                             <div className="py-4 px-0">
-                                <div className=" bg bg-gray-500 h-96" />
+                                <div className=" bg bg-gray-500 h-96 w-screen" />
                             </div>
+                            <div>
+                            <div className="mt-1">
+                                <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Send Message"
+                                />
+                            </div>
+                            </div>
+                            
                             {/* /End replace */}
                         </div>
                     </div>
