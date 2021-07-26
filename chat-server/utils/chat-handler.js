@@ -6,12 +6,6 @@ class ChatAPI {
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
             socket.on('private message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
-
-        // socket.onAny((event, ...args) => {
-        //     console.log(event, args);
-        // });
-
-
     };
 
     // METHODS
