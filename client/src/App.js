@@ -9,7 +9,8 @@ import Login from './pages/Login';
 import NoMatch from './pages/NoMatch';
 import Profile from './pages/Profile';
 import Signup from './pages/Signup';
-import Public from './pages/Public';
+import Test from './pages/Test';
+import Dashboard from './pages/Dashboard'
 
 const httpLink = createHttpLink({
   uri: '/graphql',
