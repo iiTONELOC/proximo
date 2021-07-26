@@ -4,8 +4,7 @@ import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
-import { JOIN_CHANNEL } from '../utils/mutations';
-import { QUERY_CHANNELS } from '../utils/queries';
+import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
 
 
 const Public = () => {
@@ -16,13 +15,53 @@ const Public = () => {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-  console.log(socket);
 
-  const [publicChat, setPublicChat] = useState(false);
-  const { loading, error, data } = useQuery(QUERY_CHANNELS);
-  const { user, channel, privateChannel } = useMutation(JOIN_CHANNEL);
+  let users = [];
+  useEffect(() => {
+    socket.on("user connected", (user) => {
+      this.users.push(user);
+    });
 
-  console.log(privateChannel);
+    socket.emit("users", (users) => {
+      users.forEach((user) => {
+        user.self = user.userID === socket.id;
+      });
+    });
+  });
+
+  const onMessage = (content) => {
+    if (this.selectedUser) {
+      socket.emit("private message", {
+        content,
+        to: this.selectedUser.userID,
+      });
+      this.selectedUser.messages.push({
+        content,
+        fromSelf: true,
+      });
+    }
+
+    socket.on("private message", ({ content, from }) => {
+      for (let i = 0; i < this.users.length; i++) {
+        const user = this.users[i];
+        if (user.userID === from) {
+          user.messages.push({
+            content,
+            fromSelf: false,
+          });
+          if (user !== this.selectedUser) {
+            user.hasNewMessages = true;
+          }
+          break;
+        }
+      }
+    });
+    
+  }
+
+  const { data } = useQuery(QUERY_ME);
+
+  console.log(data);
 
   return (
     <main>
