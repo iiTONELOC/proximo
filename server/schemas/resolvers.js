@@ -1,7 +1,22 @@
 const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { createNewUser, joinChannel, SendMessage, leaveChannel, createServer, DeleteMessage } = require('../utils/chatUtils/ChatUtility');
+const {
+    createNewUser,
+    // userStatus
+    // del user
+    // edit user
+    SendMessage,
+    // privateMsg
+    //  ? edit msg
+    DeleteMessage,
+    joinChannel,
+    // edit channel (ie name, status to private/public)
+    leaveChannel,
+    createServer,
+    // edit server (ie name)
+    // delete server
+} = require('../utils/chatUtils/ChatUtility');
 const Location = require('../utils/Location');
 const { aggregate } = require('../models/Servers');
 
@@ -102,6 +117,7 @@ const resolvers = {
             // ADD AUTH BACK IN! REMOVED FOR TESTING
             // COMMENTED OUT BELOW
             // PLACE THIS TRY/CATCH BLOCK INTO if statement
+            console.log("HERE", context.user)
             return await SendMessage(args);
 
             // if (context.user) {
@@ -114,7 +130,15 @@ const resolvers = {
 
             return await DeleteMessage(args);
         },
-
+        createAChannel: async (parent, args, context) => {
+            // createChannel is used when creating a new user, package data to use that existing f(n)
+            // grab location data
+            const { latitude, longitude } = await Location.user(args, context);
+            // requires ID for TESTING ONLY PLACE A USER ID FROM YOUR DB AFTER THE OR OPERATOR
+            const user = {
+                _id: context?.user._id || "60fe129701b37e35d4da18e9",
+            }
+        },
         joinAChannel: async (parent, args, context) => {
             // EXPECTS =>
             // {
