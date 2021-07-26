@@ -13,7 +13,7 @@ const chatRoomSchema = new Schema(
             type: String,
             required: 'Channels must have a name!',
             minlength: 2,
-            maxlength: 25
+
         },
         location: [locationSchema],
         private: {

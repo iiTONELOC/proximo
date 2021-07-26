@@ -13,7 +13,7 @@ const serverSchema = new Schema(
             type: String,
             required: 'Servers must have a name!',
             minlength: 1,
-            maxlength: 65
+
         },
         createdAt: {
             type: Date,

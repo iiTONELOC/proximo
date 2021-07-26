@@ -43,6 +43,7 @@ query {
         _id
         username
       UsersInRange{
+        username
         servers{
           _id
           ownerID
