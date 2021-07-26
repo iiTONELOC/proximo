@@ -4,7 +4,8 @@ import Auth from '../../utils/auth';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'Dashboard', href: '/dasboard' },
+  { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Test', href: '/test' },
   { name: 'Public', href: '/public' },
   { name: 'Test', href: '/test' },
 ]

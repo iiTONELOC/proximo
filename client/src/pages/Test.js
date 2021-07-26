@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
-
+import Header from '../components/Header'
 
 const Test = () => {
   const [socket, setSocket] = useState(null);
@@ -16,6 +16,7 @@ const Test = () => {
 
   return (
     <main>
+      <Header />
       {loggedIn && (<div className="flex-row justify-space-between">
         <h1>**THIS IS A TEST ** Global Chat</h1>
 

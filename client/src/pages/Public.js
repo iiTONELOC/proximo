@@ -6,6 +6,8 @@ import Messages from '../components/Messages';
 import Auth from '../utils/auth';
 import UserList from '../components/UserList';
 
+import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
+import Header from '../components/Header'
 
 const Public = () => {
   const [socket, setSocket] = useState(null);
@@ -31,17 +33,14 @@ const Public = () => {
 
   return (
     <main>
-      <div>
-        <div class="px-4">
-          <UserList></UserList>
-        </div>
+      <Header />
+      <UserList />
         {loggedIn && (<div className="flex-row justify-space-between">
           <h1>**THIS IS A TEST ** Global Chat</h1>
 
           {socket ? (<div><Messages socket={socket} />
             <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
         </div>)}
-      </div>
     </main>
   );
 };
