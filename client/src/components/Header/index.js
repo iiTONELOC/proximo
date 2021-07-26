@@ -2,50 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Auth from '../../utils/auth';
 
-// const Header = () => {
-//   const logout = event => {
-//     event.preventDefault();
-//     Auth.logout();
-//   };
-
-
-
-
-
-//   return (
-//     <header className="bg-secondary mb-4 py-2 flex-row align-center">
-//       <div className="container flex-row justify-space-between-lg justify-center align-center">
-//         <Link to="/">
-//           <h1>Proximo</h1>
-//         </Link>
-
-//         <nav className="text-center">
-//           {Auth.loggedIn() ? (
-//             <>
-//             <Link to="/">Home</Link>
-//               <Link to="/dashboard">Global Chats</Link>
-//               <Link to={{
-//                 pathname:`/profile/`
-//               }}>Profile</Link>
-//               <Link to='/test'>Test</Link>
-//               <a href="/" onClick={logout}>
-//                 Logout
-//               </a>
-//             </>
-//           ) : (
-//             <>
-//               <Link to="/login">Login</Link>
-//               <Link to="/signup">Signup</Link>
-//             </>
-//           )}
-//         </nav>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Dashboard', href: '/dasboard' },
@@ -60,6 +16,10 @@ function RenderLinks() {
     )) : null
   )
 }
+const logout = event => {
+  event.preventDefault();
+  Auth.logout();
+};
 export default function Example() {
   return (
     <header className="bg-indigo-600">
@@ -76,11 +36,7 @@ export default function Example() {
               />
             </Link>
             <div className="hidden ml-10 space-x-8 lg:block">
-              {Auth.loggedIn() ? navigation.map((link) => (
-                <Link key={link.name} to={link.href} className="text-base font-medium text-white hover:text-indigo-50">
-                  {link.name}
-                </Link>
-              )) : null}
+              {RenderLinks()}
             </div>
           </div>
           <div className="ml-10 space-x-4">
@@ -95,16 +51,16 @@ export default function Example() {
                 className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
               >
                 Sign up
-              </Link> </> : null}
+              </Link> </> : <><a
+                href="/"
+                onClick={logout}
+                className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
+              >Logout</a> </>}
           </div>
         </div>
         {/* SMALLER SCREEN LAYOUT DONT REMOVE */}
         <div className="py-4 flex flex-wrap justify-center space-x-6 lg:hidden">
-          {Auth.loggedIn() ? navigation.map((link) => (
-            <Link key={link.name} to={link.href} className="text-base font-medium text-white hover:text-indigo-50">
-              {link.name}
-            </Link>
-          )) : null}
+          {RenderLinks()}
         </div>
         {/* SMALLER SCREEN LAYOUT DONT REMOVE */}
       </nav>
