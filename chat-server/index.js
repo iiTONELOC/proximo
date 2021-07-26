@@ -9,7 +9,7 @@ const server = require('http').createServer(app);
 
 const io = socketIo(server, {
     cors: {
-        origin: '*',
+        origin: '"http://localhost:80"',
         methods: ['GET', 'POST']
     }
 })
