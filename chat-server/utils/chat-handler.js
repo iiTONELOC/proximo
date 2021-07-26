@@ -2,30 +2,17 @@ class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
         let clients = [];
-        console.log(clients);
 
-        io.on('connection', (socket) => {
-            clients.push({
-                socket: socket.id
-            });
-            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        io.sockets.on('connection', (socket) => {
+            clients.push(socket.id);
         });
-    };
 
-    //PUBLIC CHAT
-    static publicChat(io) {
-        socket.on('createPublic', (room) => {
-            socket.join(room);
-            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        socket.onAny((event, ...args) => {
+            console.log(event, args);
         });
-    };
 
-    //PRIVATE CHAT
-    static privateChat(io) {
-        socket.on('createPrivate', (room) => {
-            socket.join(room);
-            socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
-        });
+        socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
+        socket.on('private message', (value) => ChatAPI.handleMessage(value, socket, io));
     };
 
     // METHODS

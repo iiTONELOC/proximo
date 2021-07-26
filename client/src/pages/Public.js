@@ -16,6 +16,7 @@ const Public = () => {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
+  console.log(socket);
 
   const [publicChat, setPublicChat] = useState(false);
   const { loading, error, data } = useQuery(QUERY_CHANNELS);
@@ -23,52 +24,13 @@ const Public = () => {
 
   console.log(privateChannel);
 
-  const createRoom = async event => {
-    event.preventDefault();
-    if(!privateChannel) {
-      try {
-        socket.emit('createPublic', (room) => {
-          socket.join(room);
-          console.log(room);
-        });
-        console.log(socket);
-        
-        setPublicChat(true);
-      } catch (e) {
-        console.error(e);
-      }
-    // } else {
-    //   try {
-    //     socket.emit('createPrivate', (room) => {
-    //       socket.join(room);
-    //       console.log(room);
-    //     });
-    //     console.log(socket);
-        
-    //     //setPrivatecChat(true);
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    }
-  }
-
   return (
     <main>
-      {loggedIn && <button onClick={createRoom} type='submit'> Create Room </button>}
       {loggedIn && (<div className="flex-row justify-space-between">
         <h1>**THIS IS A TEST ** Global Chat</h1>
 
         {socket ? (<div><Messages socket={socket} />
           <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
-
-      </div>)}
-
-      {publicChat && (<div className="flex-row justify-space-between">
-        <h1>**THIS IS A TEST ** Public Chat</h1>
-
-        {socket ? (<div><Messages socket={socket} />
-          <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
-
       </div>)}
     </main>
   );
