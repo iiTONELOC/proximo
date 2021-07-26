@@ -17,6 +17,7 @@ const Public = () => {
   }, [setSocket]);
 
   let users = [];
+  
   useEffect(() => {
     // socket.on("user connected", (user) => {
     //   this.users.push(user);
