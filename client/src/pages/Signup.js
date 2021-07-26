@@ -1,22 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
-
+import { validateEmail } from '../utils/helpers'
 
 export default function Example() {
   const [formState, setFormState] = useState({ username: '', email: '', password: '' });
   const [addUser, { error }] = useMutation(ADD_USER);
+  const [errorMessage, setErrorMessage] = useState([]);
   // update state based on form input changes
-  const handleChange = (event) => {
-    const { name, value } = event.target;
 
-    setFormState({
-      ...formState,
-      [name]: value,
-    });
+  // useEffect(() => {
+
+  // })
+
+  const handleChange = (e) => {
+    setFormState({ ...formState, [e.target.name]: e.target.value });
+    if (e.target.name === 'email') {
+      const isValid = validateEmail(e.target.value);
+      console.log(isValid);
+      if (!isValid) {
+        setErrorMessage({ email: 'Your email is invalid.' });
+      } else {
+        setErrorMessage('');
+      }
+    } else if (e.target.name === 'username') {
+      if (e.target.value.length < 2) {
+        setErrorMessage({ username: `Username's must be at least 2 characters!` })
+      } else {
+        setErrorMessage({ username: `` })
+      }
+    } else {
+      if (e.target.value.length < 5) {
+        setErrorMessage({ password: `Password's must be at least 5 characters!` })
+      } else {
+        setErrorMessage({ password: `` })
+      }
+    }
+
   };
-
   // submit form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -37,13 +59,14 @@ export default function Example() {
           <div>
 
             <h2 className="mt-6 text-3xl font-extrabold text-gray-100">Create an account</h2>
-            {error && <div>Sign up failed</div>}
+
 
             <div className="mt-6">
               <form onSubmit={handleFormSubmit}>
                 <div>
                   <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                     User Name
+                    {errorMessage.username && (<div className='py-3 text-red-500'>{errorMessage.username}</div>)}
                   </label>
                   <div className="mt-1">
                     <input
@@ -62,6 +85,7 @@ export default function Example() {
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email
+                    {errorMessage.email && (<div className='py-3 text-red-500'>{errorMessage.email}</div>)}
                   </label>
                   <div className="mt-1">
                     <input
@@ -80,6 +104,7 @@ export default function Example() {
                 <div className="space-y-1">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                     Password
+                    {errorMessage.password && (<div className='py-3 text-red-500'>{errorMessage.password}</div>)}
                   </label>
                   <div className="mt-1">
                     <input
