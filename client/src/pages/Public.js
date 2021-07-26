@@ -4,7 +4,7 @@ import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
-import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
+import UserList from '../components/UserList';
 
 
 const Public = () => {
@@ -15,20 +15,6 @@ const Public = () => {
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
-
-  let users = [];
-  
-  useEffect(() => {
-    // socket.on("user connected", (user) => {
-    //   this.users.push(user);
-    // });
-
-    // socket.emit("users", (users) => {
-    //   users.forEach((user) => {
-    //     user.self = user.userID === socket.id;
-    //   });
-    // });
-  });
 
   const onMessage = (content) => {
     if (this.selectedUser) {
@@ -41,33 +27,13 @@ const Public = () => {
         fromSelf: true,
       });
     }
-
-    // socket.on("private message", ({ content, from }) => {
-    //   for (let i = 0; i < this.users.length; i++) {
-    //     const user = this.users[i];
-    //     if (user.userID === from) {
-    //       user.messages.push({
-    //         content,
-    //         fromSelf: false,
-    //       });
-    //       if (user !== this.selectedUser) {
-    //         user.hasNewMessages = true;
-    //       }
-    //       break;
-    //     }
-    //   }
-    // });
-
   }
-
-  const { data } = useQuery(QUERY_ME);
-
-  console.log(data);
 
   return (
     <main>
       <div class="px-4">
-        <div>
+        <UserList></UserList>
+        {/* <div>
           <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2>
           <ul class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <li class="col-span-1 flex shadow-sm rounded-md">
@@ -90,7 +56,7 @@ const Public = () => {
               </div>
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
       {loggedIn && (<div className="flex-row justify-space-between">
         <h1>**THIS IS A TEST ** Global Chat</h1>
