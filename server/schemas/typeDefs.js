@@ -20,15 +20,15 @@ type Location {
 }
 type Message{
     _id: ID
-    channel_id: ID
+    channels: [ChatRoom]
     text: String
     time: String
     username: String
 }
 input MessageInput{
     text: String
-    time: String
     username: String
+    channel_id: ID
 }
 type ChatRoom{
     _id: ID
@@ -60,6 +60,12 @@ type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     addFriend(friendId: ID!): User
+    sendMessage(text: String!, username: String!, channel: ID!): Message
+    deleteAMessage(messageID: ID!): Message
+    joinAChannel(user: ID!, channel: ID!, privateChannel: Boolean): ChatRoom
+    leaveAChannel(user: ID!, channel: ID!):ChatRoom
+    createAChannel(server: ID!, name: String!, private: Boolean!): ChatRoom
+    createNewServer(name: String!, ownerID: ID!): Server
 }
 type Auth {
     token: ID!
