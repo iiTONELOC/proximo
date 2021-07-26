@@ -7,7 +7,6 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard' },
   { name: 'Test', href: '/test' },
   { name: 'Public', href: '/public' },
-  { name: 'Test', href: '/test' },
 ]
 function RenderLinks() {
   return (
