@@ -31,15 +31,17 @@ const Public = () => {
 
   return (
     <main>
-      <div class="px-4">
-        <UserList></UserList>
-      </div>
-      {loggedIn && (<div className="flex-row justify-space-between">
-        <h1>**THIS IS A TEST ** Global Chat</h1>
+      <div>
+        <div class="px-4">
+          <UserList></UserList>
+        </div>
+        {loggedIn && (<div className="flex-row justify-space-between">
+          <h1>**THIS IS A TEST ** Global Chat</h1>
 
-        {socket ? (<div><Messages socket={socket} />
-          <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
-      </div>)}
+          {socket ? (<div><Messages socket={socket} />
+            <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
+        </div>)}
+      </div>
     </main>
   );
 };
