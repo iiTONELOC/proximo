@@ -36,7 +36,7 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div className="w-full h-screen flex-row justify-center">
-          <Header />
+
           <div className="w-full h-auto flex-row ">
             <Switch>
               <Route exact path="/" component={Home} />

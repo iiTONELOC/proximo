@@ -28,7 +28,7 @@ import {
     XIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
-
+import { Link } from 'react-router-dom';
 const navigation = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
     { name: 'Team', href: '#', icon: UsersIcon, current: false },
@@ -59,11 +59,15 @@ export default function Example() {
                     {/* Sidebar component, swap this element with another sidebar if you like */}
                     <div className="flex flex-col h-0 flex-1">
                         <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-                            <img
-                                className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                                alt="Workflow"
-                            />
+                            <Link to="/">
+                                <span className="sr-only">Proximo</span>
+                                <img
+                                    // INSERT ICON HERE
+                                    className="h-10 w-auto"
+                                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
+                                    alt=""
+                                />
+                            </Link>
                         </div>
                         <div className="flex-1 flex flex-col overflow-y-auto">
                             <nav className="flex-1 px-2 py-4 bg-gray-800 space-y-1">

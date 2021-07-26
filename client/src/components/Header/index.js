@@ -5,6 +5,7 @@ import Auth from '../../utils/auth';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Dashboard', href: '/dashboard' },
+  { name: 'Test', href: '/test' },
   { name: 'Public', href: '/public' },
 ]
 function RenderLinks() {

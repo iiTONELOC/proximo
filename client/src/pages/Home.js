@@ -2,14 +2,16 @@ import React from 'react';
 // import { ExternalLinkIcon } from '@heroicons/react/solid'
 import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
-
+import Header from '../components/Header'
 export default function Home() {
   const logout = event => {
     event.preventDefault();
     Auth.logout();
   };
   return (
-    <section className='w-full h-4/6 flex justify-center'>
+
+    <section className='w-full h-4/6 flex-row justify-center'>
+      <Header />
       <div className="w-full relative bg-gray-800">
         <div className="h-56 bg-indigo-600 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
           <img

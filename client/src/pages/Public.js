@@ -5,7 +5,7 @@ import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
 import Auth from '../utils/auth';
 import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
-
+import Header from '../components/Header'
 
 const Public = () => {
   const [socket, setSocket] = useState(null);
@@ -65,6 +65,7 @@ const Public = () => {
 
   return (
     <main>
+      <Header />
       <div class="px-4">
         <div>
           <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Pinned Projects</h2>

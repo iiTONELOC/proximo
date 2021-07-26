@@ -3,7 +3,7 @@ import decode from 'jwt-decode';
 class AuthService {
     // retrieve data saved in token
     getProfile() {
-        
+
         return decode(this.getToken());
     }
 
@@ -40,7 +40,7 @@ class AuthService {
         // Saves user token to localStorage
         localStorage.setItem('id_token', idToken);
 
-        window.location.assign('/');
+        window.location.assign('/dashboard');
     }
 
     // clear token from localStorage and force logout with reload
