@@ -3,7 +3,9 @@ class ChatAPI {
 
     // GLOBAL CHAT
     static globalChat(io) {
+
         io.on('connection', (socket) => {
+
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
     };

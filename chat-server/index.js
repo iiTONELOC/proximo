@@ -8,10 +8,11 @@ const ChatAPI = require('./utils/chat-handler')
 const server = require('http').createServer(app);
 const io = socketIo(server, {
     cors: {
-        origin: '"http://localhost:80"',
+        origin: "*",
         methods: ['GET', 'POST']
     }
 })
+
 app.use(cors())
 
 const ChatServer = () => {
