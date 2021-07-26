@@ -1,19 +1,7 @@
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ]
-  }
-  ```
-*/
+
+import { Redirect, useParams } from 'react-router-dom';
+import UserList from '../components/UserList';
+
 import { Fragment, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
@@ -140,6 +128,7 @@ export default function Example() {
                     <div className="bg-gray-600 flex">
                         <div className="bg-gray-700 w-56 h-screen flex-none">
                             <h1 className="text-2xl font-semibold text-gray-900 mx-14 my-5">Proximo</h1>
+                            <UserList></UserList>
                         </div>
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                             {/* Replace with your content */}
