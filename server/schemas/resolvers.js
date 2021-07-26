@@ -139,7 +139,10 @@ const resolvers = {
             const user = {
                 _id: context?.user?._id || "60fe129701b37e35d4da18e9",
             }
-            const d = await createChannel(user, latitude, longitude, args.server, args?.name, args?.private)
+            const { name, server } = { ...args };
+            const private = args.private
+            const d = await createChannel(user, latitude, longitude, server, name, !private ? false : private);
+            console.log(d)
         },
         joinAChannel: async (parent, args, context) => {
             // EXPECTS =>

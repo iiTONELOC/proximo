@@ -9,7 +9,7 @@ const Test = () => {
   const [socket, setSocket] = useState(null);
   const loggedIn = Auth.loggedIn();
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:8080`);
+    const newSocket = io(`http://${window.location.hostname}:80`);
     setSocket(newSocket);
     return () => newSocket.close();
   }, [setSocket]);
