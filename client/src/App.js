@@ -33,20 +33,22 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
-
-        <Header />
-        <div className="container">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/test" component={Test} />
-            {/* <Route exact path="/profile" component={Profile} /> */}
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/profile/:username?" component={Profile} />
-            <Route component={NoMatch} />
-          </Switch>
+        <div className="w-full h-screen flex-row justify-center">
+          <Header />
+          <div className="w-full h-auto flex-row ">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/test" component={Test} />
+              {/* <Route exact path="/profile" component={Profile} /> */}
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/signup" component={Signup} />
+              <Route exact path="/profile/:username?" component={Profile} />
+              <Route component={NoMatch} />
+            </Switch>
+            <Footer />
+          </div>
         </div>
-        <Footer />
+
 
       </Router>
     </ApolloProvider>
