@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { } from '../../utils/mutations';
 import { QUERY_ME } from '../../utils/queries';
+import { io } from "socket.io-client";
+
+
 const MessageForm = ({ socket }) => {
 
     const [value, setText] = useState('');
@@ -41,13 +44,18 @@ const MessageForm = ({ socket }) => {
                 className="flex-row justify-center justify-space-between-md align-stretch"
                 onSubmit={handleFormSubmit}
             >
-                <textarea
-                    placeholder="Be Polite"
-                    value={value}
-                    className="form-input col-12 col-md-9"
-                    onChange={handleChange}
-                ></textarea>
-                <button className="btn col-12 col-md-3" type="submit">
+    
+                            <div className="mt-1">
+                                <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Send Message"
+                                onChange={handleChange}
+                                />
+                            </div> 
+                <button className="btn col-12 col-md-3 mt-2" type="submit">
                     Submit
                 </button>
             </form>

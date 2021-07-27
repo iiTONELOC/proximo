@@ -137,19 +137,10 @@ export default function Example() {
                             {/* Replace with your content */}
                             
                             <div className="py-4 px-0">
-                                <div className=" bg bg-gray-500 h-96 w-screen" />
+                                <div className=" bg bg-gray-500 h-96 w-screen px-28" />
                             </div>
-                            <div>
-                            <div className="mt-1">
-                                <input
-                                type="text"
-                                name="email"
-                                id="email"
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Send Message"
-                                />
-                            </div>
-                            </div>
+                            
+                            <MessageForm></MessageForm>
                             
                             {/* /End replace */}
                         </div>
