@@ -49,7 +49,7 @@ const MessageForm = ({ socket }) => {
         //         </button>
         //     </form>
         // </div>
-        <div className="bg-gray-100 sm:rounded-lg">
+        <div className=" w-full bg-gray-100 sm:rounded-lg">
             <div className="px-4 py-5 sm:p-6">
                 <form className="mt-1 font-medium flex items-center justify-around">
                     <div className="w-full">

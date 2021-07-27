@@ -4,7 +4,7 @@ import React  /*{ useEffect, useState }*/ from 'react';
 // import { QUERY_ME } from '../../utils/queries';
 
 
-const UserList = ({ data }) => {
+const UserList = ({ data, loading }) => {
     // const [socket, setSocket] = useState(false);
     // useEffect(() => {
     //     const newSocket = io(`http://${window.location.hostname}:8080`);
@@ -12,8 +12,11 @@ const UserList = ({ data }) => {
     //     return () => newSocket.close();
     // }, [setSocket]);
 
-    while (!data.me.UsersInRange) {
+    while (data?.me.UsersInRange.length === 0) {
         return <h1 className='p-1 text-red-500'>No active users!</h1>
+    }
+    if (loading) {
+        return <h1>Loading please wait...</h1>
     }
     return (
         <>
