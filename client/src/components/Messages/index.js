@@ -35,7 +35,9 @@ const Messages = ({ socket }) => {
     return (
         <div className="card mb-3">
             <div className="card-header">
-                <span className="text-light">Global Chat</span>
+                <span className="text-2xl p-3 block text-base text-center text-indigo-600 font-semibold tracking-wide uppercase">
+                    Global Chat
+                </span>
             </div>
             <div className="card-body">
                 {messages ?
@@ -44,12 +46,16 @@ const Messages = ({ socket }) => {
                         .map((message) => (
                             <div
                                 key={message.id}
-                                className="message-container"
+                                className="message-container flex justify-start"
                                 title={`Sent at ${new Date(message.time).toLocaleTimeString()}`}
                             >
-                                <span className="user">{message.user.name}:</span>
-                                <span className="message">{message.value}</span>
-                                <span className="date">{new Date(message.time).toLocaleTimeString()}</span>
+                                <div className="flex flex-col">
+                                    <div className="flex flex-row">
+                                        <span className="user pl-7 pr-4 font-medium text-indigo-600">{message.user.name}</span>
+                                        <span className="date font-medium text-indigo-600 text-opacity-50">Today at: {new Date(message.time).toLocaleTimeString()}</span>
+                                    </div>
+                                    <span className="message pl-7 font-md text-indigo-600">{message.value}</span>
+                                </div>
                             </div>
                         )) : `No Messages!`
                 }

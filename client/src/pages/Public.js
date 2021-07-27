@@ -35,12 +35,22 @@ const Public = () => {
     <main>
       <Header />
       <UserList />
-        {loggedIn && (<div className="flex-row justify-space-between">
-          <h1>**THIS IS A TEST ** Global Chat</h1>
-
-          {socket ? (<div><Messages socket={socket} />
-            <MessageForm socket={socket}>  </MessageForm></div>) : `Not connected!`}
-        </div>)}
+      {loggedIn && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen bg-gray-100">
+          {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
+          <div className="max-w-3xl mx-auto">
+            <ul>{socket ? (
+              <li><Messages socket={socket} /></li>
+            ) : `Not connected!`}
+            </ul>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            {socket ? (
+              <div><MessageForm socket={socket}></MessageForm></div>
+            ) : `Not connected!`}
+          </div>
+        </div>
+      )}
     </main>
   );
 };
