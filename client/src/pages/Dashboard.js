@@ -135,7 +135,7 @@ export default function Dashboard() {
                                 {/* <div className="py-4 px-0">
                                     <div className=" bg bg-gray-500 h-96" />
                                 </div> */}
-                                <Public className='h-screen overflow-auto'></Public>
+                                <Public data={data} className='h-screen overflow-auto'></Public>
                                 {/* /End replace */}
                             </div>
                         </div>

@@ -9,15 +9,27 @@ class ChatAPI {
 
     // METHODS
     static handleMessage(value, socket, io) {
+        console.log(value)
+        // const message = {
+        //     id: Date.now(),
+        //     user: {
+        //         id: Date.now(),
+        //         name: `TEST USER`
+        //     } || '',
+        //     value,
+        //     time: Date.now()
+        // };
+        // 
+
         const message = {
             id: Date.now(),
             user: {
-                id: Date.now(),
-                name: `TEST USER`
-            } || '',
-            value,
+                id: value.id,
+                name: value.username
+            },
+            value: value.value,
             time: Date.now()
-        };
+        }
         ChatAPI.sendMessage(message, io);
     }
     static sendMessage(message, io) {

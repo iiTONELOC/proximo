@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import { useMutation } from '@apollo/client';
 import { } from '../../utils/mutations';
 // import { QUERY_ME } from '../../utils/queries';
-const MessageForm = ({ socket }) => {
+const MessageForm = ({ socket, data }) => {
 
     const [value, setText] = useState('');
     const [characterCount, setCharacterCount] = useState(0);
@@ -16,11 +16,19 @@ const MessageForm = ({ socket }) => {
 
     const handleFormSubmit = async event => {
         event.preventDefault();
-        socket.emit('message', value);
-        socket.emit('messagePublic', value);
+        const userName = data.me.username;
+
+
+        const messageData = {
+            value: value,
+            username: userName,
+            id: data.me._id
+        }
+        socket.emit('message', messageData);
+        socket.emit('messagePublic', messageData);
         console.log(characterCount)
         try {
-            console.log(value)
+            // console.log(messageData)
             // clear form value
             setText('');
             setCharacterCount(0);

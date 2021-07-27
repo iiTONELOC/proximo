@@ -9,7 +9,7 @@ import Auth from '../../utils/auth';
 // import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
 
 
-const Public = () => {
+const Public = ({ data }) => {
     const [socket, setSocket] = useState(null);
     const loggedIn = Auth.loggedIn();
     useEffect(() => {
@@ -45,7 +45,7 @@ const Public = () => {
                     </div>
                     <div className="w-full ">
                         {socket ? (
-                            <div><MessageForm socket={socket}></MessageForm></div>
+                            <div><MessageForm socket={socket} data={data}></MessageForm></div>
                         ) : `Not connected!`}
                     </div>
                 </div>
