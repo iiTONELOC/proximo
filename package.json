@@ -9,7 +9,7 @@
     "install": "cd server && npm i && cd ../client && npm i && cd ../chat-server && npm i ",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm tail && npm run build",
-    "tail": "@tailwindcss/postcss7-compat@^2.2.6"
+    "tail": "npm i @tailwindcss/postcss7-compat@^2.2.6"
   },
   "repository": {
     "type": "git",
