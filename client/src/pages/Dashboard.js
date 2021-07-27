@@ -119,28 +119,31 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-row w-full flex-1 overflow-hidden">
+                <>
+                    {data ?
+                        <div className="flex flex-row w-full flex-1 overflow-hidden">
+                            <main className=" w-full min-h-screen justify-center">
+                                <div className="grid grid-cols-6 w-full bg-gray-600 h-screen flex-row">
+                                    {/* SIDE PANEL  */}
+                                    <div className="bg-gray-700  col-start-1 col-end-7 md:col-span-1 md:h-auto flex-row justify-center p-2">
+                                        <h1 className="text-2xl font-semibold text-gray-900 text-center">Proximo</h1>
+                                        {!data ? <p className='p-1'>No Active Users!</p> : loading ? <p>LOADING PLEASE WAIT</p> : <UserList key={'userList' + data.me.username} data={data} loading={loading}></UserList>}
 
-                    <main className=" w-full min-h-screen justify-center">
-                        <div className="grid grid-cols-6 w-full bg-gray-600 h-screen flex-row">
-                            {/* SIDE PANEL  */}
-                            <div className="bg-gray-700  col-start-1 col-end-7 md:col-span-1 md:h-auto flex-row justify-center p-2">
-                                <h1 className="text-2xl font-semibold text-gray-900 text-center">Proximo</h1>
-                                {!data ? <p className='p-1'>No Active Users!</p> : loading ? <p>LOADING PLEASE WAIT</p> : <UserList key={'userList' + data.me.username} data={data} loading={loading}></UserList>}
-
-                            </div>
-                            {/* MAIN CHAT AREA */}
-                            <div className="col-span-6 col-start-1 col-end-7  md:col-start-2 flex-row justify-center p-1 h-full">
-                                {/* Replace with your content */}
-                                {/* <div className="py-4 px-0">
+                                    </div>
+                                    {/* MAIN CHAT AREA */}
+                                    <div className="col-span-6 col-start-1 col-end-7  md:col-start-2 flex-row justify-center p-1 h-full">
+                                        {/* Replace with your content */}
+                                        {/* <div className="py-4 px-0">
                                     <div className=" bg bg-gray-500 h-96" />
                                 </div> */}
-                                <Public data={data} className='h-screen overflow-auto'></Public>
-                                {/* /End replace */}
-                            </div>
-                        </div>
-                    </main>
-                </div>
+                                        <Public data={data} className='h-screen overflow-auto'></Public>
+                                        {/* /End replace */}
+                                    </div>
+                                </div>
+                            </main>
+                        </div> : null}
+                </>
+
             </div>
         </>
     )

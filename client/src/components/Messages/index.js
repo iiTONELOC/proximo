@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-
+import CurrentUserCard from './currentUserCard';
+import OtherUsersCard from './otherMessageCard';
 
 const Messages = ({ socket, data }) => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
         const messageListener = (message) => {
-            console.log(message, "HERE")
+
             setMessages((prevMessages) => {
                 const newMessages = { ...prevMessages };
                 newMessages[message.id] = message;
@@ -32,7 +33,8 @@ const Messages = ({ socket, data }) => {
             socket.off('messagePublic', messageListener);
             socket.off('deleteMessage', deleteMessageListener);
         };
-    }, [socket]);
+    }, [socket, data]);
+
     return (
         <>
             <div className="w-full">
@@ -42,23 +44,14 @@ const Messages = ({ socket, data }) => {
                     </span>
                 </div>
                 <div className="w-full">
-                    {messages ?
+                    {messages && data ?
                         [...Object.values(messages)]
                             .sort((a, b) => a.time - b.time)
                             .map((message) => (
-                                <div
-                                    key={message.id}
-                                    className="message-container flex justify-start"
-                                    title={`Sent at ${new Date(message.time).toLocaleTimeString()}`}
-                                >
-                                    <div className="flex flex-col">
-                                        <div className="flex flex-row">
-                                            <span className="user pl-7 pr-4 font-medium text-white">{message.user.name}</span>
-                                            <span className="date font-medium text-white text-opacity-50">Today at: {new Date(message.time).toLocaleTimeString()}</span>
-                                        </div>
-                                        <span className="message pl-7 font-md text-white">{message.value}</span>
-                                    </div>
-                                </div>
+                                message.user.id === data.me._id ?
+                                    <> <CurrentUserCard key={message.id} message={message}></CurrentUserCard>
+                                    </>
+                                    : <><OtherUsersCard key={message.time} message={message}></OtherUsersCard></>
                             )) : `No Messages!`
                     }
                 </div>
@@ -68,3 +61,31 @@ const Messages = ({ socket, data }) => {
 };
 
 export default Messages;
+
+/* <div key={message.id}
+
+                                    className="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                                ><div className=" w-full flex-row justify-start">
+
+
+                                        <div className="w-1/6 flex-row justify-start">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                            </svg>
+                                            <span className='w-4/6'><p className=" italic text-md font-medium text-black">{message.user.name}</p></span>
+
+                                        </div>
+                                        <div className="ml-7 w-full">
+                                            <ul className='w-full'>
+                                                <li className="ml-5 text-sm text-black w-full">
+                                                    <p >{message.value}</p>
+                                                </li>
+                                                <li className='w-full text-sm text-gray-400 text-right pr-4'>
+                                                    {new Date(message.time).toLocaleTimeString()}
+                                                </li>
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                </div> */

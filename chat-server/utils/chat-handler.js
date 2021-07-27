@@ -9,7 +9,7 @@ class ChatAPI {
 
     // METHODS
     static handleMessage(value, socket, io) {
-        console.log(value)
+
         // const message = {
         //     id: Date.now(),
         //     user: {
