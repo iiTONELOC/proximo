@@ -1,5 +1,5 @@
 const express = require('../server/node_modules/express');
-const CHATPORT = process.env.CHATPORT || 8080
+const CHATPORT = process.env.PORT || 8080
 const socketIo = require('socket.io');
 const cors = require('cors');
 const app = express();
