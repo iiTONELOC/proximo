@@ -24,6 +24,13 @@ module.exports = {
         // get location data for user
         const { latitude, longitude } = await Location.user(args, context);
         //  create new user
+        // const { username, email, password } = { ...args }
+        // const online = true
+        // const ud = {
+        //     username,
+        //     email,
+        //     password,
+        // }
         const user = await User.create({ ...args });
         if (!user) {
             throw new Error('Unable to create user')
@@ -45,7 +52,11 @@ module.exports = {
         // update server with channel
 
         const updateServer = () => Server.findByIdAndUpdate(server._id,
-            { $push: { channels: channel._id } },
+            {
+                $push: {
+                    channels: channel._id,
+                }
+            },
             { new: true }).catch(e => console.error(e));
         try {
             updateServer();
@@ -56,7 +67,8 @@ module.exports = {
                     $push: {
                         location: { user_id: user._id, latitude: latitude, longitude: longitude },
                         servers: server._id,
-                        channels: channel._id
+                        channels: channel._id,
+                        online: true
                     }
                 },
                 { new: true }

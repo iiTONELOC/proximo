@@ -92,8 +92,18 @@ const resolvers = {
             if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
+            await User.findOneAndUpdate({ email }, { online: true });
+            // console.log(`Make Seven` + upYours);
             const token = signToken(user);
             return { token, user };
+        },
+        logout: async (parent, { user_id }, context) => {
+
+            const update1 = await User.findByIdAndUpdate(user_id, {
+                $pull: { online: true }
+            }, { new: true });
+            console.log(update1)
+            return update1
         },
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
