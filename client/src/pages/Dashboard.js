@@ -3,6 +3,7 @@ import UserList from '../components/UserList';
 import { io } from "socket.io-client";
 import MessageForm from '../components/MessageForm';
 import Messages from '../components/Messages';
+
 import Auth from '../utils/auth';
 
 import { Fragment, useState } from 'react'
@@ -37,6 +38,7 @@ const userNavigation = [
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
+
 
 export default function Example() {
     const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -123,7 +125,7 @@ export default function Example() {
 
                             {/* Profile dropdown */}
 
-                         {/* </div>
+                        {/* </div>
                     </div>
                 </div>  */} 
 
