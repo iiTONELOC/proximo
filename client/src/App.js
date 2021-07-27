@@ -39,7 +39,7 @@ function App() {
 
           <div className="w-full h-auto flex-row ">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" component={Dashboard} />
               <Route exact path="/test" component={Test} />
               <Route exact path="/dashboard" component={Dashboard} />
               <Route exact path="/public" component={Public} />

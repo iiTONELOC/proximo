@@ -1,90 +1,124 @@
 
-import { Redirect, useParams } from 'react-router-dom';
+// import { Redirect, useParams } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom';
 import UserList from '../components/UserList';
-
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
+import { LOGOUT_USER } from '../utils/mutations';
+import { QUERY_ME } from '../utils/queries';
+import Auth from '../utils/auth';
+import { useQuery, useMutation } from '@apollo/client';
+import Header from "../components/Header"
 import {
-    BellIcon,
     CalendarIcon,
     ChartBarIcon,
     FolderIcon,
     HomeIcon,
     InboxIcon,
-    MenuAlt2Icon,
     UsersIcon,
-    XIcon,
+    LogoutIcon,
 } from '@heroicons/react/outline'
-import { SearchIcon } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom';
-const navigation = [
-    { name: '', href: '#', icon: HomeIcon, current: true },
-    { name: '', href: '#', icon: UsersIcon, current: false },
-    { name: '', href: '#', icon: FolderIcon, current: false },
-    { name: '', href: '#', icon: CalendarIcon, current: false },
-    { name: '', href: '#', icon: InboxIcon, current: false },
-    { name: '', href: '#', icon: ChartBarIcon, current: false },
-]
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-    { name: 'Sign out', href: '#' },
-]
+
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
+// const { data } = Auth.getProfile();
+// const { _id } = data
+export default function Dashboard() {
+    const [logout] = useMutation(LOGOUT_USER);
+    const { error, data, loading } = useQuery(QUERY_ME);
 
-export default function Example() {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
+
+    // async function handleLogout(e) {
+    //     e.preventDefault();
+    //     console.log("here", _id)
+    //     const offline = await logout({ variables: { user_id: _id } });
+    //     if (offline) {
+    //         console.log('HERE')
+    //     }
+    //     if (error) {
+    //         console.log(error)
+    //     }
+
+    // }
+
+    const navigation = [
+        { name: '', href: '#', icon: HomeIcon, current: true },
+        { name: '', href: '#', icon: UsersIcon, current: false },
+        { name: '', href: '#', icon: FolderIcon, current: false },
+        { name: '', href: '#', icon: CalendarIcon, current: false },
+        { name: '', href: '#', icon: InboxIcon, current: false },
+
+    ];
 
     return (
-        <div className="h-screen flex overflow-hidden bg-gray-100">
+        <>
+            <Header></Header>
+            <div className="h-screen flex overflow-hidden bg-gray-100">
 
-            {/* Static sidebar for desktop */}
-            <div className="h-full md:flex md:flex-shrink-0">
-                <div className="h-full flex flex-col w-20 ">
-                    {/* Sidebar component, swap this element with another sidebar if you like */}
-                    <div className=" h-full flex flex-col ">
-                        <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-                            <Link to="/">
-                                <span className="sr-only">Proximo</span>
-                                <img
-                                    // INSERT ICON HERE
-                                    className="h-10 w-auto"
-                                    src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
-                                    alt=""
-                                />
-                            </Link>
-                        </div>
-                        <div className=" h-full flex-1 flex flex-col overflow-y-auto">
-                            <nav className="h-full px-2 py-4 bg-gray-800 space-y-1">
-                                {navigation.map((item) => (
+                {/* Static sidebar for desktop */}
+                <div className="h-full md:flex md:flex-shrink-0">
+                    <div className="h-full flex flex-col w-20 ">
+                        {/* Sidebar component, swap this element with another sidebar if you like */}
+                        <div className=" h-full flex flex-col ">
+                            <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+                                <Link to="/">
+                                    <span className="sr-only">Proximo</span>
+                                    <img
+                                        // INSERT ICON HERE
+                                        className="h-10 w-auto"
+                                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
+                                        alt=""
+                                    />
+                                </Link>
+                            </div>
+                            <div className=" h-full flex-1 flex flex-col overflow-y-auto">
+                                <nav className="h-full px-2 py-4 bg-gray-800 space-y-1">
+                                    {navigation.map((item, idx) => (
+                                        <a
+                                            key={idx}
+                                            href={item.href}
+                                            className={classNames(
+                                                item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
+                                            )}
+                                        >
+                                            <item.icon
+                                                className={classNames(
+                                                    item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                                                    'mr-3 flex-shrink-0 h-6 w-6'
+                                                )}
+                                                aria-hidden="true"
+                                            />
+                                            {item.name}
+                                        </a>
+                                    ))}
                                     <a
-                                        key={item.name}
-                                        href={item.href}
+                                        href="/"
+                                        // onClick={handleLogout}
                                         className={classNames(
-                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            'text-gray-300 hover:bg-gray-700 hover:text-white',
                                             'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                                         )}
                                     >
-                                        <item.icon
+                                        <LogoutIcon
                                             className={classNames(
-                                                item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                                                'text-gray-400 group-hover:text-gray-300',
                                                 'mr-3 flex-shrink-0 h-6 w-6'
                                             )}
                                             aria-hidden="true"
                                         />
-                                        {item.name}
+
                                     </a>
-                                ))}
-                            </nav>
+
+                                </nav>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div className="flex flex-col w-0 flex-1 overflow-hidden">
-                {/* <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <div className="flex flex-col w-0 flex-1 overflow-hidden">
+                    {/* <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
                     <button
                         className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
                         onClick={() => setSidebarOpen(true)}
@@ -120,26 +154,27 @@ export default function Example() {
 
                             {/* Profile dropdown */}
 
-                {/* </div>
+                    {/* </div>
                     </div>
                 </div> */}
 
-                <main className="flex flex-col  min-h-screen">
-                    <div className="bg-gray-600 flex flex-row">
-                        <div className="bg-gray-700 w-56 h-screen flex-none">
-                            <h1 className="text-2xl font-semibold text-gray-900 mx-14 my-5">Proximo</h1>
-                            <UserList></UserList>
-                        </div>
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                            {/* Replace with your content */}
-                            <div className="py-4 px-0">
-                                <div className=" bg bg-gray-500 h-96" />
+                    <main className="flex flex-col  min-h-screen">
+                        <div className="bg-gray-600 flex flex-row">
+                            <div className="bg-gray-700 w-56 h-screen flex-none">
+                                <h1 className="text-2xl font-semibold text-gray-900 mx-14 my-5">Proximo</h1>
+                                <UserList data={data}></UserList>
                             </div>
-                            {/* /End replace */}
+                            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                                {/* Replace with your content */}
+                                <div className="py-4 px-0">
+                                    <div className=" bg bg-gray-500 h-96" />
+                                </div>
+                                {/* /End replace */}
+                            </div>
                         </div>
-                    </div>
-                </main>
+                    </main>
+                </div>
             </div>
-        </div>
+        </>
     )
 }

@@ -11,6 +11,15 @@ mutation login($email: String!, $password: String!) {
     }
 }
 `;
+export const LOGOUT_USER = gql`
+mutation logout($user_id: ID!){
+  logout(user_id: $user_id){
+    _id
+    username
+    online
+  }
+}
+`;
 
 export const ADD_USER = gql`
 mutation addUser($username: String!, $email: String!, $password: String!) {

@@ -9,6 +9,7 @@ query {
         email
         profilePicture
         friendCount
+        online
             location{
                 latitude
                 longitude
@@ -44,6 +45,7 @@ query {
         username
       UsersInRange{
         username
+        online
         servers{
           _id
           ownerID
