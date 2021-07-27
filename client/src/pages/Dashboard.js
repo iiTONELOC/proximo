@@ -23,25 +23,27 @@ import {
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
-// const { data } = Auth.getProfile();
-// const { _id } = data
+
 export default function Dashboard() {
     const [logout] = useMutation(LOGOUT_USER);
     const { error, data, loading } = useQuery(QUERY_ME);
 
+    const _id = () => {
+        if (data !== undefined) return data.me._id
+    }
+    async function handleLogout(e) {
+        e.preventDefault();
+        // console.log("here", _id())
+        const offline = await logout({ variables: { user_id: _id() } });
+        if (offline) {
+            // console.log('HERE', offline)
+            Auth.logout()
+        }
+        if (error) {
+            console.log(error)
+        }
 
-    // async function handleLogout(e) {
-    //     e.preventDefault();
-    //     console.log("here", _id)
-    //     const offline = await logout({ variables: { user_id: _id } });
-    //     if (offline) {
-    //         console.log('HERE')
-    //     }
-    //     if (error) {
-    //         console.log(error)
-    //     }
-
-    // }
+    }
 
     const navigation = [
         { name: '', href: '#', icon: HomeIcon, current: true },
@@ -96,7 +98,7 @@ export default function Dashboard() {
                                     ))}
                                     <a
                                         href="/"
-                                        // onClick={handleLogout}
+                                        onClick={handleLogout}
                                         className={classNames(
                                             'text-gray-300 hover:bg-gray-700 hover:text-white',
                                             'group flex items-center px-2 py-2 text-sm font-medium rounded-md'

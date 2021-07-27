@@ -98,13 +98,12 @@ userSchema.virtual('UsersInRange').get(async function () {
     const howFar = Distance(latitude, longitude, lat2, long2)
     // less than 2 miles away, return
     if (howFar < 2) {
-      if (el.online[0] === true) {
+      if (el.online[0] === true && el !== undefined && el !== 'undefined') {
         return el
       }
     }
   });
-  console.log(d)
-  return d
+  return d.filter(el => el !== undefined)
 })
 
 const User = model('User', userSchema);
