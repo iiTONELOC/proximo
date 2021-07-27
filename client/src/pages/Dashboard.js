@@ -10,7 +10,6 @@ import { useQuery, useMutation } from '@apollo/client';
 import Header from "../components/Header"
 import {
     CalendarIcon,
-    ChartBarIcon,
     FolderIcon,
     HomeIcon,
     InboxIcon,
@@ -33,10 +32,8 @@ export default function Dashboard() {
     }
     async function handleLogout(e) {
         e.preventDefault();
-        // console.log("here", _id())
         const offline = await logout({ variables: { user_id: _id() } });
         if (offline) {
-            // console.log('HERE', offline)
             Auth.logout()
         }
         if (error) {
@@ -164,7 +161,8 @@ export default function Dashboard() {
                         <div className="bg-gray-600 flex flex-row">
                             <div className="bg-gray-700 w-56 h-screen flex-none">
                                 <h1 className="text-2xl font-semibold text-gray-900 mx-14 my-5">Proximo</h1>
-                                <UserList data={data}></UserList>
+                                {!data ? <p className='p-1'>No Active Users!</p> : <UserList key={'userList' + data.me.username} data={data}></UserList>}
+
                             </div>
                             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                                 {/* Replace with your content */}
