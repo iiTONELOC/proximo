@@ -35,9 +35,9 @@ const Public = () => {
 
         <>
             {loggedIn && (
-                <div className="w-full p-1">
+                <div className="w-full p-1 h-full ">
                     {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
-                    <div className="w-full ">
+                    <div className="w-full h-4/5 ">
                         <ul>{socket ? (
                             <li><Messages socket={socket} /></li>
                         ) : `Not connected!`}

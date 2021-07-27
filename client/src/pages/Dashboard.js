@@ -130,12 +130,12 @@ export default function Dashboard() {
 
                             </div>
                             {/* MAIN CHAT AREA */}
-                            <div className="col-span-6 col-start-1 col-end-7  md:col-start-2 flex-row justify-center p-1">
+                            <div className="col-span-6 col-start-1 col-end-7  md:col-start-2 flex-row justify-center p-1 h-full">
                                 {/* Replace with your content */}
                                 {/* <div className="py-4 px-0">
                                     <div className=" bg bg-gray-500 h-96" />
                                 </div> */}
-                                <Public className='w-full'></Public>
+                                <Public className='h-screen overflow-auto'></Public>
                                 {/* /End replace */}
                             </div>
                         </div>
