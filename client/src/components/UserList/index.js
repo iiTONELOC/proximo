@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React  /*{ useEffect, useState }*/ from 'react';
 // import { useQuery, useMutation } from '@apollo/client';
-import { io, socket } from "socket.io-client";
+// import { io, socket } from "socket.io-client";
 // import { QUERY_ME } from '../../utils/queries';
 
 
 const UserList = ({ data }) => {
-    const [socket, setSocket] = useState(false);
-    useEffect(() => {
-        const newSocket = io(`http://${window.location.hostname}:8080`);
-        setSocket(newSocket);
-        return () => newSocket.close();
-    }, [setSocket]);
+    // const [socket, setSocket] = useState(false);
+    // useEffect(() => {
+    //     const newSocket = io(`http://${window.location.hostname}:8080`);
+    //     setSocket(newSocket);
+    //     return () => newSocket.close();
+    // }, [setSocket]);
 
     while (!data.me.UsersInRange) {
         return <h1 className='p-1 text-red-500'>No active users!</h1>
@@ -27,7 +27,7 @@ const UserList = ({ data }) => {
                             </div>
                             <div key={el + idx} className="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
                                 <div key={el.username + idx} className="flex-1 px-4 py-2 text-sm truncate">
-                                    <a key={`link` + idx} href="#" className="text-gray-900 font-medium hover:text-gray-600">{el.username}</a>
+                                    <a key={`link` + idx} href="/" className="text-gray-900 font-medium hover:text-gray-600">{el.username}</a>
                                     <p key={el.online[0] + el.username} className="text-gray-500">{el.online[0] ? `Online` : `Offline`}</p>
                                 </div>
                                 <div key={idx + idx} className="flex-shrink-0 pr-2">

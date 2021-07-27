@@ -50,6 +50,9 @@ export default function Dashboard() {
         { name: '', href: '#', icon: InboxIcon, current: false },
 
     ];
+    if (loading) {
+        return <h1>Loading please wait...</h1>
+    }
 
     return (
         <>

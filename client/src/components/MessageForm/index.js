@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+// import { useMutation } from '@apollo/client';
 import { } from '../../utils/mutations';
-import { QUERY_ME } from '../../utils/queries';
+// import { QUERY_ME } from '../../utils/queries';
 const MessageForm = ({ socket }) => {
 
     const [value, setText] = useState('');
@@ -18,6 +18,7 @@ const MessageForm = ({ socket }) => {
         event.preventDefault();
         socket.emit('message', value);
         socket.emit('messagePublic', value);
+        console.log(characterCount)
         try {
             console.log(value)
             // clear form value
