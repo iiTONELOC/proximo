@@ -1,133 +1,234 @@
-const { User } = require('../models');
+const { User, ChatRoom, Server, Message } = require('../models');
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
+const {
+    createNewUser,
+    // userStatus
+    // del user
+    // edit user
+    SendMessage,
+    // privateMsg
+    //  ? edit msg
+    DeleteMessage,
+    joinChannel,
+    // edit channel (ie name, status to private/public)
+    leaveChannel,
+    createServer,
+    createChannel,
+    // edit server (ie name)
+    // delete server
+} = require('../utils/chatUtils/ChatUtility');
 const Location = require('../utils/Location');
+const { aggregate } = require('../models/Servers');
+
 const resolvers = {
     Query: {
         me: async (parent, args, context) => {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id })
                     .select('-__v -password')
-                    .populate('comments')
-                    .populate('location')
-                    .populate('friends');
+                    .populate('friends')
+                    .populate({ path: 'servers', populate: ['channels', 'messages', 'members'] })
+                    .populate({ path: 'channels', populate: 'members' })
+
 
                 return userData;
             }
 
             throw new AuthenticationError('Not logged in');
         },
-        // comments: async (parent, { username }) => {
-        //     const params = username ? { username } : {};
-        //     return Comment.find(params).sort({ createdAt: -1 });
-        // },
-        // comment: async (parent, { _id }) => {
-        //     return Comment.findOne({ _id });
-        // },
-
+        // find all servers or a server, depending on query:
+        servers: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return Server.find(params)
+                .populate({ path: 'channels', populate: ['messages', 'members'] })
+                // .populate({ path: 'channels', populate: 'members', })
+                ;
+        },
+        // find all channels or a single channel
+        chatRooms: async (parent, { _id }) => {
+            const params = _id ? { _id } : {};
+            return ChatRoom.find(params)
+                .populate({ path: 'servers', populate: 'channels' })
+                .populate('messages')
+                .populate('members')
+                ;
+        },
 
         // get all users
-        users: async () => {
-            return User.find()
+        // get user by username
+        // get user by _id
+        users: async (parent, { _id, username }) => {
+            const params = _id ? { _id } : username ? { username } : {};
+            return User.find(params)
                 .select('-__v -password')
-                .populate('comments')
-                .populate('location')
-                .populate('friends');
+                .populate('friends')
+                .populate({ path: 'servers', populate: ['channels', 'members'] })
+                .populate({ path: 'channels', populate: 'members' })
         },
-        // get a user by username
-        // user: async (parent, { username }) => {
-        //     return User.findOne({ username })
-        //         .select('-__v -password')
-        //         .populate('comments')
-        //         .populate('location')
-        //         .populate('friends');
-        // },
+        allMessages: async (parent, args, context) => {
+            return await Message.find({}).populate('channels');
+        },
+
     }, Mutation: {
         addUser: async (parent, args, context) => {
-            // grabs the location either from browser or clients ip address
-            const { latitude, longitude } = await Location.user(args, context);
-            // create the user first then we update location
-            const user = await User.create({ ...args });
-
             try {
-                // grab user by id
-                const updatedUser = await User.findByIdAndUpdate(
-                    { _id: user._id },
-                    { $push: { location: { user_id: user._id, latitude: latitude, longitude: longitude } } },
-                    { new: true }
-                );
-                // sign user and return updated info
-                const token = signToken(updatedUser);
-                return { token, user };
-            } catch (error) {
-                // in the event there is an error,
-                // return all data minus location data
-                console.error(error);
+                // custom method 
+                // located in utils/chatUtils/ChatUtility.js
+                const user = await createNewUser(args, context);
                 const token = signToken(user);
                 return { token, user };
+            } catch (error) {
+                console.error(error)
             }
 
         },
         login: async (parent, { email, password }) => {
-
             const user = await User.findOne({ email });
-
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
             const correctPw = await user.isCorrectPassword(password);
-
             if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
+            await User.findOneAndUpdate({ email }, { online: true });
+            // console.log(`Make Seven` + upYours);
             const token = signToken(user);
             return { token, user };
         },
-        // addComment: async (parent, args, context) => {
-        //     if (context.user) {
-        //         const comment = await Comment.create({ ...args, username: context.user.username });
+        logout: async (parent, { user_id }, context) => {
 
-        //         await User.findByIdAndUpdate(
-        //             { _id: context.user._id },
-        //             { $push: { comments: Comment._id } },
-        //             { new: true }
-        //         );
-
-        //         return comment;
-        //     }
-
-        //     throw new AuthenticationError('You need to be logged in!');
-        // },
-        // addReaction: async (parent, { commentId, reactionBody }, context) => {
-        //     if (context.user) {
-        //         const updatedComment = await Comment.findOneAndUpdate(
-        //             { _id: commentId },
-        //             { $push: { reactions: { reactionBody, username: context.user.username } } },
-        //             { new: true, runValidators: true }
-        //         );
-
-        //         return updatedComment;
-        //     }
-
-        //     throw new AuthenticationError('You need to be logged in!');
-        // },
+            const update1 = await User.findByIdAndUpdate(user_id, {
+                $pull: { online: true }
+            }, { new: true });
+            return update1
+        },
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
+                return await User.findOneAndUpdate(
                     { _id: context.user._id },
                     { $addToSet: { friends: friendId } },
                     { new: true }
-                ).populate('friends');
-
-                return updatedUser;
+                ).populate('friends'); W
             }
 
             throw new AuthenticationError('You need to be logged in!');
+        },
+        sendMessage: async (parent, args, context) => {
+            // EXAMPLE DATA
+            //  expects =>
+            // {
+            //     "text": "TEST MESSAGE",
+            //         "username": "Tester2",
+            //             "channel": "60fc6a483fd0913968a723cc"
+            // }
+
+            // ADD AUTH BACK IN! REMOVED FOR TESTING
+            // COMMENTED OUT BELOW
+            // PLACE THIS TRY/CATCH BLOCK INTO if statement
+            return await SendMessage(args);
+
+            // if (context.user) {
+            //     console.log(messageInput)
+            // }
+
+            // throw new AuthenticationError('You need to be logged in!');
+        },
+        deleteAMessage: async (parent, args, context) => {
+
+            return await DeleteMessage(args);
+        },
+        createAChannel: async (parent, args, context) => {
+            // createChannel is used when creating a new user, package data to use that existing f(n)
+            // grab location data
+
+            const { latitude, longitude } = await Location.user(args, context);
+            // requires ID for TESTING ONLY PLACE A USER ID FROM YOUR DB AFTER THE OR OPERATOR
+            const user = {
+                _id: context?.user?._id || "60fe129701b37e35d4da18e9",
+            }
+            const { name, server } = { ...args };
+            const private = args.private
+            const d = await createChannel(user, latitude, longitude, server, name, !private ? false : private);
+        },
+        joinAChannel: async (parent, args, context) => {
+            // EXPECTS =>
+            // {
+            //     "user": "60fc803489194b280c993e7b",
+            //         "channel": "60fc803489194b280c993e80",
+            //             "privateChannel": false
+            // }
+            const { user, channel } = { ...args }
+            const privateChannel = args.privateChannel
+            try {
+                return await joinChannel(user, channel, !privateChannel ? false : privateChannel);
+            } catch (error) {
+                console.error(error)
+            }
+            // ADD AUTH BACK IN! REMOVED FOR TESTING
+            // COMMENTED OUT BELOW
+            // PLACE THIS TRY/CATCH BLOCK INTO if statement
+
+            // if (context.user) {
+            //     console.log(messageInput)
+            // }
+
+            // throw new AuthenticationError('You need to be logged in!');
+        },
+        leaveAChannel: async (parent, args, context) => {
+            // EXPECTS =>
+            // {
+            //     "user": "60fc803489194b280c993e7b",
+            //         "channel": "60fc803489194b280c993e80",
+            // }
+            console.log(args)
+            try {
+                return await leaveChannel(args);
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        createNewServer: async (parent, args, context) => {
+            // get location data for user
+            const { latitude, longitude } = await Location.user(args, context);
+            // package data to use the createServer method that runs when signing up
+            const user = {
+                id: args.ownerID,
+                _id: args.ownerID
+            }
+            // create the server
+            const name = args.name
+            const create = await createServer(user, name, latitude, longitude);
+            // update user
+            if (!create) {
+                throw new Error('Unable to create the server! :\n')
+            } else {
+                const updateUser = await User.findByIdAndUpdate(args.ownerID, {
+                    $push: { servers: create._id }
+                }, { new: true })
+                    .select('-__v -password')
+                    .populate('friends')
+                    .populate({ path: 'servers', populate: ['channels', 'messages', 'members'] })
+                    .populate({ path: 'channels', populate: 'members' });
+
+                if (updateUser) {
+                    return create
+                } else {
+                    // something went wrong, delete server and try again
+                    await Server.findByIdAndDelete(create._id); throw new Error('Error Updating User, Canceled server')
+                }
+
+            }
         }
+        // COMMENTED OUT BELOW
+        // PLACE THIS TRY/CATCH BLOCK INTO if statement
 
+        // if (context.user) {
+        //     console.log(messageInput)
+        // }
 
+        // throw new AuthenticationError('You need to be logged in!');
     },
 
 };

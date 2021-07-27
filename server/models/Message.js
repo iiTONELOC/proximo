@@ -5,7 +5,10 @@ const ChatRoom = require('./ChatRoom');
 const messageSchema = new Schema(
 
   {
-    channel: [ChatRoom.schema],
+    channels: [{
+      type: Schema.Types.ObjectId,
+      ref: 'ChatRoom'
+    }],
     text: {
       type: String,
       required: 'Messages must have content!',

@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const bcrypt = require('bcrypt');
 const locationSchema = require('./Location');
 const Message = require('./Message');
-const ChatRoom = require('./ChatRoom');
+const Distance = require('../utils/Distance');
 const userSchema = new Schema(
   {
     username: {
@@ -22,6 +22,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 5
     },
+    profilePicture: {
+      type: String,
+      required: false,
+      default: null
+    },
     messages: [Message.schema],
     servers: [{
       type: Schema.Types.ObjectId,
@@ -37,6 +42,11 @@ const userSchema = new Schema(
         ref: 'User'
       }
     ],
+    online: [{
+      type: Boolean,
+      required: true,
+      default: false
+    }],
     location: [locationSchema],
   },
   {
@@ -65,6 +75,38 @@ userSchema.virtual('friendCount').get(function () {
   return this.friends.length;
 });
 
+userSchema.virtual('UsersInRange').get(async function () {
+
+  // query all active users return an array of users within 2 miles for now, change distance later
+  const Users = await User.find().select('-__v -password')
+    .populate('friends')
+    .populate({ path: 'servers', populate: ['channels', 'members'], })
+    ;
+  // filter out currentUser
+  const AllUsers = Users.filter(el => el._id.toString() != this._id.toString());
+
+  const [data] = this.location
+  //  lat-lon 1
+  const { latitude, longitude } = data;
+  // map over users
+  const d = AllUsers.map((el) => {
+    const [data2] = el.location;
+    // lat-lon 2
+    const lat2 = data2.latitude;
+    const long2 = data2.longitude;
+    // calculate distance between users
+    const howFar = Distance(latitude, longitude, lat2, long2)
+    // less than 2 miles away, return
+    if (howFar < 2) {
+      if (el.online[0] === true && el !== undefined && el !== 'undefined') {
+        return el
+      }
+    }
+  });
+  return d.filter(el => el !== undefined)
+})
+
 const User = model('User', userSchema);
 
 module.exports = User;
+
