@@ -13,11 +13,11 @@ export default function Home() {
     <section className='w-full h-4/6 flex-row justify-center'>
       <Header />
       <div className="w-full relative bg-gray-800">
-        <div className="h-56 bg-indigo-600 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
+        <div className="h-56 bg-gray-600 sm:h-72 md:absolute md:left-0 md:h-full md:w-1/2">
           <img
             className="w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1525130413817-d45c1d127c42?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1920&q=60&blend=6366F1&sat=-100&blend-mode=multiply"
-            alt=""
+            src="https://unsplash.com/photos/OW5KP_Pj85Q"
+            alt="three women sitting on a sofa with a MacBook"
           />
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
