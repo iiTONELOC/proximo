@@ -48,8 +48,8 @@ db.once('open', () => {
 
   });
 });
-try {
-  ChatServer()
-} catch (error) {
-  console.error(`Error occurred while starting the chat server`, error)
-}
+// try {
+//   ChatServer()
+// } catch (error) {
+//   console.error(`Error occurred while starting the chat server`, error)
+// }
