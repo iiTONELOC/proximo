@@ -12,6 +12,7 @@ type User {
     channels: [ChatRoom]
     profilePicture: String
     UsersInRange: [User]
+    online: [Boolean]
 }
 type Location {
     user_id: ID
@@ -47,7 +48,6 @@ type Server{
     channels: [ChatRoom]
     location: [Location]
     createdAt: String
-    
 }
 type Query {
     me: User
@@ -66,11 +66,11 @@ type Mutation {
     leaveAChannel(user: ID!, channel: ID!):ChatRoom
     createAChannel(server: ID!, name: String!, private: Boolean): ChatRoom
     createNewServer(name: String!, ownerID: ID!): Server
+    logout(user_id:ID!):User
 }
 type Auth {
     token: ID!
     user: User
-    
 }
 `
 

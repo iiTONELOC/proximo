@@ -42,6 +42,11 @@ const userSchema = new Schema(
         ref: 'User'
       }
     ],
+    online: [{
+      type: Boolean,
+      required: true,
+      default: false
+    }],
     location: [locationSchema],
   },
   {
@@ -84,7 +89,7 @@ userSchema.virtual('UsersInRange').get(async function () {
   //  lat-lon 1
   const { latitude, longitude } = data;
   // map over users
-  return AllUsers.map((el) => {
+  const d = AllUsers.map((el) => {
     const [data2] = el.location;
     // lat-lon 2
     const lat2 = data2.latitude;
@@ -93,11 +98,15 @@ userSchema.virtual('UsersInRange').get(async function () {
     const howFar = Distance(latitude, longitude, lat2, long2)
     // less than 2 miles away, return
     if (howFar < 2) {
-      return el
+      if (el.online[0] === true && el !== undefined && el !== 'undefined') {
+        return el
+      }
     }
-  })
+  });
+  return d.filter(el => el !== undefined)
 })
 
 const User = model('User', userSchema);
 
 module.exports = User;
+

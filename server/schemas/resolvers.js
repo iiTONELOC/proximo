@@ -92,8 +92,17 @@ const resolvers = {
             if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
+            await User.findOneAndUpdate({ email }, { online: true });
+            // console.log(`Make Seven` + upYours);
             const token = signToken(user);
             return { token, user };
+        },
+        logout: async (parent, { user_id }, context) => {
+
+            const update1 = await User.findByIdAndUpdate(user_id, {
+                $pull: { online: true }
+            }, { new: true });
+            return update1
         },
         addFriend: async (parent, { friendId }, context) => {
             if (context.user) {
@@ -133,13 +142,15 @@ const resolvers = {
         createAChannel: async (parent, args, context) => {
             // createChannel is used when creating a new user, package data to use that existing f(n)
             // grab location data
-            console.log(args)
+
             const { latitude, longitude } = await Location.user(args, context);
             // requires ID for TESTING ONLY PLACE A USER ID FROM YOUR DB AFTER THE OR OPERATOR
             const user = {
                 _id: context?.user?._id || "60fe129701b37e35d4da18e9",
             }
-            const d = await createChannel(user, latitude, longitude, args.server, args?.name, args?.private)
+            const { name, server } = { ...args };
+            const private = args.private
+            const d = await createChannel(user, latitude, longitude, server, name, !private ? false : private);
         },
         joinAChannel: async (parent, args, context) => {
             // EXPECTS =>
@@ -200,7 +211,7 @@ const resolvers = {
                     .populate('friends')
                     .populate({ path: 'servers', populate: ['channels', 'messages', 'members'] })
                     .populate({ path: 'channels', populate: 'members' });
-                console.log(updateUser)
+
                 if (updateUser) {
                     return create
                 } else {

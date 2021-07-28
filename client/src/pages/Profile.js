@@ -1,16 +1,21 @@
 import React from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery /*, useMutation*/ } from '@apollo/client';
 import { QUERY_USERS, QUERY_ME } from '../utils/queries';
+<<<<<<< HEAD
 import { ADD_FRIEND } from '../utils/mutations';
 
+=======
+// import { ADD_FRIEND } from '../utils/mutations';
+// import ThoughtList from '../components/ThoughtList';
+>>>>>>> 77f8979206d9b5efa5a832ac6e05eb1ba2f100d3
 import FriendList from '../components/FriendList';
 
 import Auth from '../utils/auth';
 
 const Profile = () => {
 
-  const [addFriend] = useMutation(ADD_FRIEND);
+  // const [addFriend] = useMutation(ADD_FRIEND);
   const { username: userParam } = useParams();
 
 
@@ -22,6 +27,7 @@ const Profile = () => {
   console.log(data)
 
   const user = data?.me || data?.user || {};
+<<<<<<< HEAD
   const handleClick = async () => {
     try {
       await addFriend({
@@ -33,6 +39,19 @@ const Profile = () => {
   };
 
  console.log(userParam)
+=======
+  // const handleClick = async () => {
+  //   try {
+  //     await addFriend({
+  //       variables: { id: user._id }
+  //     });
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
+
+  console.log(userParam)
+>>>>>>> 77f8979206d9b5efa5a832ac6e05eb1ba2f100d3
 
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Redirect to="/profile" />;
