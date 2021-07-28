@@ -32,12 +32,12 @@ app.use(function (req, res) {
 
 // Serve up static assets
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+// app.use(express.static(path.join(__dirname, '../client/build')));
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
 
 
 db.once('open', () => {
@@ -48,8 +48,8 @@ db.once('open', () => {
 
   });
 });
-// try {
-//   ChatServer()
-// } catch (error) {
-//   console.error(`Error occurred while starting the chat server`, error)
-// }
+try {
+  ChatServer()
+} catch (error) {
+  console.error(`Error occurred while starting the chat server`, error)
+}
