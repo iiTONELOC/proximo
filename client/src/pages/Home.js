@@ -22,12 +22,10 @@ export default function Home() {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="md:ml-auto md:w-1/2 md:pl-10">
-            <h2 className="text-base font-semibold uppercase tracking-wider text-gray-300">Award winning support</h2>
-            <p className="mt-2 text-white text-3xl font-extrabold tracking-tight sm:text-4xl">We’re here to help</p>
+            <h2 className="text-base font-semibold uppercase tracking-wider text-gray-300">The Best Local Chat App</h2>
+            <p className="mt-2 text-white text-3xl font-extrabold tracking-tight sm:text-4xl">Say 'Hello' to those around you</p>
             <p className="mt-3 text-lg text-gray-300">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, egestas tempus tellus etiam sed. Quam a
-              scelerisque amet ullamcorper eu enim et fermentum, augue. Aliquet amet volutpat quisque ut interdum
-              tincidunt duis.
+              Proximo is a chat app that lets you chat with your friends, school mates, coworkers, and even family. With the use of geofencing, you can see what other Proximo members are around you.
             </p>
             <div className="mt-8">
               <div className="inline-flex rounded-md shadow">
@@ -39,13 +37,13 @@ export default function Home() {
                 </Link>
                   <Link
                     to="/signup"
-                    className="ml-4 inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
+                    className="ml-4 inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-gray-50"
                   >
                     Sign up
                   </Link> </> : <><a
                     href="/"
                     onClick={logout}
-                    className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-indigo-600 hover:bg-indigo-50"
+                    className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-gray-50"
                   >Logout</a> </>}
               </div>
             </div>

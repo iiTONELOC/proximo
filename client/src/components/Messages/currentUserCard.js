@@ -6,7 +6,7 @@ export default function CurrentUserCard({ message }) {
         <>
             <div key={message.value} className="flex justify-end mb-4">
                 <div
-                    className="mr-2 py-3 px-4 bg-indigo-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white shadow-inner">
+                    className="mr-2 py-3 px-4 bg-gray-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white shadow-inner">
                     {message.value}
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
