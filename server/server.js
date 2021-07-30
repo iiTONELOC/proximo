@@ -37,9 +37,10 @@ app.use(cors())
 app.use(requestIp.mw())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(function (req, res) {
+app.use(function (req, res, next) {
   const ip = req.clientIp;
-  return ip
+  res.send(ip);
+  next()
 });
 
 // Serve up static assets
