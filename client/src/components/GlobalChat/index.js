@@ -13,7 +13,7 @@ const Public = ({ data }) => {
     const [socket, setSocket] = useState(null);
     const loggedIn = Auth.loggedIn();
     useEffect(() => {
-        const newSocket = io(`http://${window.location.hostname}:3001`);
+        const newSocket = io(`http://${window.location.hostname}`);
         setSocket(newSocket);
         return () => newSocket.close();
     }, [setSocket]);
