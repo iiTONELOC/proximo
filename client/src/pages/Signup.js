@@ -46,13 +46,11 @@ export default function Example() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
-      console.log({ ...formState }, "STATE")
       // execute addUser mutation and pass in variable data from form
       const { data } = await addUser({
 
         variables: { ...formState }
       });
-      console.log(data, "DATA");
 
       Auth.login(data.addUser.token);
     } catch (e) {

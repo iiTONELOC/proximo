@@ -6,6 +6,8 @@ class Location {
     static async get(req) {
 
         const client = req.ip
+        console.log(req, "REQ")
+        console.log(client, 'CLIENT')
         if (client === '::1' || client === '::ffff:127.0.0.1') {
             try {
                 const response = await extIP.get().then(ip => {
