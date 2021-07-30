@@ -6,9 +6,8 @@ class Location {
     static async get(req) {
 
         const client = req.ip
-        console.log(req, "REQ")
-        console.log(client, 'CLIENT')
-        if (client === '::1' || client === '::ffff:127.0.0.1') {
+
+        if (client === '::1' || client === '::ffff:127.0.0.1' /*|| client.match(/^([::ffff])$/)*/) {
             try {
                 const response = await extIP.get().then(ip => {
                     const locationData = geoip.lookup(ip)
@@ -32,6 +31,7 @@ class Location {
             }
         } else {
             const ip = geoip.lookup(client);
+            console.log(ip)
             const { city, state } = ip
             const data = {
                 city: city,
