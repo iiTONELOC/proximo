@@ -18,7 +18,7 @@ export default function OtherUsersCard({ message }) {
                     className="w-15 px-5 py-1 h-8 flex flex-wrap justify-start text-sm text-start font-medium   text-gray-400 rounded-full">
                     {new Date(message.time).toLocaleTimeString()}
                 </span>
-            </div>`
+            </div>
         </>
     )
 }
