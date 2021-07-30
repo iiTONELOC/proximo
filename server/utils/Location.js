@@ -1,10 +1,11 @@
 const extIP = require("ext-ip")();
 const geoip = require('geoip-lite');
-
+const requestIp = require('request-ip');
 // GRABS CORDS BASED OFF IP
 class Location {
     static async get(req) {
-
+        const clientIp = requestIp.getClientIp(req);
+        console.log('LOCATION', clientIp)
         const client = req.ip
 
         if (client === '::1' || client === '::ffff:127.0.0.1' /*|| client.match(/^([::ffff])$/)*/) {

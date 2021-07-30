@@ -11,7 +11,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { authMiddleware } = require('./utils/auth');
 const requestIp = require('request-ip');
 const { typeDefs, resolvers } = require('./schemas');
-const { networkInterfaces } = require('os');
+
 
 
 // create a new Apollo server and pass in our schema data
@@ -21,9 +21,11 @@ const server = new ApolloServer({
   resolvers,
   context:
     authMiddleware,
-  ip: (req, res, next) => {
+  ip: (req, res) => {
     const clientIp = requestIp.getClientIp(req);
-    next()
+    console.log('SERVER', clientIp)
+    return clientIp
+
   }
 });
 const chatServer = require('http').createServer(app);
@@ -38,11 +40,11 @@ app.use(cors())
 app.use(requestIp.mw())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(function (req, res, next) {
-//   const ip = req.clientIp;
-//   res.send(ip);
-//   next()
-// });
+app.use(function (req, res, next) {
+  const ip = req.clientIp;
+  res.end(ip);
+  next()
+});
 
 // Serve up static assets
 
