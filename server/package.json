@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@stdlib/math-base-special-deg2rad": "^0.0.6",
+    "socket.io": "^4.1.3",
     "apollo-server-express": "2.25.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
