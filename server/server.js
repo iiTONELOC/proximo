@@ -15,6 +15,7 @@ const { typeDefs, resolvers } = require('./schemas');
 
 // create a new Apollo server and pass in our schema data
 const server = new ApolloServer({
+  uri: "http://localhost:3000/graphql",
   typeDefs,
   resolvers,
   context:
@@ -43,12 +44,12 @@ app.use(function (req, res) {
 
 // Serve up static assets
 
-app.use(express.static(path.join(__dirname, '../client/build')));
+// app.use(express.static(path.join(__dirname, '../client/build')));
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
 
 
 db.once('open', () => {
