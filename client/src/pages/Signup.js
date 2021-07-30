@@ -48,8 +48,11 @@ export default function Example() {
     try {
       // execute addUser mutation and pass in variable data from form
       const { data } = await addUser({
+
         variables: { ...formState }
       });
+      console.log(data, "DATA");
+      console.log(...formState, "STATE")
       Auth.login(data.addUser.token);
     } catch (e) {
       console.log(e);
