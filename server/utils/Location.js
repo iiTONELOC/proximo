@@ -31,9 +31,7 @@ class Location {
             }
         } else {
             const clientIp = requestIp.getClientIp(req);
-            console.log('LOCATION', clientIp)
             const ip = geoip.lookup(clientIp);
-            console.log(ip, "WHERE I WANT TO SEE")
             const { city, state } = ip
             const data = {
                 city: city,

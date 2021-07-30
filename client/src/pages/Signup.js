@@ -12,11 +12,6 @@ export default function Example() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [signUpError, setAlert] = useState('')
-  // update state based on form input changes
-
-  // useEffect(() => {
-
-  // })
 
   const handleChange = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });

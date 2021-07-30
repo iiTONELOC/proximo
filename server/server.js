@@ -13,8 +13,6 @@ const requestIp = require('request-ip');
 const { typeDefs, resolvers } = require('./schemas');
 
 
-
-// create a new Apollo server and pass in our schema data
 const server = new ApolloServer({
   uri: "http://localhost:3000/graphql",
   typeDefs,
@@ -40,34 +38,15 @@ app.use(cors())
 app.use(requestIp.mw())
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-// app.use(function (req, res, next) {
-//   const ip = req.clientIp;
-//   next(ip)
-// });
-
-// Serve up static assets
-
 app.use(express.static(path.join(__dirname, '../client/build')));
-
-
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
-
-
 db.once('open', () => {
   chatServer.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
-    // log where we can go to test our GQL API
     console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
     console.log(`Chat Server connected @ http://localhost:${PORT}\nOr on your network: http://${NetAddress()}:${PORT} `)
-    // GLOBAL CHAT
     ChatAPI.globalChat(io);
-
   });
 });
-// try {
-//   ChatServer()
-// } catch (error) {
-//   console.error(`Error occurred while starting the chat server`, error)
-// }
