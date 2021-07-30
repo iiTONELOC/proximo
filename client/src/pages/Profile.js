@@ -1,16 +1,16 @@
 import React from 'react';
 import { Redirect, useParams } from 'react-router-dom';
-import { useQuery /*, useMutation*/ } from '@apollo/client';
+import { useQuery , useMutation } from '@apollo/client';
 import { QUERY_USERS, QUERY_ME } from '../utils/queries';
-// import { ADD_FRIEND } from '../utils/mutations';
-// import ThoughtList from '../components/ThoughtList';
+import { ADD_FRIEND } from '../utils/mutations';
+
 import FriendList from '../components/FriendList';
-//mport ThoughtForm from '../components/ThoughtForm';
+
 import Auth from '../utils/auth';
 
 const Profile = () => {
 
-  // const [addFriend] = useMutation(ADD_FRIEND);
+  const [addFriend] = useMutation(ADD_FRIEND);
   const { username: userParam } = useParams();
 
 
@@ -22,17 +22,17 @@ const Profile = () => {
   console.log(data)
 
   const user = data?.me || data?.user || {};
-  // const handleClick = async () => {
-  //   try {
-  //     await addFriend({
-  //       variables: { id: user._id }
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
+  const handleClick = async () => {
+    try {
+      await addFriend({
+        variables: { id: user._id }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-  console.log(userParam)
+ console.log(userParam)
 
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
     return <Redirect to="/profile" />;
@@ -57,11 +57,11 @@ const Profile = () => {
 
         </h2>
 
-        {/* {userParam && (
+        { {userParam } (
           <button className="btn ml-auto" onClick={handleClick}>
             Add Friend
           </button>
-        )} */}
+        )}
       </div>
 
       <div className="flex-row justify-space-between mb-3">
