@@ -4,8 +4,7 @@ const requestIp = require('request-ip');
 // GRABS CORDS BASED OFF IP
 class Location {
     static async get(req) {
-        const clientIp = requestIp.getClientIp(req);
-        console.log('LOCATION', clientIp)
+
         const client = req.ip
 
         if (client === '::1' || client === '::ffff:127.0.0.1' /*|| client.match(/^([::ffff])$/)*/) {
@@ -31,7 +30,9 @@ class Location {
                 console.error(error)
             }
         } else {
-            const ip = geoip.lookup(client);
+            const clientIp = requestIp.getClientIp(req);
+            console.log('LOCATION', clientIp)
+            const ip = geoip.lookup(clientIp);
             console.log(ip, "WHERE I WANT TO SEE")
             const { city, state } = ip
             const data = {
