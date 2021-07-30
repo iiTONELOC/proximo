@@ -32,7 +32,7 @@ class Location {
             }
         } else {
             const ip = geoip.lookup(client);
-            console.log(ip)
+            console.log(ip, "WHERE I WANT TO SEE")
             const { city, state } = ip
             const data = {
                 city: city,
