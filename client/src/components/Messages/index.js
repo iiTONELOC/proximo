@@ -40,15 +40,14 @@ const Messages = ({ socket, data }) => {
                         Global Chat
                     </span>
                 </div>
-                <div className="w-full">
+                <div className="w-full" >
                     {messages && data ?
                         [...Object.values(messages)]
                             .sort((a, b) => a.time - b.time)
                             .map((message) => (
                                 message.user.id === data.me._id ?
-                                    <> <CurrentUserCard key={message.id} message={message}></CurrentUserCard>
-                                    </>
-                                    : <><OtherUsersCard key={message.time} message={message}></OtherUsersCard></>
+                                    <CurrentUserCard key={message.value} message={message}></CurrentUserCard>
+                                    : <OtherUsersCard key={message.time.toString()} message={message}></OtherUsersCard>
                             )) : `No Messages!`
                     }
                 </div>

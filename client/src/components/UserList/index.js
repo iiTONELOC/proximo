@@ -1,27 +1,57 @@
-import React  /*{ useEffect, useState }*/ from 'react';
-// import { useQuery, useMutation } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useQuery /* , useMutation */ } from '@apollo/client';
 // import { io, socket } from "socket.io-client";
-// import { QUERY_ME } from '../../utils/queries';
+import { QUERY_ME } from '../../utils/queries';
 
 
-const UserList = ({ data, loading }) => {
-    // const [socket, setSocket] = useState(false);
-    // useEffect(() => {
-    //     const newSocket = io(`http://${window.location.hostname}:8080`);
-    //     setSocket(newSocket);
-    //     return () => newSocket.close();
-    // }, [setSocket]);
+const UserList = ({ socket }) => {
+    const [activeUsers, setActiveUsers] = useState([]);
+    const { data, loading } = useQuery(QUERY_ME);
 
-    while (data?.me.UsersInRange.length === 0) {
+    useEffect(() => {
+
+        const activeUserListener = async (user) => {
+
+            console.log('USEEFFECT', user);
+            // render currently online users from usersInRange
+            setTimeout(async () => {
+                setActiveUsers(await data.me.UsersInRange)
+            }, 500);
+
+
+            // grab all users currently online and push to activeUsers
+
+        }
+        if (socket != null) {
+            socket.on('activeUser', activeUserListener);
+        }
+
+        // return () => {
+        //     socket.off('message', messageListener);
+        //     socket.off('deleteMessage', deleteMessageListener);
+        // };
+    }, [socket, data]);
+
+    while (socket?.length === 0) {
         return <h1 className='p-1 text-red-500'>No active users!</h1>
     }
     if (loading) {
         return <h1>Loading please wait...</h1>
     }
+
+    // return (
+    //     <h1>In progress</h1>
+    // )
+
+    if (activeUsers) {
+        console.log("ACTIVE", activeUsers);
+
+
+    }
     return (
         <>
-            {data && data.me.UsersInRange && data.me.UsersInRange.map((el, idx) => (
-                <div key={el.username + idx}>
+            {activeUsers.length > 0 && activeUsers.map((el, idx) => (
+                <div key={idx}>
                     <ul key={el._id} className="mt-3 grid grid-cols-1 gap-5 sm:gap-6 ">
                         <li key={el++} className="col-span-1 flex shadow-sm rounded-md">
                             <div key={Date.now()} className="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">

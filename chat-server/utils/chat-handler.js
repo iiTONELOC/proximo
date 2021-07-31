@@ -29,10 +29,10 @@ class ChatAPI {
         io.sockets.emit('message', message);
     }
     static handleUserLogin(user, socket, io) {
-        console.log(user);
         // grab logged in user info,
         // find users in range
         //  emit to that socket only
+        io.sockets.emit('activeUser', user)
     }
 }
 

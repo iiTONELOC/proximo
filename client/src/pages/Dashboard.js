@@ -36,8 +36,12 @@ export default function Dashboard() {
     useEffect(() => {
         const newSocket = io(`http://${window.location.hostname}:3001`);
         setSocket(newSocket);
+        if (data) {
+            newSocket.emit('loggedIn', data?.me)
+        }
+
         return () => newSocket.close();
-    }, [setSocket]);
+    }, [setSocket, data]);
 
 
     const _id = () => {
@@ -138,7 +142,7 @@ export default function Dashboard() {
                                     {/* SIDE PANEL  */}
                                     <div className="bg-gray-700  col-start-1 col-end-7 md:col-span-1 md:h-auto flex-row justify-center p-2">
                                         <h1 className="text-2xl font-semibold text-gray-900 text-center">Proximo</h1>
-                                        {!data ? <p className='p-1'>No Active Users!</p> : loading ? <p>LOADING PLEASE WAIT</p> : <UserList key={'userList' + data.me.username} data={data} loading={loading}></UserList>}
+                                        {!data ? <p className='p-1'>No Active Users!</p> : loading ? <p>LOADING PLEASE WAIT</p> : <UserList key={'userList' + data.me.username} socket={socket}></UserList>}
 
                                     </div>
                                     {/* MAIN CHAT AREA */}

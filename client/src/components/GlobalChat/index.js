@@ -39,9 +39,9 @@ const Public = (props) => {
                 <div className="w-full p-1 h-full ">
                     {/* We've used 3xl here, but feel free to try other max-widths based on your needs */}
                     <div className="w-full h-4/5 ">
-                        <ul key={socket}>{socket ? (
-                            <li ><Messages socket={socket} data={data} /></li>
-                        ) : `Not connected!`}
+                        <ul>{socket ? (
+                            <li><Messages socket={socket} data={data} /></li>
+                        ) : null}
                         </ul>
                     </div>
                     <div className="w-full">

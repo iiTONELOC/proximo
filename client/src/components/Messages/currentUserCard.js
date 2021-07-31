@@ -4,7 +4,7 @@ export default function CurrentUserCard({ message }) {
     // CURRENT USER MESSAGE CARD
     return (
         <>
-            <div key={message.value} className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4">
                 <div
                     className="mr-2 py-3 px-4 bg-gray-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white shadow-inner">
                     {message.value}
