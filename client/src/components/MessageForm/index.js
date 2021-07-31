@@ -18,17 +18,14 @@ const MessageForm = ({ socket, data }) => {
         event.preventDefault();
         const userName = data.me.username;
 
-
         const messageData = {
             value: value,
             username: userName,
             id: data.me._id
         }
-        // socket.emit('message', messageData);
         socket.emit('message', messageData);
         console.log(characterCount)
         try {
-            // console.log(messageData)
             // clear form value
             setText('');
             setCharacterCount(0);
@@ -37,26 +34,6 @@ const MessageForm = ({ socket, data }) => {
         }
     };
     return (
-        // <div>
-        //     <p className={`m-0 ${characterCount === 280 /*|| error ? 'text-error' : ''*/}`}>
-        //         Character Count: {characterCount}/280
-        //         {/* {error && <span className="ml-2">Something went wrong...</span>} */}
-        //     </p>
-        //     <form
-        //         className="flex-row justify-center justify-space-between-md align-stretch"
-        //         onSubmit={handleFormSubmit}
-        //     >
-        //         <textarea
-        //             placeholder="Be Polite"
-        //             value={value}
-        //             className="form-input col-12 col-md-9"
-        //             onChange={handleChange}
-        //         ></textarea>
-        //         <button className="btn col-12 col-md-3" type="submit">
-        //             Submit
-        //         </button>
-        //     </form>
-        // </div>
         <div className=" w-full bg-gray-100 sm:rounded-lg">
             <div className="px-4 py-5 sm:p-6">
                 <form className="mt-1 font-medium flex items-center justify-around">

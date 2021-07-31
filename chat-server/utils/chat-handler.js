@@ -10,17 +10,6 @@ class ChatAPI {
     // METHODS
     static handleMessage(value, socket, io) {
 
-        // const message = {
-        //     id: Date.now(),
-        //     user: {
-        //         id: Date.now(),
-        //         name: `TEST USER`
-        //     } || '',
-        //     value,
-        //     time: Date.now()
-        // };
-        // 
-
         const message = {
             id: Date.now(),
             user: {
