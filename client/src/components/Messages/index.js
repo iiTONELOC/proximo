@@ -11,6 +11,7 @@ const Messages = ({ socket, data }) => {
             setMessages((prevMessages) => {
                 const newMessages = { ...prevMessages };
                 newMessages[message.id] = message;
+                console.log('IN useEffect, setMessages', newMessages)
                 return newMessages;
             });
         };
