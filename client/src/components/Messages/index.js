@@ -24,14 +24,14 @@ const Messages = ({ socket, data }) => {
             });
         };
 
-        // socket.on('message', messageListener);
-        socket.on('messagePublic', messageListener);
+        socket.on('message', messageListener);
+        // socket.on('messagePublic', messageListener);
         socket.on('deleteMessage', deleteMessageListener);
         socket.emit('getMessages');
 
         return () => {
-            // socket.off('message', messageListener);
-            socket.off('messagePublic', messageListener);
+            socket.off('message', messageListener);
+            // socket.off('messagePublic', messageListener);
             socket.off('deleteMessage', deleteMessageListener);
         };
     }, [socket, data]);
