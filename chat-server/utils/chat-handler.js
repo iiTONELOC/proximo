@@ -2,7 +2,6 @@ class ChatAPI {
     // GLOBAL CHAT
     static globalChat(io) {
         io.on('connection', (socket) => {
-            // console.log('NEW CONNECTION', socket)
             socket.on('message', (value) => ChatAPI.handleMessage(value, socket, io));
             socket.on('private message', (value) => ChatAPI.handleMessage(value, socket, io));
         });
@@ -34,8 +33,6 @@ class ChatAPI {
         ChatAPI.sendMessage(message, io);
     }
     static sendMessage(message, io) {
-        console.log('new message', message);
-        console.log('new msg socket info', io)
         io.sockets.emit('message', message);
     }
 }

@@ -11,7 +11,6 @@ const Messages = ({ socket, data }) => {
             setMessages((prevMessages) => {
                 const newMessages = { ...prevMessages };
                 newMessages[message.id] = message;
-                console.log('IN useEffect, setMessages', newMessages)
                 return newMessages;
             });
         };
@@ -36,9 +35,6 @@ const Messages = ({ socket, data }) => {
         };
     }, [socket, data]);
 
-    if (messages) {
-        console.log(messages)
-    }
     return (
         <>
             <div className="w-full">
