@@ -24,7 +24,7 @@ const MessageForm = ({ socket, data }) => {
             username: userName,
             id: data.me._id
         }
-        socket.emit('message', messageData);
+        // socket.emit('message', messageData);
         socket.emit('messagePublic', messageData);
         console.log(characterCount)
         try {
