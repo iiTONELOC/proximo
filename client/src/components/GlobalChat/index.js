@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React /*, { useEffect, useState }*/ from 'react';
 // import { useQuery, useMutation } from '@apollo/client';
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import MessageForm from '../MessageForm';
 import Messages from '../Messages';
-import Auth from '../../utils/auth';
+// import Auth from '../../utils/auth';
 
 
 // import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
 
 
-const Public = ({ data }) => {
-    const [socket, setSocket] = useState(null);
-    const loggedIn = Auth.loggedIn();
-    useEffect(() => {
-        const newSocket = io(`https://${window.location.hostname}`);
-        setSocket(newSocket);
-        return () => newSocket.close();
-    }, [setSocket]);
+const Public = (props) => {
+    const { loggedIn, socket, data } = { ...props }
+    // const [socket, setSocket] = useState(null);
+    // const loggedIn = Auth.loggedIn();
+    // useEffect(() => {
+    //     const newSocket = io(`https://${window.location.hostname}`);
+    //     setSocket(newSocket);
+    //     return () => newSocket.close();
+    // }, [setSocket]);
 
     // const onMessage = (content) => {
     //   if (this.selectedUser) {

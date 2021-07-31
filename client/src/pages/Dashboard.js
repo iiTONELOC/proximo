@@ -1,7 +1,8 @@
 
 // import { Redirect, useParams } from 'react-router-dom';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
+import { io } from "socket.io-client";
 import UserList from '../components/UserList';
 import { LOGOUT_USER } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
@@ -28,6 +29,16 @@ function classNames(...classes) {
 export default function Dashboard() {
     const [logout] = useMutation(LOGOUT_USER);
     const { error, data, loading } = useQuery(QUERY_ME);
+    const [socket, setSocket] = useState(null);
+    const loggedIn = Auth.loggedIn();
+    // socket info here for now.. we are prop drilling.. we need to set up a global store
+
+    useEffect(() => {
+        const newSocket = io(`http://${window.location.hostname}:3001`);
+        setSocket(newSocket);
+        return () => newSocket.close();
+    }, [setSocket]);
+
 
     const _id = () => {
         if (data !== undefined) return data.me._id
@@ -136,7 +147,7 @@ export default function Dashboard() {
                                         {/* <div className="py-4 px-0">
                                     <div className=" bg bg-gray-500 h-96" />
                                 </div> */}
-                                        <Public data={data} className='h-screen overflow-auto'></Public>
+                                        <Public data={data} socket={socket} loggedIn={loggedIn} className='h-screen overflow-auto'></Public>
                                         {/* /End replace */}
                                     </div>
                                 </div>
