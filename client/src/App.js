@@ -7,11 +7,9 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NoMatch from './pages/NoMatch';
-import Profile from './pages/Profile';
 import Signup from './pages/Signup';
-import Test from './pages/Test';
 import Dashboard from './pages/Dashboard'
-import Public from './pages/Public';
+
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -40,12 +38,9 @@ function App() {
           <div className="w-full h-auto flex-row ">
             <Switch>
               <Route exact path="/" component={Home} />
-              <Route exact path="/test" component={Test} />
               <Route exact path="/dashboard" component={Dashboard} />
-              <Route exact path="/public" component={Public} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/signup" component={Signup} />
-              <Route exact path="/profile/:username?" component={Profile} />
               <Route component={NoMatch} />
             </Switch>
             <Footer />

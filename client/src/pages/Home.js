@@ -1,13 +1,7 @@
 import React from 'react';
-// import { ExternalLinkIcon } from '@heroicons/react/solid'
-import { Link } from 'react-router-dom';
-import Auth from '../utils/auth';
 import Header from '../components/Header'
 export default function Home() {
-  const logout = event => {
-    event.preventDefault();
-    Auth.logout();
-  };
+
   return (
 
     <section className='w-full h-4/6 flex-row justify-center'>
@@ -29,22 +23,7 @@ export default function Home() {
             </p>
             <div className="mt-8">
               <div className="inline-flex rounded-md shadow">
-                {!Auth.loggedIn() ? <> <Link
-                  to="/login"
-                  className="inline-block bg-indigo-500 py-2 px-4 border border-transparent rounded-md text-base font-medium text-white hover:bg-opacity-75"
-                >
-                  Sign in
-                </Link>
-                  <Link
-                    to="/signup"
-                    className="ml-4 inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-gray-50"
-                  >
-                    Sign up
-                  </Link> </> : <><a
-                    href="/"
-                    onClick={logout}
-                    className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-gray-50"
-                  >Logout</a> </>}
+
               </div>
             </div>
           </div>

@@ -34,9 +34,9 @@ const MessageForm = ({ socket, data }) => {
         }
     };
     return (
-        <div className=" w-full bg-gray-100 sm:rounded-lg">
+        <div className=" w-full bg-gray-100 sm:rounded-lg mb-12">
             <div className="px-4 py-5 sm:p-6">
-                <form className="mt-1 font-medium flex items-center justify-around">
+                <form className="mt-1 font-medium flex items-center justify-start">
                     <div className="w-full">
                         <input
                             placeholder="Message"
@@ -48,7 +48,7 @@ const MessageForm = ({ socket, data }) => {
                     <button
                         onClick={handleFormSubmit}
                         type="submit"
-                        className="mt-3 w-full inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="mt-3 w-2/6 inline-flex items-center justify-center px-4 py-2 border border-transparent shadow-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 ml-3 sm:w-1/3 md:w-1/6 text-sm"
                     >
                         Send
                     </button>

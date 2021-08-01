@@ -11,11 +11,11 @@ import { useQuery, useMutation } from '@apollo/client';
 import GlobalChat from '../components/GlobalChat'
 // import Header from "../components/Header"
 import {
-    CalendarIcon,
-    FolderIcon,
+    // CalendarIcon,
+    // FolderIcon,
     HomeIcon,
-    InboxIcon,
-    UsersIcon,
+    // InboxIcon,
+    // UsersIcon,
     LogoutIcon,
     GlobeAltIcon,
 } from '@heroicons/react/outline'
@@ -61,12 +61,12 @@ export default function Dashboard() {
     }
 
     const navigation = [
-        { name: '', href: '', icon: GlobeAltIcon, current: true },
-        { name: '', href: '/', icon: HomeIcon, current: false },
-        { name: '', href: '', icon: UsersIcon, current: false },
-        { name: '', href: '', icon: FolderIcon, current: false },
-        { name: '', href: '', icon: CalendarIcon, current: false },
-        { name: '', href: '', icon: InboxIcon, current: false },
+        { name: '', href: '/dashboard', icon: GlobeAltIcon, current: true },
+        { name: '', href: '/dashboard', icon: HomeIcon, current: false },
+        // { name: '', href: '', icon: UsersIcon, current: false },
+        // { name: '', href: '', icon: FolderIcon, current: false },
+        // { name: '', href: '', icon: CalendarIcon, current: false },
+        // { name: '', href: '', icon: InboxIcon, current: false },
 
     ];
 
@@ -143,23 +143,27 @@ export default function Dashboard() {
                                     {/* SIDE PANEL  */}
                                     <div className="bg-gray-700  col-start-1 col-end-7 md:col-span-1 md:h-auto flex-row justify-center p-2">
                                         <h1 className="text-2xl font-semibold text-gray-900 text-center">Proximo</h1>
-                                        {!data ? <p className='p-1'>No Active Users!</p> : loading ? <p>LOADING PLEASE WAIT</p> : <UserList key={'userList' + data.me.username} data={data} socket={socket}></UserList>}
-
+                                        {!data ? <p className='p-1'>No Active Users!</p>
+                                            : loading ? <p>LOADING PLEASE WAIT</p>
+                                                : <UserList
+                                                    key={'userList' + data.me.username}
+                                                    data={data}
+                                                    socket={socket}>
+                                                </UserList>}
                                     </div>
                                     {/* MAIN CHAT AREA */}
                                     <div className="col-span-6 col-start-1 col-end-7  md:col-start-2 flex-row justify-center p-1 h-full">
-                                        {/* Replace with your content */}
-                                        {/* <div className="py-4 px-0">
-                                    <div className=" bg bg-gray-500 h-96" />
-                                </div> */}
-                                        <GlobalChat data={data} socket={socket} loggedIn={loggedIn} className='h-screen overflow-auto'></GlobalChat>
-                                        {/* /End replace */}
+                                        <GlobalChat
+                                            data={data}
+                                            socket={socket}
+                                            loggedIn={loggedIn}
+                                            className='h-screen overflow-auto'>
+                                        </GlobalChat>
                                     </div>
                                 </div>
                             </main>
                         </div> : null}
                 </>
-
             </div>
         </>
     )

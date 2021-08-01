@@ -5,8 +5,6 @@ import Auth from '../../utils/auth';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Dashboard', href: '/dashboard' },
-  { name: 'Test', href: '/test' },
-  { name: 'Public', href: '/public' },
 ]
 function RenderLinks() {
   return (
@@ -52,11 +50,7 @@ export default function Example() {
                 className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-indigo-50"
               >
                 Sign up
-              </Link> </> : <><a
-                href="/"
-                onClick={logout}
-                className="inline-block bg-white py-2 px-4 border border-transparent rounded-md text-base font-medium text-gray-600 hover:bg-indigo-50"
-              >Logout</a> </>}
+              </Link> </> : null}
           </div>
         </div>
         {/* SMALLER SCREEN LAYOUT DONT REMOVE */}
