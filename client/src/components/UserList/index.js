@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery /* , useMutation */ } from '@apollo/client';
-// import { io, socket } from "socket.io-client";
-import { QUERY_ME } from '../../utils/queries';
 
 
-const UserList = ({ socket }) => {
+
+
+
+const UserList = ({ socket, data }) => {
     const [activeUsers, setActiveUsers] = useState([]);
-    const { data, loading } = useQuery(QUERY_ME);
     useEffect(() => {
+        // there's def a better way to do this
+        // but its working for now
         const activeUserListener = async (user) => {
             // list of all users available to this user, online or not
             const usersInMyRange = data.me.UsersInRange;
@@ -25,7 +26,6 @@ const UserList = ({ socket }) => {
             // check user against usersInMyRange to see if we should show user info
             const newUser = user.username;
             const canShow = usersInMyRange.filter(el => el.username === newUser);
-            console.log('HERE', usersInMyRange)
             // create a new object to return will all our active users
             const allActiveUsersInRange = Object.assign(active, canShow);
             // add active users to state
@@ -45,7 +45,7 @@ const UserList = ({ socket }) => {
     while (socket?.length === 0) {
         return <h1 className='p-1 text-red-500'>No active users!</h1>
     }
-    if (loading) {
+    if (!data) {
         return <h1>Loading please wait...</h1>
     }
 
