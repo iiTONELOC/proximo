@@ -34,7 +34,7 @@ export default function Dashboard() {
     // socket info here for now.. we are prop drilling.. we need to set up a global store
 
     useEffect(() => {
-        const newSocket = io(`http://${window.location.hostname}:3001`);
+        const newSocket = io(`https://${window.location.hostname}`);
         setSocket(newSocket);
         if (data) {
             newSocket.emit('loggedIn', data?.me)
