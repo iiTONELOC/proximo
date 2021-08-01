@@ -40,7 +40,7 @@ export default function Dashboard() {
             newSocket.emit('loggedIn', data?.me)
         }
 
-        return () => newSocket.close();
+        return () => { newSocket.close() };
     }, [setSocket, data]);
 
 
@@ -51,6 +51,7 @@ export default function Dashboard() {
         e.preventDefault();
         const offline = await logout({ variables: { user_id: _id() } });
         if (offline) {
+            socket.emit('loggingOut', data.me._id)
             Auth.logout()
         }
         if (error) {

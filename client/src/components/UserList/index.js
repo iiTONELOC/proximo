@@ -9,7 +9,7 @@ const UserList = ({ socket, data }) => {
     useEffect(() => {
         // there's def a better way to do this
         // but its working for now
-        const activeUserListener = async (user) => {
+        const activeUserListener = (user) => {
             // list of all users available to this user, online or not
             const usersInMyRange = data.me.UsersInRange;
             // currently the me query only updates on page reload
@@ -23,23 +23,31 @@ const UserList = ({ socket, data }) => {
                 }
             }).filter(el => el !== null);
             // when a new user signs on
-            // check user against usersInMyRange to see if we should show user info
+            // check user against its usersInMyRange to see if we are in their range
             const newUser = user.username;
-            const canShow = usersInMyRange.filter(el => el.username === newUser);
-            // create a new object to return will all our active users
-            const allActiveUsersInRange = Object.assign(active, canShow);
-            // add active users to state
-            setActiveUsers(allActiveUsersInRange);
+            const canShow = user.UsersInRange.filter(el => el.username === data.me.username);
+            // if we are in their range
+            if (canShow.length > 0) {
+                const allActiveUsersInRange = Object.assign(active, [user]);
+                setActiveUsers(allActiveUsersInRange);
+            } else {
+                // if not filter by our avail in-range users
+                const canShow = usersInMyRange.filter(el => el.username === newUser);
+                const allActiveUsersInRange = Object.assign(active, canShow);
+                setActiveUsers(allActiveUsersInRange);
+            }
         }
-        // sometimes the socket is null while awaiting the connection
-        // optional chain will prevent the undefined error
+
+        const deleteActiveUser = (_id) => {
+            setActiveUsers((previousOnline) => {
+                const newUsers = { ...previousOnline };
+                delete newUsers[_id];
+                return newUsers
+            })
+        }
         socket?.on('activeUser', activeUserListener);
+        socket?.on('inactiveUser', deleteActiveUser);
 
-
-        // return () => {
-        //     socket.off('message', messageListener);
-        //     socket.off('deleteMessage', deleteMessageListener);
-        // };
     }, [socket, data]);
 
     while (socket?.length === 0) {

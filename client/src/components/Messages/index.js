@@ -26,10 +26,6 @@ const Messages = ({ socket, data }) => {
         socket.on('deleteMessage', deleteMessageListener);
         socket.emit('getMessages');
 
-        return () => {
-            socket.off('message', messageListener);
-            socket.off('deleteMessage', deleteMessageListener);
-        };
     }, [socket, data]);
 
     return (
