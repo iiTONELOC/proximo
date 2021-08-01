@@ -86,7 +86,7 @@ export default function Dashboard() {
                                     <img
                                         // INSERT ICON HERE
                                         className="h-10 w-auto"
-                                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=white"
+                                        src="https://img.icons8.com/color/48/000000/p.png"
                                         alt=""
                                     />
                                 </Link>
