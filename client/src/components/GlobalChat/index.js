@@ -9,7 +9,7 @@ import Messages from '../Messages';
 // import { QUERY_CHANNELS, QUERY_ME } from '../utils/queries';
 
 
-const Public = (props) => {
+const GlobalChat = (props) => {
     const { loggedIn, socket, data } = { ...props }
     // const [socket, setSocket] = useState(null);
     // const loggedIn = Auth.loggedIn();
@@ -55,4 +55,4 @@ const Public = (props) => {
     );
 };
 
-export default Public;
+export default GlobalChat;

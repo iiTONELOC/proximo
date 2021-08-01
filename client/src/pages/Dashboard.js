@@ -8,7 +8,7 @@ import { LOGOUT_USER } from '../utils/mutations';
 import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 import { useQuery, useMutation } from '@apollo/client';
-import Public from '../components/GlobalChat'
+import GlobalChat from '../components/GlobalChat'
 // import Header from "../components/Header"
 import {
     CalendarIcon,
@@ -34,7 +34,7 @@ export default function Dashboard() {
     // socket info here for now.. we are prop drilling.. we need to set up a global store
 
     useEffect(() => {
-        const newSocket = io(`https://${window.location.hostname}`);
+        const newSocket = io(`http://${window.location.hostname}:3001`);
         setSocket(newSocket);
         if (data) {
             newSocket.emit('loggedIn', data?.me)
@@ -151,7 +151,7 @@ export default function Dashboard() {
                                         {/* <div className="py-4 px-0">
                                     <div className=" bg bg-gray-500 h-96" />
                                 </div> */}
-                                        <Public data={data} socket={socket} loggedIn={loggedIn} className='h-screen overflow-auto'></Public>
+                                        <GlobalChat data={data} socket={socket} loggedIn={loggedIn} className='h-screen overflow-auto'></GlobalChat>
                                         {/* /End replace */}
                                     </div>
                                 </div>
