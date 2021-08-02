@@ -1,18 +1,22 @@
 # Proximo
+
 ---
+
 ## Live Website URL
 
 [Proximo](https://blooming-wildwood-24520.herokuapp.com)
 
 ## Description
 
-Proximo is a user friendly chat app that allows for one to open the app, see all of the geographically close users of proximo, chat on a global chat and add friends. Great for use in offices, schools, and just about everywhere else. 
+Proximo is a user friendly chat app that allows for one to open the app, see all of the geographically close users of proximo, chat on a global chat and add friends. Great for use in offices, schools, and just about everywhere else.
 
 ## Table of Contents
 
+[Screen Shot](#camera-screen-shot)
+
 [Installation](#package-installation)
 
-[Tech/Frameworks](#computer-tech-frameworks)  
+[Tech/Frameworks](#computer-tech-frameworks)
 
 [Technology Stack](#penguin-technology-stack)
 
@@ -24,6 +28,10 @@ Proximo is a user friendly chat app that allows for one to open the app, see all
 
 [Contributors](#pencil2-contributors)
 
+## :camera: Screen Shot
+
+![ScreenShot](./assets/proximo-screenshot.jpg)
+
 ## :package: Installation
 
 To install all necessary dependencies, run the following command:
@@ -31,28 +39,29 @@ To install all necessary dependencies, run the following command:
     npm i
 
 ## :computer: Tech Frameworks
-    * MERN 
+
+    * MERN
     * Bcrypt
     * JWT
     * Graphql
-    * Apollo Client 
+    * Apollo Client
     * STDLib
     * TailwindCSS
     * Geo-IP and Ext-IP
-    * Socket.io  
-        
+    * Socket.io
+
+
 ## :penguin: Technology Stack
 
-| Technology | Description                        |Links ↘️ |
-| ---------- | -----------------------------------| ------|
-|![GitHub top language](https://img.shields.io/github/languages/top/iiTONELOC/proximo?color=yellow&label=JavaScript&message=97.6%&style=flat-square) | JavaScript |   |
-|![HTML](https://img.shields.io/static/v1?label=HTML&message=1.8%&color=orange&style=flat-square)| Hyper Text Markup Language |         |
-|![CSS](https://img.shields.io/static/v1?label=CSS&message=0.6%&color=purple&style=flat-square)| Cascading Style Sheets |                                  |
+| Technology                                                                                                                                          | Description                | Links ↘️ |
+| --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------- |
+| ![GitHub top language](https://img.shields.io/github/languages/top/iiTONELOC/proximo?color=yellow&label=JavaScript&message=97.6%&style=flat-square) | JavaScript                 |          |
+| ![HTML](https://img.shields.io/static/v1?label=HTML&message=1.8%&color=orange&style=flat-square)                                                    | Hyper Text Markup Language |          |
+| ![CSS](https://img.shields.io/static/v1?label=CSS&message=0.6%&color=purple&style=flat-square)                                                      | Cascading Style Sheets     |          |
 
 ## :thought_balloon: Usage
 
-To run locally ```npm run develop``` after installing dependencies
-
+To run locally `npm run develop` after installing dependencies
 
 ## :copyright: License
 
@@ -83,6 +92,7 @@ SOFTWARE.
 If you have any questions about the repo, open an issue or contact one of the main contributers directly!
 
 ## :pencil2: Contributors
+
 - Steve Black - Email: / Github: [N2theFray](https://github.com/N2theFray)
 - Semion Evdokimov - Email: semionaevdokimov@icloud.com / GitHub: [ItsEvdok](https://github.com/ItsEvdok)
 - Otis Singfield - Email: / Github: [singfieldotis](https://github.com/singfieldotis)

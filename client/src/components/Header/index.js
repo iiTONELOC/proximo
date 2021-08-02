@@ -15,10 +15,6 @@ function RenderLinks() {
     )) : null
   )
 }
-const logout = event => {
-  event.preventDefault();
-  Auth.logout();
-};
 export default function Example() {
   return (
     <header className="bg-gray-600">
